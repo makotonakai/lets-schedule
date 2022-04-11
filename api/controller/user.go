@@ -3,15 +3,15 @@ package controller
 import (
     "fmt"
     "net/http"
-    "api/model"
     "github.com/labstack/echo"
-    connect "github.com/MakotoNakai/lets-schedule/api/connect"
+		"github.com/MakotoNakai/lets-schedule/api/model"
+    dbconnection "github.com/MakotoNakai/lets-schedule/api/dbconnection"
 )
 
 func Create() echo.HandlerFunc{
     return func(c echo.Context) error {
         //Project/api/database/connect.goで定義したやつ。
-        db := connect.Connect()
+        db := dbconnection.Connect()
         //この記述は絶対に必要でdeferを書くことでメソッド終了後に発動し、DBをCloseしてくれる。そのためこの下にメソッドを書いても問題ありません。
         defer db.Close()
 
