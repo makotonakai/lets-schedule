@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  mariadb:
+    image: mariadb:10.3
+    container_name: mariadb_container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      TZ: "Asia/Tokyo"
+      BIND_ADDRESS: 0.0.0.0
+    volumes:
+      - ./db/data:/var/lib/mariadb
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./db/initdb.d/table.sql:/docker-entrypoint-initdb.d/table.sql
+    ports:
+      - "3306:3306"
+    # command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mariadb
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=mariadb
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    ports:
+      - "8080:80"
+    volumes:
+      - ./phpmyadmin/sessions:/sessions
