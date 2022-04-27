@@ -12,30 +12,30 @@ CREATE TABLE users (
   updated_at datetime
 );
 -- データの挿入
--- INSERT INTO
---   users (
---     id,
---     username,
---     emailaddress,
---     password,
---     isadmin,
---     canlogin,
---     created_at,
---     updated_at
---   )
--- VALUES
---   (
---     1,
---     "makoto",
---     "hoge@email.com",
---     "password",
---     true,
---     true,
---     sysdate(),
---     sysdate()
---   );
+INSERT INTO
+  users (
+    id,
+    username,
+    emailaddress,
+    password,
+    isadmin,
+    canlogin,
+    created_at,
+    updated_at
+  )
+VALUES
+  (
+    1,
+    "makoto",
+    "hoge@email.com",
+    "password",
+    true,
+    true,
+    sysdate(),
+    sysdate()
+  );
 -- -- テーブルの表示
--- SELECT
---   *
--- FROM
---   users;
+  -- SELECT
+  --   *
+  -- FROM
+  --   users;
