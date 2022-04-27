@@ -7,7 +7,7 @@ import (
 	"github.com/MakotoNakai/lets-schedule/controllers"
 )
 
-func Router() *echo.Echo {
+func Initialize() *echo.Echo {
 
 	e := echo.New()
 	e.Use(middleware.Logger())
