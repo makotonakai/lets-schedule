@@ -2,9 +2,7 @@ package controllers
 
 import (
 
-	"strconv"
 	"net/http"
-
 	"github.com/labstack/echo/v4"
 
 	"github.com/MakotoNakai/lets-schedule/models"
@@ -19,7 +17,7 @@ var db = database.Connect()
 func CreateUser(c echo.Context) error {
 	
 	newUser := models.User{}
-	err := c.Bind(newUser)
+	err := c.Bind(&newUser)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -32,13 +30,11 @@ func CreateUser(c echo.Context) error {
 func GetUser(c echo.Context) error {
 
 	user := models.User{}
-	err := c.Bind(user)
+	err := c.Bind(&user)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-
-	id, _ := strconv.Atoi(c.Param("id"))
-	db.First(&user, id)
+	db.First(&user)
 
 	return c.JSON(http.StatusOK, user)
 }
@@ -46,36 +42,34 @@ func GetUser(c echo.Context) error {
 func GetUsers(c echo.Context) error {
 
 	userList:= []models.User{}
-	users := db.Find(&userList)
-
-	return c.JSON(http.StatusOK, users)
+	db.Find(&userList)
+	
+	return c.JSON(http.StatusOK, userList)
 
 }
 
 func UpdateUser(c echo.Context) error {
 
 	user := models.User{}
-	err := c.Bind(user)
+	err := c.Bind(&user)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-
-	id, _ := strconv.Atoi(c.Param("id"))
-	db.First(&user, id)
 	db.Save(&user)
+
 	return c.JSON(http.StatusOK, user)
 }
 
 func DeleteUser(c echo.Context) error {
 
 	user := models.User{}
-	err := c.Bind(user)
+	err := c.Bind(&user)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	id, _ := strconv.Atoi(c.Param("id"))
-	db.Delete(&user, id)
+	db.Delete(&user)
+
 	return c.JSON(http.StatusNoContent, user)
 }
 

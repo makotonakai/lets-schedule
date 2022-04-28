@@ -1,16 +1,10 @@
 package models
 
-import (
-	"time"
-)
-
-type User struct {
-	ID int								`json:"id"`
-	UserName string 			`json:"userName"`
-	EmailAddress string 	`json:"emailAddress"`
-	Password string 			`json:"password"`
-	IsAdmin bool 					`json:"isAdmin"`
-	CanLogin bool 				`json:"canLogin"`
-	CreatedAt time.Time		`json:"CreatedAt"`
-	UpdatedAt time.Time		`json:"UpdatedAt"`
+type User struct {	
+	Id 						int			`json:"id" param:"id"`	
+	UserName 			string 	`json:"username"`
+	EmailAddress  string 	`json:"email_address"`
+	Password 			string 	`json:"password"`
+	IsAdmin 			bool 		`json:"is_admin"`
+	CanLogin 			bool 		`json:"can_login"`				
 }
