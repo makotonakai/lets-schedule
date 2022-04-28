@@ -3,18 +3,18 @@ package database
 import (
 	"os"
 	"fmt"
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
   "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
 func Connect() *gorm.DB {
 
-	err := godotenv.Load("database/.env")
+	// err := godotenv.Load("database/.env")
 	
-	if err != nil {
-		fmt.Printf("Could not load the .env file: %v", err)
-	} 
+	// if err != nil {
+	// 	fmt.Printf("Could not load the .env file: %v", err)
+	// } 
 
 	db_user := os.Getenv("DB_USER")
 	db_password := os.Getenv("DB_PASSWORD")
