@@ -4,10 +4,17 @@ import (
 	"net/http"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	
+	"github.com/MakotoNakai/lets-schedule/models"
+	"github.com/MakotoNakai/lets-schedule/database"
 	"github.com/MakotoNakai/lets-schedule/controllers"
 )
 
 func Initialize() *echo.Echo {
+
+	db := database.Connect()
+	db.AutoMigrate(&models.User{})
+	database.Seed(db)
 
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -27,6 +34,12 @@ func Initialize() *echo.Echo {
 	e.GET("/users/:id", controllers.GetUser)
 	e.PUT("/users/:id", controllers.UpdateUser)
 	e.DELETE("/users/:id", controllers.DeleteUser)
+
+	e.GET("/meetings", controllers.GetMeetings)
+	e.POST("/meetings/new", controllers.CreateMeeting)
+	e.GET("/meetings/:id", controllers.GetMeeting)
+	e.PUT("/meetings/:id", controllers.UpdateMeeting)
+	e.DELETE("/meetings/:id", controllers.DeleteMeeting)
 
 	return e
 
