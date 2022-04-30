@@ -20,6 +20,8 @@ func SeedUser(db *gorm.DB) {
 		Password: "password",
 		IsAdmin: true,
 		CanLogin: true,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	user2 := models.User{
@@ -29,6 +31,8 @@ func SeedUser(db *gorm.DB) {
 		Password: "password",
 		IsAdmin: false,
 		CanLogin: false,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	db.Create(&user1)
@@ -64,3 +68,5 @@ func SeedMeeting(db *gorm.DB) {
 	db.Create(&meeting1)
 	db.Create(&meeting2)
 }
+
+
