@@ -13,7 +13,7 @@ import (
 func Initialize() *echo.Echo {
 
 	db := database.Connect()
-	db.AutoMigrate(&models.User{}, &models.Meeting{}, &models.Participant{})
+	db.AutoMigrate(&models.User{}, &models.Meeting{}, &models.Participant{}, &models.CandidateTime{})
 	database.Seed(db)
 
 	e := echo.New()
@@ -46,6 +46,12 @@ func Initialize() *echo.Echo {
 	e.GET("/participants/:meeting_id", controllers.GetParticipant)
 	e.PUT("/participants/:meeting_id", controllers.UpdateParticipant)
 	e.DELETE("/participants/:meeting_id", controllers.DeleteParticipant)
+
+	e.GET("/candidate_times", controllers.GetParticipants)
+	e.POST("/candidate_times/new", controllers.CreateParticipant)
+	e.GET("/candidate_times/:id", controllers.GetParticipant)
+	e.PUT("/candidate_times/:id", controllers.UpdateParticipant)
+	e.DELETE("/candidate_times/:id", controllers.DeleteParticipant)
 
 	return e
 

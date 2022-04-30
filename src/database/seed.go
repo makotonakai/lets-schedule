@@ -11,6 +11,7 @@ func Seed(db *gorm.DB){
 	SeedUser(db)
 	SeedMeeting(db)
 	SeedParticipant(db)
+	SeedCandidateTime(db)
 }
 
 func SeedUser(db *gorm.DB) {
@@ -74,25 +75,54 @@ func SeedMeeting(db *gorm.DB) {
 	db.Create(&meeting2)
 }
 
-	func SeedParticipant(db *gorm.DB) {
-		participant1 := models.Participant{
-			Id:1, 
-			MeetingId: 1,
-			UserId:1,
-			IsHost:true,
-			HasResponded:true,
-		}
+func SeedParticipant(db *gorm.DB) {
+	participant1 := models.Participant{
+		Id:1, 
+		MeetingId: 1,
+		UserId:1,
+		IsHost:true,
+		HasResponded:true,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
 
-		participant2 := models.Participant{
-			Id:2, 
-			MeetingId: 1,
-			UserId:2,
-			IsHost:false,
-			HasResponded:false,
-		}
+	participant2 := models.Participant{
+		Id:2, 
+		MeetingId: 1,
+		UserId:2,
+		IsHost:false,
+		HasResponded:false,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
 
-		db.Create(&participant1)
-		db.Create(&participant2)
+	db.Create(&participant1)
+	db.Create(&participant2)
+}
+
+func SeedCandidateTime(db *gorm.DB) {
+	candidateTime1 := models.CandidateTime{
+		Id:1,
+		MeetingId:1,
+		UserId:1,
+		StartTime:time.Now(),
+		EndTime:time.Now(),
+		CreatedAt:time.Now(),
+		UpdatedAt:time.Now(),
+	}
+
+	candidateTime2 := models.CandidateTime{
+		Id:2,
+		MeetingId:1,
+		UserId:1,
+		StartTime:time.Now(),
+		EndTime:time.Now(),
+		CreatedAt:time.Now(),
+		UpdatedAt:time.Now(),
+	}
+
+	db.Create(&candidateTime1)
+	db.Create(&candidateTime2)
 }
 
 
