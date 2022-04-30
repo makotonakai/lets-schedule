@@ -13,4 +13,6 @@ type Meeting struct {
 	Type string `json:"type"`
 	MeetingPlace string `json:"meeting_place"`
 	MeetingUrl string `json:"meeting_url"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

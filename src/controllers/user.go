@@ -7,13 +7,11 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"github.com/MakotoNakai/lets-schedule/models"
-	"github.com/MakotoNakai/lets-schedule/database"
 )
 
 //----------
 // Handlers
 //----------
-var db = database.Connect()
 
 func CreateUser(c echo.Context) error {
 	

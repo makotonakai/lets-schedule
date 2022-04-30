@@ -10,6 +10,7 @@ import (
 func Seed(db *gorm.DB){
 	SeedUser(db)
 	SeedMeeting(db)
+	SeedParticipant(db)
 }
 
 func SeedUser(db *gorm.DB) {
@@ -52,6 +53,8 @@ func SeedMeeting(db *gorm.DB) {
 		Type: "hybrid",
 		MeetingPlace: "Delta 1F",
 		MeetingUrl: "https://aqua-meeting.com",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	meeting2 := models.Meeting{
@@ -63,10 +66,33 @@ func SeedMeeting(db *gorm.DB) {
 		Type: "online",
 		MeetingPlace: "",
 		MeetingUrl: "https://gaiax-meeting.com",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	db.Create(&meeting1)
 	db.Create(&meeting2)
+}
+
+	func SeedParticipant(db *gorm.DB) {
+		participant1 := models.Participant{
+			Id:1, 
+			MeetingId: 1,
+			UserId:1,
+			IsHost:true,
+			HasResponded:true,
+		}
+
+		participant2 := models.Participant{
+			Id:2, 
+			MeetingId: 1,
+			UserId:2,
+			IsHost:false,
+			HasResponded:false,
+		}
+
+		db.Create(&participant1)
+		db.Create(&participant2)
 }
 
 
