@@ -13,7 +13,7 @@ import (
 func Initialize() *echo.Echo {
 
 	db := database.Connect()
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.User{}, &models.Meeting{})
 	database.Seed(db)
 
 	e := echo.New()

@@ -38,7 +38,9 @@ func SeedUser(db *gorm.DB) {
 func SeedMeeting(db *gorm.DB) {
 
 	now := time.Now()
+
 	meeting1 := models.Meeting{
+		Id: 1,
 		Title: "lab meeting",
 		Description: "Just a regular weekly meeting",
 		StartTime: now,
@@ -49,6 +51,7 @@ func SeedMeeting(db *gorm.DB) {
 	}
 
 	meeting2 := models.Meeting{
+		Id: 2,
 		Title: "meeting with Aram-san",
 		Description: "progres report",
 		StartTime: now,
