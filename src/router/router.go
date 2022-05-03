@@ -1,7 +1,7 @@
 package router
 
 import (
-	"net/http"
+	// "net/http"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	
@@ -25,36 +25,42 @@ func Initialize() *echo.Echo {
 		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
 	}))
 
-	e.Use(middleware.BasicAuth(handlers.BasicAuth))
-
+	api := e.Group("/api")
 	// versionを取得して埋め込みして、version非依存にする
-	e.GET("/ping", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Ping")
-	})
+	api.GET("/", handlers.Accessible)
+	api.POST("/login", handlers.Login)
 
-	e.GET("/users", controllers.GetUsers)
-	e.POST("/users/new", controllers.CreateUser)
-	e.GET("/users/:id", controllers.GetUser)
-	e.PUT("/users/:id", controllers.UpdateUser)
-	e.DELETE("/users/:id", controllers.DeleteUser)
+	r := e.Group("/api/restricted")
+	config := middleware.JWTConfig{
+		Claims:     &handlers.JWTCustomClaims{},
+		SigningKey: []byte("secret"),
+	}
+	r.Use(middleware.JWTWithConfig(config))
+	r.GET("", handlers.Restricted)
 
-	e.GET("/meetings", controllers.GetMeetings)
-	e.POST("/meetings/new", controllers.CreateMeeting)
-	e.GET("/meetings/:id", controllers.GetMeeting)
-	e.PUT("/meetings/:id", controllers.UpdateMeeting)
-	e.DELETE("/meetings/:id", controllers.DeleteMeeting)
+	r.GET("/users", controllers.GetUsers)
+	r.POST("/users/new", controllers.CreateUser)
+	r.GET("/users/:id", controllers.GetUser)
+	r.PUT("/users/:id", controllers.UpdateUser)
+	r.DELETE("/users/:id", controllers.DeleteUser)
 
-	e.GET("/participants", controllers.GetParticipants)
-	e.POST("/participants/new", controllers.CreateParticipant)
-	e.GET("/participants/:id", controllers.GetParticipant)
-	e.PUT("/participants/:id", controllers.UpdateParticipant)
-	e.DELETE("/participants/:id", controllers.DeleteParticipant)
+	r.GET("/meetings", controllers.GetMeetings)
+	r.POST("/meetings/new", controllers.CreateMeeting)
+	r.GET("/meetings/:id", controllers.GetMeeting)
+	r.PUT("/meetings/:id", controllers.UpdateMeeting)
+	r.DELETE("/meetings/:id", controllers.DeleteMeeting)
 
-	e.GET("/candidate_times", controllers.GetParticipants)
-	e.POST("/candidate_times/new", controllers.CreateParticipant)
-	e.GET("/candidate_times/:id", controllers.GetParticipant)
-	e.PUT("/candidate_times/:id", controllers.UpdateParticipant)
-	e.DELETE("/candidate_times/:id", controllers.DeleteParticipant)
+	r.GET("/participants", controllers.GetParticipants)
+	r.POST("/participants/new", controllers.CreateParticipant)
+	r.GET("/participants/:id", controllers.GetParticipant)
+	r.PUT("/participants/:id", controllers.UpdateParticipant)
+	r.DELETE("/participants/:id", controllers.DeleteParticipant)
+
+	r.GET("/candidate_times", controllers.GetParticipants)
+	r.POST("/candidate_times/new", controllers.CreateParticipant)
+	r.GET("/candidate_times/:id", controllers.GetParticipant)
+	r.PUT("/candidate_times/:id", controllers.UpdateParticipant)
+	r.DELETE("/candidate_times/:id", controllers.DeleteParticipant)
 
 	return e
 
