@@ -6,7 +6,7 @@ COPY ./src/ /go/src/app/
 WORKDIR /go/src/app
 RUN go install
 
-EXPOSE 3000
+EXPOSE 1323
 
 
 

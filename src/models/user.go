@@ -5,12 +5,12 @@ import (
 )
 
 type User struct {	
-	Id int `json:"id" param:"id"`	
-	UserName string `json:"username"`
-	EmailAddress string `json:"email_address"`
-	Password string `json:"password"`
-	IsAdmin	bool `json:"is_admin"`
-	CanLogin bool `json:"can_login"`	
-	CreatedAt time.Time `json:"created_at"`	
-	UpdatedAt time.Time `json:"updated_at"`	
+	Id int `gorm:"primaryKey:autoIncrement" json:"id" param:"id"`	
+	UserName string `gorm:"unique" json:"username"`
+	EmailAddress string `gorm:"unique" json:"email_address"`
+	Password string `gorm:"not null" json:"password"`
+	IsAdmin	bool `gorm:"not null" json:"is_admin"`
+	CanLogin bool `gorm:"not null" json:"can_login"`	
+	CreatedAt time.Time `gorm:"autoCreateTime:int" json:"created_at"`	
+	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`	
 }

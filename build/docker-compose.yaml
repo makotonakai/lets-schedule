@@ -39,21 +39,21 @@ services:
     volumes:
       - ./phpmyadmin/sessions:/sessions
 
-  # api-server:
-  #   image: api-server
-  #   build:
-  #     context: ../
-  #     dockerfile: ./build/api-server/Dockerfile
-  #   container_name: api-server_container
-  #   depends_on:
-  #     mariadb:
-  #       condition: service_healthy
-  #   environment:
-  #     - DB_HOST=mariadb_container
-  #     - DB_USER=user
-  #     - DB_PASSWORD=password
-  #     - DB_PORT=3306
-  #     - DB_NAME=db
-  #   ports:
-  #     - "3000:3000"
-  #   command: /bin/bash -c "sleep 3 && go run /go/src/app/main.go"
+  api-server:
+    image: api-server
+    build:
+      context: ../
+      dockerfile: ./build/api-server/Dockerfile
+    container_name: api-server_container
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      - DB_HOST=mariadb_container
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_PORT=3306
+      - DB_NAME=db
+    ports:
+      - "1323:1323"
+    command: /bin/bash -c "sleep 3 && go run /go/src/app/main.go"

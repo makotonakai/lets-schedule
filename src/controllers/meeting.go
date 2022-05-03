@@ -2,7 +2,9 @@ package controllers
 
 import (
 
+	"time"
 	"net/http"
+	
 	"github.com/labstack/echo/v4"
 
 	"github.com/MakotoNakai/lets-schedule/models"
@@ -15,6 +17,9 @@ func CreateMeeting(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
+
+	newMeeting.CreatedAt = time.Now()
+	newMeeting.UpdatedAt = time.Now()
 
 	db.Create(&newMeeting)
 	return c.JSON(http.StatusCreated, newMeeting)
@@ -49,6 +54,8 @@ func UpdateMeeting(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
+
+	meeting.UpdatedAt = time.Now()
 	db.Save(&meeting)
 
 	return c.JSON(http.StatusOK, meeting)

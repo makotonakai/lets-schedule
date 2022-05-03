@@ -23,7 +23,9 @@ func Connect() *gorm.DB {
 	db_name := os.Getenv("DB_NAME")
 
   dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", db_user, db_password, db_host, db_port, db_name)
-  db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+  db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 
 	if err != nil {
 		fmt.Printf("Connection with database failed: %v", err)

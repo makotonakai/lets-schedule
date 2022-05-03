@@ -7,14 +7,7 @@ import (
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
-func Seed(db *gorm.DB){
-	SeedUser(db)
-	SeedMeeting(db)
-	SeedParticipant(db)
-	SeedCandidateTime(db)
-}
-
-func SeedUser(db *gorm.DB) {
+func Seed(db *gorm.DB) {
 	user1 := models.User{
 		Id: 1,
 		UserName: "makoto",
@@ -39,9 +32,7 @@ func SeedUser(db *gorm.DB) {
 
 	db.Create(&user1)
 	db.Create(&user2)
-}
 
-func SeedMeeting(db *gorm.DB) {
 
 	now := time.Now()
 
@@ -73,22 +64,21 @@ func SeedMeeting(db *gorm.DB) {
 
 	db.Create(&meeting1)
 	db.Create(&meeting2)
-}
 
-func SeedParticipant(db *gorm.DB) {
+	
 	participant1 := models.Participant{
 		Id:1, 
-		MeetingId: 1,
+		MeetingId:1,
 		UserId:1,
-		IsHost:true,
-		HasResponded:true,
+		IsHost: true,
+		HasResponded: true,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
 
 	participant2 := models.Participant{
 		Id:2, 
-		MeetingId: 1,
+		MeetingId:1,
 		UserId:2,
 		IsHost:false,
 		HasResponded:false,
@@ -98,9 +88,8 @@ func SeedParticipant(db *gorm.DB) {
 
 	db.Create(&participant1)
 	db.Create(&participant2)
-}
 
-func SeedCandidateTime(db *gorm.DB) {
+
 	candidateTime1 := models.CandidateTime{
 		Id:1,
 		MeetingId:1,

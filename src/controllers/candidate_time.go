@@ -2,7 +2,9 @@ package controllers
 
 import (
 
+	"time"
 	"net/http"
+
 	"github.com/labstack/echo/v4"
 
 	"github.com/MakotoNakai/lets-schedule/models"
@@ -15,6 +17,9 @@ func CreateCandidateTime(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
+
+	newCandidateTime.CreatedAt = time.Now()
+	newCandidateTime.UpdatedAt = time.Now()
 
 	db.Create(&newCandidateTime)
 	return c.JSON(http.StatusCreated, newCandidateTime)
@@ -49,6 +54,8 @@ func UpdateCandidateTime(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
+
+	candidateTime.UpdatedAt = time.Now()
 	db.Save(&candidateTime)
 
 	return c.JSON(http.StatusOK, candidateTime)

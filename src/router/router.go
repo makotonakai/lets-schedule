@@ -7,6 +7,7 @@ import (
 	
 	"github.com/MakotoNakai/lets-schedule/models"
 	"github.com/MakotoNakai/lets-schedule/database"
+	"github.com/MakotoNakai/lets-schedule/handlers"
 	"github.com/MakotoNakai/lets-schedule/controllers"
 )
 
@@ -23,6 +24,8 @@ func Initialize() *echo.Echo {
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
 	}))
+
+	e.Use(middleware.BasicAuth(handlers.BasicAuth))
 
 	// versionを取得して埋め込みして、version非依存にする
 	e.GET("/ping", func(c echo.Context) error {
@@ -43,9 +46,9 @@ func Initialize() *echo.Echo {
 
 	e.GET("/participants", controllers.GetParticipants)
 	e.POST("/participants/new", controllers.CreateParticipant)
-	e.GET("/participants/:meeting_id", controllers.GetParticipant)
-	e.PUT("/participants/:meeting_id", controllers.UpdateParticipant)
-	e.DELETE("/participants/:meeting_id", controllers.DeleteParticipant)
+	e.GET("/participants/:id", controllers.GetParticipant)
+	e.PUT("/participants/:id", controllers.UpdateParticipant)
+	e.DELETE("/participants/:id", controllers.DeleteParticipant)
 
 	e.GET("/candidate_times", controllers.GetParticipants)
 	e.POST("/candidate_times/new", controllers.CreateParticipant)

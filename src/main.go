@@ -9,6 +9,6 @@ import (
 func main() {
 	
 	e := router.Initialize()
-	e.Logger.Fatal(e.Start(":3000"))
+	e.Logger.Fatal(e.Start(":1323"))
 	
 }
