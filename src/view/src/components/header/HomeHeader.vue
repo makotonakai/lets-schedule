@@ -3,23 +3,25 @@
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item">
-          <img src="../../assets/logo.png" width="140" height="64">
+          <router-link to="/home">
+            <img src="../../assets/logo.png" width="140" height="64">
+          </router-link>
         </a>
       </div>
 
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-primary">
+            <router-link to="/signup" class="button is-primary">
               <strong>Sign up</strong>
-            </a>
+            </router-link>
           </div>
         </div>
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-right">
+            <router-link to="/login" class="button is-right">
               <strong>Log in</strong>
-            </a>
+            </router-link>
           </div>
         </div>
       </div>
