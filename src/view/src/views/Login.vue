@@ -17,7 +17,7 @@ import LoginHeader from '../components/header/LoginHeader.vue'
                 <div class="control has-icons-left">
                   <input type="email" placeholder="e.g. lets-schedule@gmail.com" class="input" required>
                   <span class="icon is-small is-left">
-                    <i class="fa fa-envelope"></i>
+                    <i class="fas fa-envelope"></i>
                   </span>
                 </div>
               </div>
@@ -26,7 +26,7 @@ import LoginHeader from '../components/header/LoginHeader.vue'
                 <div class="control has-icons-left">
                   <input type="password" placeholder="*******" class="input" required>
                   <span class="icon is-small is-left">
-                    <i class="fa fa-lock"></i>
+                    <i class="fas fa-lock"></i>
                   </span>
                 </div>
               </div>

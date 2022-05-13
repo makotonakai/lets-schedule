@@ -1,5 +1,10 @@
-
+<script setup>
+import HomeHeader from '../components/header/HomeHeader.vue'
+</script>
 <template>
+  <header>
+    <HomeHeader></HomeHeader>
+  </header>
   <section class="hero is-primary is-fullheight">
     <div class="hero-body">
       <div class="container">
