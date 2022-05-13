@@ -32,7 +32,7 @@ import SignupHeader from '../components/header/SignupHeader.vue'
               </div>
               <div class="field">
                 <button class="button is-success">
-                  Sign in
+                  Sign up
                 </button>
               </div>
             </form>
