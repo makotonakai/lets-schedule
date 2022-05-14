@@ -1,16 +1,16 @@
 <script setup>
-import HomeHeader from "../components/header/HomeHeader.vue";
+import DashboardHeader from "../components/header/DashboardHeader.vue";
 </script>
 <template>
   <div>
     <header>
-      <HomeHeader></HomeHeader>
+      <DashboardHeader></DashboardHeader>
     </header>
     <section class="hero is-primary is-fullheight">
       <div class="hero-body">
         <div class="container">
           <div class="column is-6 is-size-1 has-text-left">
-            <strong>日程調整を自動化しませんか？</strong>
+            <strong>ようこそ！</strong>
           </div>
         </div>
       </div>

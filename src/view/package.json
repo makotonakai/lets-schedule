@@ -7,9 +7,12 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "bulma": "^0.9.4",
+    "jsonwebtoken": "^8.5.1",
     "vue": "^3.2.33",
-    "vue-router": "^4.0.14"
+    "vue-router": "^4.0.14",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.1",
