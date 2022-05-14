@@ -1,12 +1,14 @@
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
 import { useRouter } from "vue-router";
+import { useCookie } from "vue-cookie-next";
+import axios from "axios";
 import LoginHeader from "../components/header/LoginHeader.vue";
 
 const username = ref("");
 const password = ref("");
 const router = useRouter();
+const { setCookie, getCookie, removeCookie } = useCookie();
 
 function login() {
   axios
@@ -16,6 +18,8 @@ function login() {
     })
     .then((response) => {
       console.log(response.data);
+      let token = response.data["token"];
+      setCookie("token", token);
       router.push("/dashboard");
     })
     .catch((err) => {
