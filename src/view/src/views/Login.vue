@@ -16,6 +16,7 @@ function login() {
     })
     .then((response) => {
       console.log(response.data);
+      router.push("/dashboard");
     })
     .catch((err) => {
       console.log(err);
