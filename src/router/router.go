@@ -5,17 +5,11 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	
-	"github.com/MakotoNakai/lets-schedule/models"
-	"github.com/MakotoNakai/lets-schedule/database"
 	"github.com/MakotoNakai/lets-schedule/handlers"
 	"github.com/MakotoNakai/lets-schedule/controllers"
 )
 
 func Initialize() *echo.Echo {
-
-	db := database.Connect()
-	db.AutoMigrate(&models.User{}, &models.Meeting{}, &models.Participant{}, &models.CandidateTime{})
-	database.Seed(db)
 
 	e := echo.New()
 	e.Use(middleware.Logger())
