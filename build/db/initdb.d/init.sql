@@ -1,6 +1,6 @@
 create table if not exists users (
   `id` bigint(11) not null auto_increment,
-  `username` varchar(191) not null,
+  `user_name` varchar(191) not null,
   `email_address` varchar(191) not null,
   `password` varchar(191) not null,
   `is_admin` boolean,

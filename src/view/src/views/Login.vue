@@ -1,25 +1,24 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useCookie } from "vue-cookie-next";
+import VueCookies from "vue-cookies";
 import axios from "axios";
 import LoginHeader from "../components/header/LoginHeader.vue";
 
 const username = ref("");
 const password = ref("");
 const router = useRouter();
-const { setCookie, getCookie, removeCookie } = useCookie();
 
 function login() {
   axios
-    .post("/api/login", {
-      username: username.value,
+    .post("http://localhost:1323/api/login", {
+      user_name: username.value,
       password: password.value,
     })
     .then((response) => {
       console.log(response.data);
       let token = response.data["token"];
-      setCookie("token", token);
+      $cookies.set("token", token);
       router.push("/dashboard");
     })
     .catch((err) => {
