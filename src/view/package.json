@@ -7,6 +7,7 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^3.2.1",
     "axios": "^0.27.2",
     "bulma": "^0.9.4",
     "jsonwebtoken": "^8.5.1",

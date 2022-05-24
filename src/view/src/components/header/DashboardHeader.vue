@@ -23,7 +23,9 @@
 
       <div id="targetMenu" class="navbar-menu">
         <div class="navbar-start">
-          <a class="navbar-item"> ミーティング新規作成 </a>
+          <!-- hrefをhttpsのリンクに置き換える -->
+          <!-- タブ移動等のリダイレクトを禁じる方法もあることはある -->
+          <a class="navbar-item" href="/meeting/new"> ミーティング新規作成 </a>
 
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link"> 主催ミーティング確認 </a>
@@ -42,6 +44,7 @@
               <a class="navbar-item"> 確定済み </a>
               <hr class="navbar-divider" />
               <a class="navbar-item"> 未対応 </a>
+              <hr class="navbar-divider" />
               <a class="navbar-item"> 返信済み </a>
             </div>
           </div>
