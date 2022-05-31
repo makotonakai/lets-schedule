@@ -18,7 +18,9 @@ function login() {
     .then((response) => {
       console.log(response.data);
       let token = response.data["token"];
+      let id = response.data["id"];
       $cookies.set("token", token);
+      $cookies.set("id", id);
       router.push("/dashboard");
     })
     .catch((err) => {

@@ -50,6 +50,21 @@ func GetParticipants(c echo.Context) error {
 
 }
 
+func GetParticipantsByUserId(c echo.Context) error {
+
+	user := models.User{}
+	err := c.Bind(&user)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	participantList := []models.Participant{}
+	db.Where("user_id = ?", user.Id).Find(&participantList)
+	
+	return c.JSON(http.StatusOK, participantList)
+
+}
+
 func UpdateParticipant(c echo.Context) error {
 
 	participant := models.Participant{}

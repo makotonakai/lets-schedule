@@ -3,6 +3,7 @@ package handlers
 import (
 
 	"time"
+	"strconv"
 	"net/http"
 
 	"github.com/golang-jwt/jwt"
@@ -52,6 +53,7 @@ func Login(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]string{
+			"id": strconv.Itoa(user.Id),
 			"token": t,
 	})
 

@@ -45,6 +45,7 @@ func Initialize() *echo.Echo {
 	r.DELETE("/meetings/:id", controllers.DeleteMeeting)
 
 	r.GET("/participants", controllers.GetParticipants)
+	r.GET("/participants/user/:id", controllers.GetParticipantsByUserId)
 	r.POST("/participants/new", controllers.CreateParticipant)
 	r.GET("/participants/:id", controllers.GetParticipant)
 	r.PUT("/participants/:id", controllers.UpdateParticipant)

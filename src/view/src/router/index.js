@@ -32,12 +32,18 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: DashBoard
+      component: DashBoard,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/meeting/new',
       name: 'new-meeting',
-      component: NewMeeting
+      component: NewMeeting,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })

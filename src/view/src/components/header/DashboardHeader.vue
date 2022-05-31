@@ -25,6 +25,7 @@
         <div class="navbar-start">
           <!-- hrefをhttpsのリンクに置き換える -->
           <!-- タブ移動等のリダイレクトを禁じる方法もあることはある -->
+          <a class="navbar-item" href="/dashboard"> ダッシュボード </a>
           <a class="navbar-item" href="/meeting/new"> ミーティング新規作成 </a>
 
           <div class="navbar-item has-dropdown is-hoverable">
