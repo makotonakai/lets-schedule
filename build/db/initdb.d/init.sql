@@ -18,8 +18,6 @@ create table if not exists meetings (
   `id` bigint(11) not null auto_increment,
   `title` varchar(191) not null,
   `description` text,
-  `start_time` timestamp not null,
-  `end_time` timestamp not null,
   `type` varchar(191),
   `meeting_place` varchar(191),
   `meeting_url` varchar(191),
@@ -28,8 +26,8 @@ create table if not exists meetings (
   primary key(id)
 );
 
-insert into meetings values (1, "AQUA meeting", "Just a weekly meeting", current_timestamp, current_timestamp, "meeting", "delta", "http://keio-zoom.com", current_timestamp, current_timestamp);
-insert into meetings values (2, "Meeting with Aram-san", "Progress report", current_timestamp, current_timestamp, "meeting", "", "http://gaiax-zoom.com", current_timestamp, current_timestamp);
+insert into meetings values (1, "AQUA meeting", "Just a weekly meeting", "meeting", "delta", "http://keio-zoom.com", current_timestamp, current_timestamp);
+insert into meetings values (2, "Meeting with Aram-san", "Progress report", "meeting", "", "http://gaiax-zoom.com", current_timestamp, current_timestamp);
 
 create table if not exists participants (
   `id` bigint(11) not null auto_increment,

@@ -1,41 +1,115 @@
 <script setup>
 import { ref } from "vue";
+import VueCookies from "vue-cookies";
+import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import axios from "axios";
 
 const title = ref();
 const description = ref();
-const datetime = ref();
+let tags = ref();
 const type = ref();
-const place = ref();
-const url = ref();
+const meeting_place = ref();
+const meeting_url = ref();
 
 const datetimeNum = ref(0);
-const datetimeModelList = ref(["datetime0"]);
+let datetimeList = ref([""]);
+
+function GetMonthByName(monthName) {
+  if (monthName == "Jan") {
+    return "01";
+  } else if (monthName == "Feb") {
+    return "02";
+  } else if (monthName == "Mar") {
+    return "03";
+  } else if (monthName == "Apr") {
+    return "04";
+  } else if (monthName == "May") {
+    return "05";
+  } else if (monthName == "Jun") {
+    return "06";
+  } else if (monthName == "Jul") {
+    return "07";
+  } else if (monthName == "Aug") {
+    return "08";
+  } else if (monthName == "Sep") {
+    return "09";
+  } else if (monthName == "Oct") {
+    return "10";
+  } else if (monthName == "Nov") {
+    return "11";
+  } else if (monthName == "Dec") {
+    return "12";
+  }
+}
+
+function ConvertStringToDateTime(string) {
+  let stringWithSpace = string.split(" ");
+  let month = GetMonthByName(stringWithSpace[1]);
+  let day = stringWithSpace[2];
+  let year = stringWithSpace[3];
+  let time = stringWithSpace[4];
+
+  let datetime = year + "-" + month + "-" + day + " " + time;
+
+  return datetime;
+}
+
+function GetTagList(tags) {
+  let tagString = tags.toString();
+  let tagList = tagString.split(",");
+  return tagList;
+}
+
+function GetMeetingTypeKey(meetingType) {
+  if (meetingType == "現地開催") {
+    return "physical";
+  } else if (meetingType == "オンライン") {
+    return "online";
+  } else {
+    return "hybrid";
+  }
+}
 
 function Register() {
-  if (title.value == undefined) {
-    alert(true);
-  } else {
-    alert(false);
-  }
-  // alert(description.value);
-  // alert(datetime.value);
-  // alert(type.value);
-  // alert(place.value);
-  // alert(url.value);
+  const jwtToken = $cookies.get("token");
+  axios
+    .post(
+      "http://localhost:1323/api/restricted/meetings/new",
+      {
+        title: title.value,
+        description: description.value,
+        type: GetMeetingTypeKey(type.value),
+        meeting_place: meeting_place.value,
+        meeting_url: meeting_url.value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    )
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  // let tagList = GetTagList(tags.value);
+  // console.log(tagList);
 }
 
 function AddDateTimeColumn() {
   datetimeNum.value++;
-  let newDateTimeModel = "datetime" + datetimeNum.value;
-  datetimeModelList.value.push(newDateTimeModel);
+  let newDateTime = "";
+  datetimeList.value.push(newDateTime);
 }
 
 function DeleteDateTimeColumn() {
   datetimeNum.value--;
-  datetimeModelList.value.pop();
+  datetimeList.value.pop();
 }
 </script>
 <template>
@@ -72,19 +146,15 @@ function DeleteDateTimeColumn() {
 
             <div class="field">
               <label class="label">日時</label>
-              <div v-for="(value, key) in datetimeModelList" :key="key">
-                <Datepicker
-                  v-model="datetimeModelList[key]"
-                  range
-                  multiCalendars
-                />
+              <div v-for="(value, key) in datetimeList" :key="key">
+                <Datepicker v-model="datetimeList[key]" range multiCalendars />
               </div>
             </div>
 
             <div class="field is-grouped">
               <p class="control">
-                <button class="button is-primary" @click="AddDateTimeColumn">
-                  新規作成
+                <button class="button is-light" @click="AddDateTimeColumn">
+                  入力欄を追加
                 </button>
               </p>
               <p class="control">
@@ -92,6 +162,18 @@ function DeleteDateTimeColumn() {
                   戻る
                 </button>
               </p>
+            </div>
+
+            <div class="field">
+              <label class="label">参加者</label>
+              <div class="control has-icons-left has-icons-right">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="E.g. Alice, Bob, Charlie"
+                  v-model="tags"
+                />
+              </div>
             </div>
 
             <div class="field">
@@ -114,7 +196,7 @@ function DeleteDateTimeColumn() {
                   class="input"
                   type="text"
                   placeholder="E.g. 会議室"
-                  v-model="place"
+                  v-model="meeting_place"
                 ></textarea>
               </div>
             </div>
@@ -126,7 +208,7 @@ function DeleteDateTimeColumn() {
                   class="input"
                   type="text"
                   placeholder="E.g. https://kaigi-zoom.com"
-                  v-model="url"
+                  v-model="meeting_url"
                 ></textarea>
               </div>
             </div>
@@ -135,7 +217,7 @@ function DeleteDateTimeColumn() {
               <p class="control">
                 <router-link
                   to="/dashboard"
-                  class="button is-primary"
+                  class="button is-light"
                   @click="Register"
                 >
                   新規作成
