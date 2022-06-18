@@ -66,7 +66,10 @@ _<template>
           <div class="container">
             <div class="columns is-centered">
               <div class="column is-half">
-                <li v-for="meetingInfo in meetingInfoList">
+                <li
+                  v-for="meetingInfo in meetingInfoList"
+                  :key="meetingInfo.id"
+                >
                   <Meeting
                     :title="meetingInfo.title"
                     :description="meetingInfo.description"

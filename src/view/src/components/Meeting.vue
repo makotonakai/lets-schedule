@@ -1,8 +1,7 @@
 <script setup>
 const props = defineProps({
   title: String,
-  role: String,
-  hasResponded: Boolean,
+  description: String,
 });
 </script>
 <template>
