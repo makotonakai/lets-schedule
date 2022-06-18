@@ -10,19 +10,22 @@ import (
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
-func CreateCandidateTime(c echo.Context) error {
+func CreateCandidateTimeList(c echo.Context) error {
 	
-	newCandidateTime := models.CandidateTime{}
-	err := c.Bind(&newCandidateTime)
+	newCandidateTimeList := []models.CandidateTime{}
+	err := c.Bind(&newCandidateTimeList)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	newCandidateTime.CreatedAt = time.Now()
-	newCandidateTime.UpdatedAt = time.Now()
+	for _, newCandidateTime := range newCandidateTimeList {
+		newCandidateTime.CreatedAt = time.Now()
+		newCandidateTime.UpdatedAt = time.Now()
+	}
+	
 
-	db.Create(&newCandidateTime)
-	return c.JSON(http.StatusCreated, newCandidateTime)
+	db.Create(&newCandidateTimeList)
+	return c.JSON(http.StatusCreated, newCandidateTimeList)
 	
 }
 

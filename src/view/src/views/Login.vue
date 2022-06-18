@@ -17,10 +17,15 @@ function login() {
     })
     .then((response) => {
       console.log(response.data);
+
       let token = response.data["token"];
       let id = response.data["id"];
+      let userName = response.data["user_name"];
+
       $cookies.set("token", token);
-      $cookies.set("id", id);
+      $cookies.set("user_id", id);
+      $cookies.set("user_name", userName);
+
       router.push("/dashboard");
     })
     .catch((err) => {

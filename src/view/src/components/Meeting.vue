@@ -11,11 +11,8 @@ const props = defineProps({
       <p class="card-header-title">{{ title }}</p>
     </header>
     <div class="card-content">
-      <div class="meeting-role">
-        {{ role }}
-      </div>
-      <div class="meeting-hasResponded">
-        {{ hasResponded }}
+      <div class="meeting-description">
+        {{ description }}
       </div>
     </div>
   </div>

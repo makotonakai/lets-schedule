@@ -2,6 +2,7 @@ package controllers
 
 import (
 
+	"time"
 	"net/http"
 	"github.com/labstack/echo/v4"
 
@@ -14,15 +15,19 @@ import (
 
 func CreateParticipant(c echo.Context) error {
 	
-	newParticipant := models.Participant{}
-
-	err := c.Bind(&newParticipant)
+	newParticipantList := []models.Participant{}
+	err := c.Bind(&newParticipantList)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	db.Create(&newParticipant)
-	return c.JSON(http.StatusCreated, newParticipant)
+	for _, newParticipant := range newParticipantList {
+		newParticipant.CreatedAt = time.Now()
+		newParticipant.UpdatedAt = time.Now()
+	}
+
+	db.Create(&newParticipantList)
+	return c.JSON(http.StatusCreated, newParticipantList)
 	
 }
 
@@ -40,26 +45,11 @@ func GetParticipant(c echo.Context) error {
 	return c.JSON(http.StatusOK, participant)
 }
 
-func GetParticipants(c echo.Context) error {
+func GetParticipantsByUserName(c echo.Context) error {
 
 	participantList := []models.Participant{}
-
-	db.Find(&participantList)
-	
-	return c.JSON(http.StatusOK, participantList)
-
-}
-
-func GetParticipantsByUserId(c echo.Context) error {
-
-	user := models.User{}
-	err := c.Bind(&user)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-
-	participantList := []models.Participant{}
-	db.Where("user_id = ?", user.Id).Find(&participantList)
+	userName := c.Param("username")
+	db.Where("user_name = ?", userName).Find(&participantList)
 	
 	return c.JSON(http.StatusOK, participantList)
 

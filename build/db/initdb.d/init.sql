@@ -32,7 +32,7 @@ insert into meetings values (2, "Meeting with Aram-san", "Progress report", "mee
 create table if not exists participants (
   `id` bigint(11) not null auto_increment,
   `meeting_id` bigint(11) not null,
-  `user_id` bigint(11) not null,
+  `user_name` varchar(191) not null,
   `is_host` boolean not null,
   `has_responded` boolean not null,
   `created_at` timestamp not null default current_timestamp,
@@ -40,8 +40,8 @@ create table if not exists participants (
   primary key(id)
 );
 
-insert into participants values (1, 1, 1, 1, 1, current_timestamp, current_timestamp);
-insert into participants values (2, 1, 2, 0, 0, current_timestamp, current_timestamp);
+insert into participants values (1, 1, "makoto", 1, 1, current_timestamp, current_timestamp);
+insert into participants values (2, 1, "minoru", 0, 0, current_timestamp, current_timestamp);
 
 
 create table if not exists candidate_times (

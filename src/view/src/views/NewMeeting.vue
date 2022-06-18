@@ -7,15 +7,19 @@ import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import axios from "axios";
 
+const jwtToken = $cookies.get("token");
+
 const title = ref();
 const description = ref();
-let tags = ref();
 const type = ref();
-const meeting_place = ref();
-const meeting_url = ref();
+const meetingPlace = ref();
+const meetingUrl = ref();
 
 const datetimeNum = ref(0);
-let datetimeList = ref([""]);
+let datetimeObjectList = ref([""]);
+
+let host = ref([]);
+let participantListObject = ref([""]);
 
 function GetMonthByName(monthName) {
   if (monthName == "Jan") {
@@ -53,17 +57,70 @@ function ConvertStringToDateTime(string) {
   let time = stringWithSpace[4];
 
   let datetime = year + "-" + month + "-" + day + " " + time;
-
   return datetime;
 }
 
-function GetTagList(tags) {
-  let tagString = tags.toString();
-  let tagList = tagString.split(",");
-  return tagList;
+function GetCandidateTimeJSONList() {
+  let datetimeKeyList = Object.keys(datetimeObjectList.value);
+  let candidateTimeList = [];
+
+  for (let datetimeKey in datetimeKeyList) {
+    let datetimeObjectDict = datetimeObjectList.value[datetimeKey];
+
+    let startTimeObject = datetimeObjectDict[0];
+    let endTimeObject = datetimeObjectDict[1];
+
+    let startTimeString = startTimeObject.toString();
+    let endTimeString = endTimeObject.toString();
+
+    let startTime = ConvertStringToDateTime(startTimeString);
+    let endTime = ConvertStringToDateTime(endTimeString);
+
+    let meetingId = parseInt($cookies.get("meeting_id"));
+    let userId = parseInt($cookies.get("user_id"));
+    let isHost = true;
+    let hasResponded = true;
+
+    let candidateTime = {
+      meeting_id: meetingId,
+      user_id: userId,
+      is_host: isHost,
+      has_responded: hasResponded,
+      start_time: startTime,
+      end_time: endTime,
+    };
+    candidateTimeList.push(candidateTime);
+  }
+
+  return candidateTimeList;
 }
 
-function GetMeetingTypeKey(meetingType) {
+function GetParticipantJSONList(participantListObject) {
+  let participantListString = participantListObject.toString();
+  let participantList = participantListString.split(" ");
+
+  let participantJSONList = [];
+  let hostJSON = {
+    meeting_id: parseInt($cookies.get("meeting_id")),
+    user_name: host.value,
+    is_host: true,
+    has_responded: true,
+  };
+  participantJSONList.push(hostJSON);
+
+  for (let idx = 0; idx < participantList.length; idx++) {
+    let participantJSON = {
+      meeting_id: parseInt($cookies.get("meeting_id")),
+      user_name: participantList[idx],
+      is_host: false,
+      has_responded: false,
+    };
+    participantJSONList.push(participantJSON);
+  }
+  return participantJSONList;
+}
+
+function GetMeetingType(meetingType) {
   if (meetingType == "現地開催") {
     return "physical";
   } else if (meetingType == "オンライン") {
@@ -74,17 +131,35 @@ function GetMeetingTypeKey(meetingType) {
 }
 
 function Register() {
-  const jwtToken = $cookies.get("token");
   axios
     .post(
       "http://localhost:1323/api/restricted/meetings/new",
       {
         title: title.value,
         description: description.value,
-        type: GetMeetingTypeKey(type.value),
-        meeting_place: meeting_place.value,
-        meeting_url: meeting_url.value,
+        type: GetMeetingType(type.value),
+        meetingPlace: meetingPlace.value,
+        meetingUrl: meetingUrl.value,
       },
+      {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    )
+    .then(function (response) {
+      $cookies.set("meeting_id", response.data.id);
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  let candidateTimeList = GetCandidateTimeJSONList();
+  axios
+    .post(
+      "http://localhost:1323/api/restricted/candidate_times/new",
+      candidateTimeList,
       {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -97,19 +172,35 @@ function Register() {
     .catch(function (error) {
       console.log(error);
     });
-  // let tagList = GetTagList(tags.value);
-  // console.log(tagList);
+
+  let participantJSONList = GetParticipantJSONList(participantListObject.value);
+  axios
+    .post(
+      "http://localhost:1323/api/restricted/participants/new",
+      participantJSONList,
+      {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    )
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
 function AddDateTimeColumn() {
   datetimeNum.value++;
   let newDateTime = "";
-  datetimeList.value.push(newDateTime);
+  datetimeObjectList.value.push(newDateTime);
 }
 
 function DeleteDateTimeColumn() {
   datetimeNum.value--;
-  datetimeList.value.pop();
+  datetimeObjectList.value.pop();
 }
 </script>
 <template>
@@ -146,8 +237,12 @@ function DeleteDateTimeColumn() {
 
             <div class="field">
               <label class="label">日時</label>
-              <div v-for="(value, key) in datetimeList" :key="key">
-                <Datepicker v-model="datetimeList[key]" range multiCalendars />
+              <div v-for="(value, key) in datetimeObjectList" :key="key">
+                <Datepicker
+                  v-model="datetimeObjectList[key]"
+                  range
+                  multiCalendars
+                />
               </div>
             </div>
 
@@ -165,13 +260,25 @@ function DeleteDateTimeColumn() {
             </div>
 
             <div class="field">
+              <label class="label">主催者</label>
+              <div class="control has-icons-left has-icons-right">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="E.g. Alice"
+                  v-model="host"
+                />
+              </div>
+            </div>
+
+            <div class="field">
               <label class="label">参加者</label>
               <div class="control has-icons-left has-icons-right">
                 <input
                   class="input"
                   type="text"
-                  placeholder="E.g. Alice, Bob, Charlie"
-                  v-model="tags"
+                  placeholder="E.g. Bob Charlie"
+                  v-model="participantListObject"
                 />
               </div>
             </div>
@@ -196,7 +303,7 @@ function DeleteDateTimeColumn() {
                   class="input"
                   type="text"
                   placeholder="E.g. 会議室"
-                  v-model="meeting_place"
+                  v-model="meetingPlace"
                 ></textarea>
               </div>
             </div>
@@ -208,7 +315,7 @@ function DeleteDateTimeColumn() {
                   class="input"
                   type="text"
                   placeholder="E.g. https://kaigi-zoom.com"
-                  v-model="meeting_url"
+                  v-model="meetingUrl"
                 ></textarea>
               </div>
             </div>

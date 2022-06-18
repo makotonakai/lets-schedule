@@ -5,32 +5,59 @@ import axios from "axios";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
 import Meeting from "../components/Meeting.vue";
 
+const userName = $cookies.get("user_name");
+const jwtToken = $cookies.get("token");
+
 const meetings = ref([]);
 const meeting = ref("hoge");
 const role = ref("host");
 const hasResponded = ref(true);
 
-onMounted(() => {
-  const id = parseInt($cookies.get("id"));
-  const jwtToken = $cookies.get("token");
-  const url = `http://localhost:1323/api/restricted/participants/user/${id}`;
+let meetingIdList = ref([]);
+let meetingInfoList = ref([]);
 
+onMounted(() => {
   axios
-    .get(url, {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
-    })
+    .get(
+      `http://localhost:1323/api/restricted/participants/username/${userName}`,
+      {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    )
     .then((response) => {
-      console.log(response.data);
-      meetings.value = response.data;
+      for (let idx = 0; idx < response.data.length; idx++) {
+        let meetingId = parseInt(response.data[idx]["meeting_id"]);
+        meetingIdList.value.push(meetingId);
+      }
+
+      for (let idx = 0; idx < meetingIdList.value.length; idx++) {
+        let meetingId = meetingIdList.value[idx];
+        let url = `http://localhost:1323/api/restricted/meetings/${meetingId}`;
+
+        axios
+          .get(url, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          })
+          .then((response) => {
+            console.log(response.data);
+            meetingInfoList.value.push(response.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     })
     .catch((err) => {
       console.log(err);
     });
 });
 </script>
-<template>
+
+_<template>
   <div>
     <header>
       <DashboardHeader></DashboardHeader>
@@ -39,11 +66,12 @@ onMounted(() => {
           <div class="container">
             <div class="columns is-centered">
               <div class="column is-half">
-                <Meeting
-                  :title="meeting"
-                  :role="role"
-                  :hasResponded="hasResponded"
-                ></Meeting>
+                <li v-for="meetingInfo in meetingInfoList">
+                  <Meeting
+                    :title="meetingInfo.title"
+                    :description="meetingInfo.description"
+                  ></Meeting>
+                </li>
               </div>
             </div>
           </div>
