@@ -57,7 +57,7 @@ onMounted(() => {
 });
 </script>
 
-_<template>
+<template>
   <div>
     <header>
       <DashboardHeader></DashboardHeader>
@@ -65,7 +65,7 @@ _<template>
         <div class="hero-body">
           <div class="container">
             <div class="columns is-centered">
-              <div class="column is-half">
+              <div class="column is-half is-4">
                 <li
                   v-for="meetingInfo in meetingInfoList"
                   :key="meetingInfo.id"
@@ -74,6 +74,7 @@ _<template>
                     :title="meetingInfo.title"
                     :description="meetingInfo.description"
                   ></Meeting>
+                  <br>
                 </li>
               </div>
             </div>
@@ -83,3 +84,9 @@ _<template>
     </header>
   </div>
 </template>
+
+<style scoped>
+li {
+  list-style: none;
+}
+</style>
