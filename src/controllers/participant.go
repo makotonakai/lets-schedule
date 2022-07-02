@@ -45,15 +45,36 @@ func GetParticipant(c echo.Context) error {
 	return c.JSON(http.StatusOK, participant)
 }
 
-func GetParticipantsByUserName(c echo.Context) error {
+func GetHostParticipant(c echo.Context) error {
 
 	participantList := []models.Participant{}
 	userName := c.Param("username")
-	db.Where("user_name = ?", userName).Find(&participantList)
+	db.Where("user_name = ? ", userName).Where("is_host = ?", 1).Find(&participantList)
 	
 	return c.JSON(http.StatusOK, participantList)
 
 }
+
+func GetRespondedGuestParticipant(c echo.Context) error {
+
+	participantList := []models.Participant{}
+	userName := c.Param("username")
+	db.Where("user_name = ? ", userName).Where("is_host = ?", 0).Where("is_responded = ?", 1).Find(&participantList)
+	
+	return c.JSON(http.StatusOK, participantList)
+
+}
+
+func GetNotRespondedGuestParticipant(c echo.Context) error {
+
+	participantList := []models.Participant{}
+	userName := c.Param("username")
+	db.Where("user_name = ? ", userName).Where("is_host = ?", 0).Where("is_responded = ?", 0).Find(&participantList)
+	
+	return c.JSON(http.StatusOK, participantList)
+
+}
+
 
 func UpdateParticipant(c echo.Context) error {
 

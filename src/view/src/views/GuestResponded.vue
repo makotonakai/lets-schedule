@@ -13,7 +13,7 @@ let meetings = ref();
 onMounted(() => {
   axios
     .get(
-      `http://localhost:1323/api/restricted/meetings/${userId}`,
+      `http://localhost:1323/api/restricted/meetings/guest/responded/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
