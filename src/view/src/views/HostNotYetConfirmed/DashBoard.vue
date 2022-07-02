@@ -2,8 +2,8 @@
 import { ref, onMounted } from "vue";
 import VueCookies from "vue-cookies";
 import axios from "axios";
-import DashboardHeader from "../components/header/DashboardHeader.vue";
-import Meeting from "../components/Meeting.vue";
+import DashboardHeader from "../../components/header/DashboardHeader.vue";
+import Card from "./Card.vue";
 
 const userId = $cookies.get("user_id");
 const jwtToken = $cookies.get("token");
@@ -42,10 +42,14 @@ onMounted(() => {
                   v-for="meeting in meetings"
                   :key="meeting.id"
                 >
-                  <Meeting
+                  <Card
+                    :id="meeting.id"
                     :title="meeting.title"
                     :description="meeting.description"
-                  ></Meeting>
+                    :type="meeting.type"
+                    :place="meeting.place"
+                    :url="meeting.url"
+                  ></Card>
                   <br>
                 </li>
               </div>

@@ -43,6 +43,7 @@ onMounted(() => {
                   :key="meeting.id"
                 >
                   <Meeting
+                    :id ="meeting.id"
                     :title="meeting.title"
                     :description="meeting.description"
                   ></Meeting>

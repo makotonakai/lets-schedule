@@ -19,8 +19,8 @@ create table if not exists meetings (
   `title` varchar(191) not null,
   `description` text,
   `type` varchar(191),
-  `meeting_place` varchar(191),
-  `meeting_url` varchar(191),
+  `place` varchar(191),
+  `url` varchar(191),
   `is_confirmed` boolean not null,
   `created_at` timestamp not null default current_timestamp,
   `updated_at` timestamp not null default current_timestamp on update current_timestamp,
@@ -69,4 +69,4 @@ create table if not exists candidate_times (
 );
 
 insert into candidate_times values (1, 1, 1, 1, 1, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
-insert into candidate_times values (2, 1, 1, 0, 0, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
+insert into candidate_times values (2, 1, 2, 0, 0, current_timestamp, current_timestamp, current_timestamp, current_timestamp);

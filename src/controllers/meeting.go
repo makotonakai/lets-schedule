@@ -43,7 +43,7 @@ func GetMeetingsByUserId(c echo.Context) error {
 
 	userId, _ := strconv.Atoi(c.Param("user_id"))
 	meetingList:= []models.Meeting{}
-	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.meeting_place", "meetings.meeting_url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Find(&meetingList)
+	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.place", "meetings.url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Find(&meetingList)
 	
 	return c.JSON(http.StatusOK, meetingList)
 
@@ -53,7 +53,7 @@ func GetConfirmedMeetingsForHost(c echo.Context) error {
 
 	userId, _ := strconv.Atoi(c.Param("user_id"))
 	meetingList:= []models.Meeting{}
-	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.meeting_place", "meetings.meeting_url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Where("participants.is_host = ?", 1).Where("meetings.is_confirmed = ?", 1).Find(&meetingList)
+	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.place", "meetings.url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Where("participants.is_host = ?", 1).Where("meetings.is_confirmed = ?", 1).Find(&meetingList)
 	return c.JSON(http.StatusOK, meetingList)
 
 }
@@ -62,7 +62,7 @@ func GetNotYetConfirmedMeetingsForHost(c echo.Context) error {
 
 	userId, _ := strconv.Atoi(c.Param("user_id"))
 	meetingList:= []models.Meeting{}
-	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.meeting_place", "meetings.meeting_url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Where("participants.is_host = ?", 1).Where("meetings.is_confirmed = ?", 0).Find(&meetingList)
+	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.place", "meetings.url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Where("participants.is_host = ?", 1).Where("meetings.is_confirmed = ?", 0).Find(&meetingList)
 	
 	return c.JSON(http.StatusOK, meetingList)
 
@@ -72,7 +72,7 @@ func GetConfirmedMeetingsForGuest(c echo.Context) error {
 
 	userId, _ := strconv.Atoi(c.Param("user_id"))
 	meetingList:= []models.Meeting{}
-	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.meeting_place", "meetings.meeting_url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Where("participants.is_host = ?", 0).Where("meetings.is_confirmed = ?", 1).Find(&meetingList)
+	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.place", "meetings.url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Where("participants.is_host = ?", 0).Where("meetings.is_confirmed = ?", 1).Find(&meetingList)
 	return c.JSON(http.StatusOK, meetingList)
 
 }
@@ -81,7 +81,7 @@ func GetRespondedMeetingsForGuest(c echo.Context) error {
 
 	userId, _ := strconv.Atoi(c.Param("user_id"))
 	meetingList:= []models.Meeting{}
-	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.meeting_place", "meetings.meeting_url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Where("participants.is_host = ?", 0).Where("meetings.is_confirmed = ?", 0).Where("participants.has_responded = ?", 1).Find(&meetingList)
+	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.place", "meetings.url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Where("participants.is_host = ?", 0).Where("meetings.is_confirmed = ?", 0).Where("participants.has_responded = ?", 1).Find(&meetingList)
 	return c.JSON(http.StatusOK, meetingList)
 
 }
@@ -90,7 +90,7 @@ func GetNotYetRespondedMeetingsForGuest(c echo.Context) error {
 
 	userId, _ := strconv.Atoi(c.Param("user_id"))
 	meetingList:= []models.Meeting{}
-	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.meeting_place", "meetings.meeting_url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Where("participants.is_host = ?", 0).Where("meetings.is_confirmed = ?", 0).Where("participants.has_responded = ?", 0).Find(&meetingList)
+	db.Table("meetings").Select("meetings.id", "meetings.title", "meetings.description", "meetings.type", "meetings.place", "meetings.url").Joins("inner join participants on meetings.id = participants.meeting_id").Where("participants.user_id = ?", userId).Where("participants.is_host = ?", 0).Where("meetings.is_confirmed = ?", 0).Where("participants.has_responded = ?", 0).Find(&meetingList)
 	return c.JSON(http.StatusOK, meetingList)
 
 }

@@ -12,8 +12,8 @@ const jwtToken = $cookies.get("token");
 const title = ref();
 const description = ref();
 const type = ref();
-const meetingPlace = ref();
-const meetingUrl = ref();
+const place = ref();
+const url = ref();
 
 const datetimeNum = ref(0);
 let datetimeObjectList = ref([""]);
@@ -138,8 +138,8 @@ function Register() {
         title: title.value,
         description: description.value,
         type: GetMeetingType(type.value),
-        meetingPlace: meetingPlace.value,
-        meetingUrl: meetingUrl.value,
+        place: place.value,
+        url: url.value,
       },
       {
         headers: {
@@ -303,7 +303,7 @@ function DeleteDateTimeColumn() {
                   class="input"
                   type="text"
                   placeholder="E.g. 会議室"
-                  v-model="meetingPlace"
+                  v-model="place"
                 ></textarea>
               </div>
             </div>
@@ -315,7 +315,7 @@ function DeleteDateTimeColumn() {
                   class="input"
                   type="text"
                   placeholder="E.g. https://kaigi-zoom.com"
-                  v-model="meetingUrl"
+                  v-model="url"
                 ></textarea>
               </div>
             </div>

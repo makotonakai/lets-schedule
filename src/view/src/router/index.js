@@ -5,11 +5,12 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import DashBoard from '../views/DashBoard.vue'
 import NewMeeting from '../views/NewMeeting.vue'
-import HostConfirmed from '../views/HostConfirmed.vue'
-import HostNotYetConfirmed from '../views/HostNotYetConfirmed.vue'
-import GuestConfirmed from '../views/GuestConfirmed.vue'
-import GuestResponded from '../views/GuestResponded.vue'
-import GuestNotYetResponded from '../views/GuestNotYetResponded.vue'
+import HostConfirmedDashBoard from '../views/HostConfirmed/DashBoard.vue'
+import HostNotYetConfirmedDashBoard from '../views/HostNotYetConfirmed/DashBoard.vue'
+import GuestConfirmedDashBoard from '../views/GuestConfirmed/DashBoard.vue'
+import GuestRespondedDashBoard from '../views/GuestResponded/DashBoard.vue'
+import GuestNotYetRespondedDashBoard from '../views/GuestNotYetResponded/DashBoard.vue'
+import EnterCandidateTime from '../views/GuestNotYetResponded/EnterCandidateTime.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,40 +53,48 @@ const router = createRouter({
     },
     {
       path: '/meeting/host/confirmed',
-      name: 'host-confirmed-meeting',
-      component: HostConfirmed,
+      name: 'host-confirmed-dashboard',
+      component: HostConfirmedDashBoard,
       meta: {
         requiresAuth: true
       }
     },
     {
       path: '/meeting/host/not-yet-confirmed',
-      name: 'host-not-yet-confirmed-meeting',
-      component: HostNotYetConfirmed,
+      name: 'host-not-yet-confirmed-dashboard',
+      component: HostNotYetConfirmedDashBoard,
       meta: {
         requiresAuth: true
       }
     },
     {
       path: '/meeting/guest/confirmed',
-      name: 'guest-confirmed-meeting',
-      component: GuestConfirmed,
+      name: 'guest-confirmed-dashboard',
+      component: GuestConfirmedDashBoard,
       meta: {
         requiresAuth: true
       }
     },
     {
       path: '/meeting/guest/responded',
-      name: 'guest-responded-meeting',
-      component: GuestResponded,
+      name: 'guest-responded-dashboard',
+      component: GuestRespondedDashBoard,
       meta: {
         requiresAuth: true
       }
     },
     {
       path: '/meeting/guest/not-yet-responded',
-      name: 'guest-not-yet-responded-meeting',
-      component: GuestNotYetResponded,
+      name: 'guest-not-yet-responded-dashboard',
+      component: GuestNotYetRespondedDashBoard,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/meeting/guest/candidate_time/:id",
+      name: "enter-candidate-time",
+      component: EnterCandidateTime,
       meta: {
         requiresAuth: true
       }

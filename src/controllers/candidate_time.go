@@ -3,6 +3,7 @@ package controllers
 import (
 
 	"time"
+	"strconv"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -29,22 +30,12 @@ func CreateCandidateTimeList(c echo.Context) error {
 	
 }
 
-func GetCandidateTime(c echo.Context) error {
+func GetCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 
-	candidateTime := models.CandidateTime{}
-	err := c.Bind(&candidateTime)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-	db.First(&candidateTime)
-
-	return c.JSON(http.StatusOK, candidateTime)
-}
-
-func GetCandidateTimes(c echo.Context) error {
-
+	userId, _ := strconv.Atoi(c.Param("user_id"))
+	meetingId, _ := strconv.Atoi(c.Param("meeting_id"))
 	candidateTimeList:= []models.CandidateTime{}
-	db.Find(&candidateTimeList)
+	db.Where("meeting_id=?", meetingId).Where("user_id=?", userId).Find(&candidateTimeList)
 	
 	return c.JSON(http.StatusOK, candidateTimeList)
 

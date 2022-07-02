@@ -53,9 +53,8 @@ func Initialize() *echo.Echo {
 	r.PUT("/participants/:id", controllers.UpdateParticipant)
 	r.DELETE("/participants/:id", controllers.DeleteParticipant)
 
-	r.GET("/candidate_times", controllers.GetCandidateTime)
+	r.GET("/candidate_times/:user_id/:meeting_id", controllers.GetCandidateTimeByUserIdAndMeetingId)
 	r.POST("/candidate_times/new", controllers.CreateCandidateTimeList)
-	r.GET("/candidate_times/:id", controllers.GetCandidateTime)
 	r.PUT("/candidate_times/:id", controllers.UpdateCandidateTime)
 	r.DELETE("/candidate_times/:id", controllers.DeleteCandidateTime)
 
