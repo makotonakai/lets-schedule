@@ -8,9 +8,11 @@ import NewMeeting from '../views/NewMeeting.vue'
 import HostConfirmedDashBoard from '../views/HostConfirmed/DashBoard.vue'
 import HostNotYetConfirmedDashBoard from '../views/HostNotYetConfirmed/DashBoard.vue'
 import GuestConfirmedDashBoard from '../views/GuestConfirmed/DashBoard.vue'
+import HostConfirmedDetailEdit from '../views/HostConfirmed/Detail.vue'
 import GuestRespondedDashBoard from '../views/GuestResponded/DashBoard.vue'
 import GuestNotYetRespondedDashBoard from '../views/GuestNotYetResponded/DashBoard.vue'
-import EnterCandidateTime from '../views/GuestNotYetResponded/EnterCandidateTime.vue'
+import GuestDetailEdit from '../views/GuestResponded/Detail.vue'
+import GuestDetailNew from '../views/GuestNotYetResponded/Detail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -92,9 +94,25 @@ const router = createRouter({
       }
     },
     {
-      path: "/meeting/guest/candidate_time/:id",
-      name: "enter-candidate-time",
-      component: EnterCandidateTime,
+      path: "/meeting/host/confirmed/detail/edit/:id",
+      name: "host-edit-detail",
+      component: HostConfirmedDetailEdit,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/meeting/guest/has-not-responded/new/:id",
+      name: "guest-enter-candidate-time",
+      component: GuestDetailNew,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/meeting/guest/responded/edit/:id",
+      name: "guest-edit-candidate-time",
+      component: GuestDetailEdit,
       meta: {
         requiresAuth: true
       }

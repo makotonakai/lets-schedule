@@ -8,11 +8,12 @@ const props = defineProps({
   place: String,
   url: String
 });
-let meeting_id = props.id;
+
+const router = useRouter()
+const meeting_id = props.id;
 
 function GoToDetailPage() {
-  let router = useRouter()
-  router.push(`/meeting/host/confirmed/${meeting_id}`)
+  router.push(`/meeting/host/confirmed/detail/edit/${meeting_id}`)
 }
 </script>
 <template>
@@ -32,7 +33,7 @@ function GoToDetailPage() {
       </div>
     </div>
     <footer class="card-footer">
-      <button v-on:click="GoToDetailPage" class="card-footer-item">Show Details</button>
+      <button v-on:click="GoToDetailPage()" class="card-footer-item">Show Details</button>
     </footer>
   </div>
 </template>

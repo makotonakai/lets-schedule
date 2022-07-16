@@ -13,7 +13,7 @@ let meeting_id = props.id;
 let router = useRouter()
 
 function EnterAvailableTime() {
-  router.push(`/meeting/guest/candidate_time/${meeting_id}`)
+  router.push(`/meeting/guest/has-not-responded/new/${meeting_id}`)
 }
 </script>
 <template>

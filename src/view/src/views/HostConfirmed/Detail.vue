@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router"
 import VueCookies from "vue-cookies";
 import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../../components/header/DashboardHeader.vue";
@@ -8,7 +9,7 @@ import "@vuepic/vue-datepicker/dist/main.css";
 import axios from "axios";
 
 const jwtToken = $cookies.get("token");
-let meeting_id = this.$route.params.meeting_id;
+const route = useRoute()
 
 const title = ref();
 const description = ref();
@@ -24,7 +25,8 @@ let host = ref([]);
 let participantListObject = ref([""]);
 
 onMounted(() => {
-  
+
+  const meeting_id = parseInt(route.params.id);
   axios
     .get(
       `http://localhost:1323/api/restricted/meetings/host/confirmed/${meeting_id}`,
@@ -35,6 +37,29 @@ onMounted(() => {
       }
     )
     .then((response) => {
+      console.log(response);
+      let meeting = response.data[0];
+      title.value = meeting["title"]
+      description.value = meeting["description"]
+      type.value = meeting["type"]
+      place.value = meeting["place"]
+      url.value = meeting["url"]
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+    axios
+    .get(
+      `http://localhost:1323/api/restricted/meetings/host/confirmed/${meeting_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response);
       let meeting = response.data[0];
       title.value = meeting["title"]
       description.value = meeting["description"]
@@ -250,7 +275,7 @@ onMounted(() => {
               </div>
             </div>
 
-            <!-- <div class="field">
+            <div class="field">
               <label class="label">概要</label>
               <div class="control has-icons-left has-icons-right">
                 <input
@@ -272,7 +297,7 @@ onMounted(() => {
               </div>
             </div>
 
-            <div class="field is-grouped">
+            <!-- <div class="field is-grouped">
               <p class="control">
                 <button class="button is-light" @click="AddDateTimeColumn">
                   入力欄を追加
