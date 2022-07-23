@@ -41,13 +41,13 @@ create table if not exists user_meetings (
   primary key(id)
 );
 insert into user_meetings values (1, 1, 1, current_timestamp, current_timestamp);
-insert into user_meetings values (2, 2, 1, current_timestamp, current_timestamp);
-insert into user_meetings values (3, 3, 2, current_timestamp, current_timestamp);
-insert into user_meetings values (4, 3, 1, current_timestamp, current_timestamp);
-insert into user_meetings values (5, 4, 2, current_timestamp, current_timestamp);
-insert into user_meetings values (6, 4, 1, current_timestamp, current_timestamp);
-insert into user_meetings values (7, 5, 2, current_timestamp, current_timestamp);
-insert into user_meetings values (8, 5, 1, current_timestamp, current_timestamp);
+insert into user_meetings values (2, 1, 2, current_timestamp, current_timestamp);
+insert into user_meetings values (3, 2, 3, current_timestamp, current_timestamp);
+insert into user_meetings values (4, 1, 3, current_timestamp, current_timestamp);
+insert into user_meetings values (5, 2, 4, current_timestamp, current_timestamp);
+insert into user_meetings values (6, 1, 4, current_timestamp, current_timestamp);
+insert into user_meetings values (7, 2, 5, current_timestamp, current_timestamp);
+insert into user_meetings values (8, 1, 5, current_timestamp, current_timestamp);
 
 
 create table if not exists participants (

@@ -5,11 +5,9 @@ import (
 )
 
 type CandidateTime struct {
-	Id int `json:"id" param:"id"`
-	MeetingId int `json:"meeting_id"`
-	UserId int `json:"user_id"`
-	StartTime string `json:"start_time"`
-	EndTime string `json:"end_time"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	Id int `gorm:"primaryKey:autoIncrement" json:"id"`
+	StartTime string `gorm:"not null" json:"start_time"`
+	EndTime string `gorm:"not null" json:"end_time"`
+	CreatedAt time.Time `gorm:"autoCreateTime:int" json:"created_at"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`
 }
