@@ -31,7 +31,8 @@ onMounted(() => {
       for (let key in response.data) {
         let start_date = Date(response.data[key]["start_time"]);
         let end_date = Date(response.data[key]["end_time"]);
-        datetimeObjectList.value.push([start_date, end_date])
+        let datetimeObject = [start_date, end_date]
+        datetimeObjectList.value.push(datetimeObject)
       }
     })
     .catch((err) => {
@@ -39,45 +40,6 @@ onMounted(() => {
     });
  
 });
-
-function GetMonthByName(monthName) {
-  if (monthName == "Jan") {
-    return "01";
-  } else if (monthName == "Feb") {
-    return "02";
-  } else if (monthName == "Mar") {
-    return "03";
-  } else if (monthName == "Apr") {
-    return "04";
-  } else if (monthName == "May") {
-    return "05";
-  } else if (monthName == "Jun") {
-    return "06";
-  } else if (monthName == "Jul") {
-    return "07";
-  } else if (monthName == "Aug") {
-    return "08";
-  } else if (monthName == "Sep") {
-    return "09";
-  } else if (monthName == "Oct") {
-    return "10";
-  } else if (monthName == "Nov") {
-    return "11";
-  } else if (monthName == "Dec") {
-    return "12";
-  }
-}
-
-function ConvertStringToDateTime(string) {
-  let stringWithSpace = string.split(" ");
-  let month = GetMonthByName(stringWithSpace[1]);
-  let day = stringWithSpace[2];
-  let year = stringWithSpace[3];
-  let time = stringWithSpace[4];
-
-  let datetime = year + "-" + month + "-" + day + " " + time;
-  return datetime;
-}
 
 function GetCandidateTimeJSONList() {
 
@@ -90,12 +52,8 @@ function GetCandidateTimeJSONList() {
     let startTimeObject = datetimeObjectDict[0];
     let endTimeObject = datetimeObjectDict[1];
 
-    let startTimeString = startTimeObject.toString();
-    let endTimeString = endTimeObject.toString();
-
-    let startTime = ConvertStringToDateTime(startTimeString);
-    let endTime = ConvertStringToDateTime(endTimeString);
-
+    let startTime = startTimeObject.toISOString().split('Z')[0] + '+09:00';
+    let endTime = endTimeObject.toISOString().split('Z')[0] + '+09:00';
 
     let candidateTime = {
       meeting_id: meetingId,

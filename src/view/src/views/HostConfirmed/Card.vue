@@ -23,17 +23,14 @@ function GoToDetailPage() {
     </header>
     <div class="card-content">
       <div class="meeting-description">
-        description: {{ description }}
-        <br>
-        type: {{ type }}
-        <br>
-        place: {{ place }}
-        <br>
-        url: {{ url }}
+        Description: {{ description }}<br>
+        Type: {{ type }}<br>
+        Place: {{ place }}<br>
+        URL: {{ url }}<br>
       </div>
     </div>
-    <footer class="card-footer">
+    <!-- <footer class="card-footer">
       <button v-on:click="GoToDetailPage()" class="card-footer-item">Show Details</button>
-    </footer>
+    </footer> -->
   </div>
 </template>
