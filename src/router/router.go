@@ -32,33 +32,7 @@ func Initialize() *echo.Echo {
 	r.Use(middleware.JWTWithConfig(config))
 	r.GET("", handlers.Restricted)
 
-	r.GET("/users", controllers.GetUsers)
-	r.POST("/users/new", controllers.CreateUser)
-	r.GET("/users/:id", controllers.GetUser)
-	r.PUT("/users/:id", controllers.UpdateUser)
-	r.DELETE("/users/:id", controllers.DeleteUser)
-
-	r.POST("/meetings/new", controllers.CreateMeeting)
-	r.GET("/meetings/:user_id", controllers.GetMeetingsByUserId)
-	r.GET("/meetings/host/confirmed/:user_id", controllers.GetConfirmedMeetingsForHost)
-	r.GET("/meetings/host/not-yet-confirmed/:user_id", controllers.GetNotYetConfirmedMeetingsForHost)
-	r.GET("/meetings/guest/confirmed/:user_id", controllers.GetConfirmedMeetingsForGuest)
-	r.GET("/meetings/guest/responded/:user_id", controllers.GetRespondedMeetingsForGuest)
-	r.GET("/meetings/guest/not-yet-responded/:user_id", controllers.GetNotYetRespondedMeetingsForGuest)
-	r.PUT("/meetings/:meeting_id", controllers.UpdateMeeting)
-	r.DELETE("/meetings/:id", controllers.DeleteMeeting)
-
-	r.POST("/participants/new", controllers.CreateParticipant)
-	r.GET("/participants/host/:meeting_id", controllers.GetHostByMeetingId)
-	r.GET("/participants/guest/:meeting_id", controllers.GetGuestByMeetingId)
-	r.PUT("/participants/:meeting_id", controllers.UpdateParticipant)
-	r.DELETE("/participants/:id", controllers.DeleteParticipant)
-
-	r.GET("/candidate_times/:user_id/:meeting_id", controllers.GetCandidateTimeByUserIdAndMeetingId)
-	r.POST("/candidate_times/new", controllers.CreateCandidateTimeList)
-	r.PUT("/candidate_times/:user_id/:meeting_id", controllers.UpdateCandidateTimeByUserIdAndMeetingId)
-	r.DELETE("/candidate_times/:id", controllers.DeleteCandidateTime)
-
+	r.GET("/meetings/:user_id", controllers.GetMeetingByUserId)
 	return e
 
 }

@@ -2,6 +2,9 @@
 const props = defineProps({
   title: String,
   description: String,
+  type: String,
+  place: String,
+  url: String
 });
 </script>
 <template>
@@ -11,7 +14,10 @@ const props = defineProps({
     </header>
     <div class="card-content">
       <div class="meeting-description">
-        {{ description }}
+        Description: {{ description }} <br>
+        Type: {{ type }} <br>
+        Place: {{ place }} <br>
+        URL: {{ url }} <br>
       </div>
     </div>
   </div>

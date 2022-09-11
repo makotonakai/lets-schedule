@@ -28,7 +28,16 @@ func CreateUser(c echo.Context) error {
 	
 }
 
-func GetUser(c echo.Context) error {
+func GetAllUser(c echo.Context) error {
+
+	userList:= []models.User{}
+
+	db.Find(&userList)
+	return c.JSON(http.StatusOK, userList)
+
+}
+
+func GetUserById(c echo.Context) error {
 
 	user := models.User{}
 	err := c.Bind(&user)
@@ -38,18 +47,7 @@ func GetUser(c echo.Context) error {
 	}
 
 	db.First(&user)
-
 	return c.JSON(http.StatusOK, user)
-}
-
-func GetUsers(c echo.Context) error {
-
-	userList:= []models.User{}
-
-	db.Find(&userList)
-	
-	return c.JSON(http.StatusOK, userList)
-
 }
 
 func UpdateUser(c echo.Context) error {
@@ -62,7 +60,6 @@ func UpdateUser(c echo.Context) error {
 	}
 
 	db.Save(&user)
-
 	return c.JSON(http.StatusOK, user)
 }
 
@@ -76,7 +73,5 @@ func DeleteUser(c echo.Context) error {
 	}
 
 	db.Delete(&user)
-
 	return c.JSON(http.StatusNoContent, user)
 }
-

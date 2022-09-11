@@ -14,3 +14,5 @@ type User struct {
 	CreatedAt time.Time `gorm:"autoCreateTime:int" json:"created_at"`	
 	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`	
 }
+
+

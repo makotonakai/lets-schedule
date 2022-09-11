@@ -1,32 +1,74 @@
-<script setup>
-import { ref, onMounted } from "vue";
+<script>
 import VueCookies from "vue-cookies";
 import axios from "axios";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
 import Meeting from "../components/Meeting.vue";
 
-const userId = $cookies.get("user_id");
-const jwtToken = $cookies.get("token");
+export default {
+  // Properties returned from data() become reactive state
+  // and will be exposed on `this`.
+  components: {
+    DashboardHeader,
+    Meeting
+  },
+  data() {
+    return {
+      token: $cookies.get("token"),
+      user_id: parseInt($cookies.get("user_id")),
+      user_name: $cookies.get("user_name"),
+      meetings: []
+    }
+  },
 
-let meetings = ref();
-
-onMounted(() => {
-  axios
-    .get(
-      `http://localhost:1323/api/restricted/meetings/${userId}`,
-      {
+  // Methods are functions that mutate state and trigger updates.
+  // They can be bound as event listeners in templates.
+  methods: {
+      async getMeetings() {
+        await axios
+      .get(`http://localhost:1323/api/restricted/meetings/${this.user_id}`, {
         headers: {
-          Authorization: `Bearer ${jwtToken}`,
+          Authorization: `Bearer ${this.token}`,
         },
-      }
-    )
-    .then((response) => {
-      meetings.value = response.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+      })
+      .then((response) => {
+        console.log(response.data);
+        this.meetings = response.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  },
+    mounted() {
+      // console.log(this.token);
+      // console.log(this.user_id);
+      // console.log(this.user_name);
+      this.getMeetings();
+  }
+}
+
+// const userId = $cookies.get("user_id");
+// const jwtToken = $cookies.get("token");
+
+// let meetings = ref();
+
+// onMounted(() => {
+//   axios
+//     .get(
+//       `http://localhost:1323/api/restricted/meetings/${userId}`,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${jwtToken}`,
+//         },
+//       }
+//     )
+//     .then((response) => {
+//       meetings.value = response.data;
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
 </script>
 
 <template>

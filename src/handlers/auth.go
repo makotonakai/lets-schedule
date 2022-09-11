@@ -2,6 +2,7 @@ package handlers
 
 import (
 
+	"log"
 	"time"
 	"strconv"
 	"net/http"
@@ -26,7 +27,7 @@ func Login(c echo.Context) error {
 	u := models.User{}
 	err := c.Bind(&u)
 	if err != nil {
-		return c.JSON(http.StatusNoContent, u)
+		log.Fatal(err);
 	}
 
 	user := models.User{}

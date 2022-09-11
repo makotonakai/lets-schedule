@@ -2,73 +2,77 @@ package controllers
 
 import (
 
-	"time"
-	"strconv"
 	"net/http"
-
 	"github.com/labstack/echo/v4"
 
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
-func CreateCandidateTimeList(c echo.Context) error {
+//----------
+// Handlers
+//----------
+
+func CreateCandidateTime(c echo.Context) error {
 	
-	newCandidateTimeList := []models.CandidateTime{}
-	err := c.Bind(&newCandidateTimeList)
+	newCandidateTime := models.CandidateTime{}
+	
+	err := c.Bind(&newCandidateTime)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	for _, newCandidateTime := range newCandidateTimeList {
-		newCandidateTime.CreatedAt = time.Now()
-		newCandidateTime.UpdatedAt = time.Now()
-	}
-	
-
-	db.Create(&newCandidateTimeList)
-	return c.JSON(http.StatusCreated, newCandidateTimeList)
+	db.Create(&newCandidateTime)
+	return c.JSON(http.StatusCreated, newCandidateTime)
 	
 }
 
-func GetCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
+func GetAllCandidateTime(c echo.Context) error {
 
-	userId, _ := strconv.Atoi(c.Param("user_id"))
-	meetingId, _ := strconv.Atoi(c.Param("meeting_id"))
-	candidateTimeList:= []models.CandidateTime{}
-	db.Where("meeting_id=?", meetingId).Where("user_id=?", userId).Find(&candidateTimeList)
-	
-	return c.JSON(http.StatusOK, candidateTimeList)
+	CandidateTimeList:= []models.CandidateTime{}
+
+	db.Find(&CandidateTimeList)
+	return c.JSON(http.StatusOK, CandidateTimeList)
 
 }
 
-func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
+func GetCandidateTimeById(c echo.Context) error {
 
-	userId, _ := strconv.Atoi(c.Param("user_id"))
-	meetingId, _ := strconv.Atoi(c.Param("meeting_id"))
+	CandidateTime := models.CandidateTime{}
+	err := c.Bind(&CandidateTime)
 
-	OldcandidateTimeList:= []models.CandidateTime{}
-	db.Table("candidate_times").Where("meeting_id=?", meetingId).Where("user_id=?", userId).Delete(&OldcandidateTimeList)
-
-	NewcandidateTimeList:= []models.CandidateTime{}
-	err := c.Bind(&NewcandidateTimeList)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	db.Table("candidate_times").Where("meeting_id=?", meetingId).Where("user_id=?", userId).Save(&NewcandidateTimeList)
 
-	return c.JSON(http.StatusOK, NewcandidateTimeList)
+	db.First(&CandidateTime)
+	return c.JSON(http.StatusOK, CandidateTime)
+
+}
+
+func UpdateCandidateTime(c echo.Context) error {
+
+	CandidateTime := models.CandidateTime{}
+
+	err := c.Bind(&CandidateTime)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	db.Save(&CandidateTime)
+	return c.JSON(http.StatusOK, CandidateTime)
+
 }
 
 func DeleteCandidateTime(c echo.Context) error {
 
-	candidateTime:= models.CandidateTime{}
-	err := c.Bind(&candidateTime)
+	CandidateTime := models.CandidateTime{}
+	
+	err := c.Bind(&CandidateTime)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	db.Delete(&candidateTime)
+	db.Delete(&CandidateTime)
+	return c.JSON(http.StatusNoContent, CandidateTime)
 
-	return c.JSON(http.StatusNoContent, candidateTime)
 }
-
