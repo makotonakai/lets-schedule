@@ -1,11 +1,13 @@
-<script setup>
-const props = defineProps({
-  title: String,
-  description: String,
-  type: String,
-  place: String,
-  url: String
-});
+<script>
+export default {
+  props: {
+    title: String,
+    description: String,
+    type: String,
+    place: String,
+    url: String
+  }
+};
 </script>
 <template>
   <div class="card">

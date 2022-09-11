@@ -11,6 +11,7 @@ export default {
     DashboardHeader,
     Meeting
   },
+
   data() {
     return {
       token: $cookies.get("token"),
@@ -20,8 +21,10 @@ export default {
     }
   },
 
-  // Methods are functions that mutate state and trigger updates.
-  // They can be bound as event listeners in templates.
+  mounted() {
+      this.getMeetings();
+  },
+
   methods: {
       async getMeetings() {
         await axios
@@ -38,37 +41,8 @@ export default {
         console.log(err);
       });
     }
-  },
-    mounted() {
-      // console.log(this.token);
-      // console.log(this.user_id);
-      // console.log(this.user_name);
-      this.getMeetings();
   }
 }
-
-// const userId = $cookies.get("user_id");
-// const jwtToken = $cookies.get("token");
-
-// let meetings = ref();
-
-// onMounted(() => {
-//   axios
-//     .get(
-//       `http://localhost:1323/api/restricted/meetings/${userId}`,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${jwtToken}`,
-//         },
-//       }
-//     )
-//     .then((response) => {
-//       meetings.value = response.data;
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
 </script>
 
 <template>
