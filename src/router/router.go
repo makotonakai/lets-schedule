@@ -32,7 +32,7 @@ func Initialize() *echo.Echo {
 	r.Use(middleware.JWTWithConfig(config))
 	r.GET("", handlers.Restricted)
 
-	r.GET("/meetings/:user_id", controllers.GetMeetingByUserId)
+	r.GET("/meetings/:user_id", controllers.GetAllMeetings)
 	r.POST("/meetings/new", controllers.CreateMeeting)
 
 	r.POST("/candidate_times/new", controllers.CreateCandidateTime)

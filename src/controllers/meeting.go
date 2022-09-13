@@ -27,7 +27,7 @@ func CreateMeeting(c echo.Context) error {
 	
 }
 
-func GetMeetingByUserId(c echo.Context) error {
+func GetAllMeetings(c echo.Context) error {
 
 	user := models.User{}
 	id_str := c.Param("user_id")
@@ -37,14 +37,7 @@ func GetMeetingByUserId(c echo.Context) error {
 	}
 	db.First(&user, id)
 
-	meetings := []models.Meeting{}
-	db.Table("meetings").
-		Select("meetings.*").
-		Joins("inner join participants on participants.meeting_id = meetings.id").
-		Joins("inner join users on users.id = participants.user_id").
-		Where("users.id = ?", id).
-		Find(&meetings)
-
+	meetings := models.GetMeetingsByUserId(id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
