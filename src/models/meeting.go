@@ -11,6 +11,7 @@ type Meeting struct {
 	Type string `json:"type"`
 	Place string `json:"place"`
 	Url string `json:"url"`
+	IsConfirmed bool `json:"is_confirmed"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

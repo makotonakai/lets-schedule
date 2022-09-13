@@ -14,7 +14,7 @@ import (
 
 func CreateCandidateTime(c echo.Context) error {
 	
-	newCandidateTime := models.CandidateTime{}
+	newCandidateTime := []models.CandidateTime{}
 	
 	err := c.Bind(&newCandidateTime)
 	if err != nil {

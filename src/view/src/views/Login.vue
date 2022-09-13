@@ -11,18 +11,18 @@ export default {
   },
   data() {
     return {
-      username: "",
-      password: "",
+      UserName: "",
+      Password: "",
     }
   },
 
   // Methods are functions that mutate state and trigger updates.
   // They can be bound as event listeners in templates.
   methods: {
-    async login(){
+    async Login(){
       await axios.post("http://localhost:1323/api/login", {
-        user_name: this.username,
-        password: this.password,
+        user_name: this.UserName,
+        Password: this.Password,
       })
       .then((response) => {
         console.log(response.data);
@@ -58,11 +58,11 @@ export default {
             <div class="column is-5-tablet is-4-desktop is-3-widescreen">
               <form action="" class="box">
                 <div class="field">
-                  <label for="" class="label">Username </label>
+                  <label for="" class="label">UserName </label>
                   <div class="control has-icons-left">
                     <input
-                      v-model="username"
-                      type="username"
+                      v-model="UserName"
+                      type="UserName"
                       placeholder="e.g. lets-schedule"
                       class="input"
                       required
@@ -76,8 +76,8 @@ export default {
                   <label for="" class="label">Password</label>
                   <div class="control has-icons-left">
                     <input
-                      v-model="password"
-                      type="password"
+                      v-model="Password"
+                      type="Password"
                       placeholder="*******"
                       class="input"
                       required
@@ -88,7 +88,7 @@ export default {
                   </div>
                 </div>
                 <div class="field">
-                  <button @click="login" class="button is-success">
+                  <button @click="Login" class="button is-success">
                     Login
                   </button>
                 </div>

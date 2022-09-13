@@ -17,7 +17,6 @@ import (
 func CreateMeeting(c echo.Context) error {
 	
 	newMeeting := models.Meeting{}
-
 	err := c.Bind(&newMeeting)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())

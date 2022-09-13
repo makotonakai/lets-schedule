@@ -33,6 +33,11 @@ func Initialize() *echo.Echo {
 	r.GET("", handlers.Restricted)
 
 	r.GET("/meetings/:user_id", controllers.GetMeetingByUserId)
+	r.POST("/meetings/new", controllers.CreateMeeting)
+
+	r.POST("/candidate_times/new", controllers.CreateCandidateTime)
+
+
 	return e
 
 }

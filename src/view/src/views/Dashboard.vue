@@ -14,10 +14,10 @@ export default {
 
   data() {
     return {
-      token: $cookies.get("token"),
-      user_id: parseInt($cookies.get("user_id")),
-      user_name: $cookies.get("user_name"),
-      meetings: []
+      Token: $cookies.get("token"),
+      UserId: parseInt($cookies.get("user_id")),
+      UserName: $cookies.get("user_name"),
+      Meetings: []
     }
   },
 
@@ -28,14 +28,13 @@ export default {
   methods: {
       async getMeetings() {
         await axios
-      .get(`http://localhost:1323/api/restricted/meetings/${this.user_id}`, {
+      .get(`http://localhost:1323/api/restricted/meetings/${this.UserId}`, {
         headers: {
-          Authorization: `Bearer ${this.token}`,
+          Authorization: `Bearer ${this.Token}`,
         },
       })
       .then((response) => {
-        console.log(response.data);
-        this.meetings = response.data;
+        this.Meetings = response.data;
       })
       .catch((err) => {
         console.log(err);
@@ -55,7 +54,7 @@ export default {
             <div class="columns is-centered">
               <div class="column is-half is-4">
                 <li
-                  v-for="meeting in meetings"
+                  v-for="meeting in Meetings"
                   :key="meeting.id"
                 >
                   <Meeting
