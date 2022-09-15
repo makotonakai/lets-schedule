@@ -25,16 +25,16 @@
         <div class="navbar-start">
           <!-- hrefをhttpsのリンクに置き換える -->
           <!-- タブ移動等のリダイレクトを禁じる方法もあることはある -->
-          <a class="navbar-item" href="/dashboard"> ダッシュボード </a>
+          <a class="navbar-item" href="/meeting/dashboard"> ダッシュボード </a>
           <a class="navbar-item" href="/meeting/new"> ミーティング新規作成 </a>
 
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link"> 主催ミーティング確認 </a>
 
             <div class="navbar-dropdown">
-              <a class="navbar-item" href="/meeting/host/confirmed"> 確定済み </a>
+              <a class="navbar-item" href="/meeting/host/confirmed/dashboard"> 確定済み </a>
               <hr class="navbar-divider" />
-              <a class="navbar-item" href="/meeting/host/not-yet-confirmed"> 未確定 </a>
+              <a class="navbar-item" href="/meeting/host/not-confirmed/dashboard"> 未確定 </a>
             </div>
           </div>
 
@@ -42,11 +42,11 @@
             <a class="navbar-link"> 参加ミーティング確認 </a>
 
             <div class="navbar-dropdown">
-              <a class="navbar-item" href="/meeting/guest/confirmed"> 確定済み </a>
+              <a class="navbar-item" href="/meeting/guest/confirmed/dashboard"> 確定済み </a>
               <hr class="navbar-divider" />
-              <a class="navbar-item" href="/meeting/guest/responded"> 返信済み </a>
+              <a class="navbar-item" href="/meeting/guest/not-confirmed/dashboard"> 返信済み </a>
               <hr class="navbar-divider" />
-              <a class="navbar-item" href="/meeting/guest/not-yet-responded"> 未対応 </a>
+              <a class="navbar-item" href="/meeting/guest/not-responsed/dashboard"> 未対応 </a>
             </div>
           </div>
         </div>

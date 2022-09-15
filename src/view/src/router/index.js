@@ -3,7 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
-import DashBoard from '../views/DashBoard.vue'
+import DashBoard from '../views/Dashboard.vue'
+import HostConfirmedDashBoard from '../views/host/confirmed/HostConfirmedDashBoard.vue'
 import NewMeeting from '../views/NewMeeting.vue'
 
 const router = createRouter({
@@ -30,9 +31,17 @@ const router = createRouter({
       component: Login
     },
     {
-      path: '/dashboard',
+      path: '/meeting/dashboard',
       name: 'dashboard',
       component: DashBoard,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/meeting/host/confirmed/dashboard',
+      name: 'host-confirmed-dashboard',
+      component: HostConfirmedDashBoard,
       meta: {
         requiresAuth: true
       }

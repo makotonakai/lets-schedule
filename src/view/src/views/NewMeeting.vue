@@ -222,7 +222,7 @@ export default {
             <div class="field is-grouped">
               <p class="control">
                 <router-link
-                  to="/dashboard"
+                  to="/meeting/dashboard"
                   class="button is-light"
                   @click="Register"
                 >
@@ -230,7 +230,7 @@ export default {
                 </router-link>
               </p>
               <p class="control">
-                <router-link to="/dashboard" class="button is-light">
+                <router-link to="/meeting/dashboard" class="button is-light">
                   戻る
                 </router-link>
               </p>

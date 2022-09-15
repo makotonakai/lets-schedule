@@ -40,7 +40,7 @@ export default {
       $cookies.set("user_name", response.data["user_name"]);
     },
     goToDashboard() {
-      this.$router.push("/dashboard");
+      this.$router.push("/meeting/dashboard");
     }
   }
 }
