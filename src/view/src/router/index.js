@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import DashBoard from '../views/Dashboard.vue'
 import HostConfirmedDashBoard from '../views/host/confirmed/HostConfirmedDashBoard.vue'
+import HostNotConfirmedDashBoard from '../views/host/not-confirmed/HostNotConfirmedDashBoard.vue'
 import NewMeeting from '../views/NewMeeting.vue'
 
 const router = createRouter({
@@ -42,6 +43,14 @@ const router = createRouter({
       path: '/meeting/host/confirmed/dashboard',
       name: 'host-confirmed-dashboard',
       component: HostConfirmedDashBoard,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/meeting/host/not-confirmed/dashboard',
+      name: 'host-not-confirmed-dashboard',
+      component: HostNotConfirmedDashBoard,
       meta: {
         requiresAuth: true
       }
