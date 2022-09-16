@@ -28,7 +28,7 @@ create table if not exists meetings (
 
 insert into meetings values (1, "meeting1", " description1", "physical", "place1", "", 1, current_timestamp, current_timestamp);
 insert into meetings values (2, "meeting2", " description2", "virtual", "", "http://meeting2-zoom.com", 0, current_timestamp, current_timestamp);
-insert into meetings values (3, "meeting3", " description3", "hybrid", "place3", "http://meeting3-zoom.com", 0, current_timestamp, current_timestamp);
+insert into meetings values (3, "meeting3", " description3", "hybrid", "place3", "http://meeting3-zoom.com", 1, current_timestamp, current_timestamp);
 insert into meetings values (4, "meeting4", " description4", "hybrid", "place4", "http://meeting4-zoom.com", 0, current_timestamp, current_timestamp);
 insert into meetings values (5, "meeting5", " description5", "hybrid", "place5", "http://meeting5-zoom.com", 0, current_timestamp, current_timestamp);
 

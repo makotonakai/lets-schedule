@@ -46,6 +46,101 @@ func GetAllMeetings(c echo.Context) error {
 
 }
 
+func GetConfirmedMeetingsForHost(c echo.Context) error {
+
+	user := models.User{}
+	id_str := c.Param("user_id")
+	id, err := strconv.Atoi(id_str)
+	if err != nil {
+		log.Fatal(err)
+	}
+	db.First(&user, id)
+
+	confirmedMeetingsForHost := models.GetConfirmedMeetingsForHostByUserId(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
+
+}
+
+func GetNotConfirmedMeetingsForHost(c echo.Context) error {
+
+	user := models.User{}
+	id_str := c.Param("user_id")
+	id, err := strconv.Atoi(id_str)
+	if err != nil {
+		log.Fatal(err)
+	}
+	db.First(&user, id)
+
+	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForHostByUserId(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
+
+}
+
+func GetConfirmedMeetingsForGuest(c echo.Context) error {
+
+	user := models.User{}
+	id_str := c.Param("user_id")
+	id, err := strconv.Atoi(id_str)
+	if err != nil {
+		log.Fatal(err)
+	}
+	db.First(&user, id)
+
+	confirmedMeetingsForHost := models.GetConfirmedMeetingsForGuestByUserId(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
+
+}
+
+func GetNotConfirmedMeetingsForGuest(c echo.Context) error {
+
+	user := models.User{}
+	id_str := c.Param("user_id")
+	id, err := strconv.Atoi(id_str)
+	if err != nil {
+		log.Fatal(err)
+	}
+	db.First(&user, id)
+
+	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForGuestByUserId(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
+
+}
+
+func GetNotRespondedMeetingsForGuest(c echo.Context) error {
+
+	user := models.User{}
+	id_str := c.Param("user_id")
+	id, err := strconv.Atoi(id_str)
+	if err != nil {
+		log.Fatal(err)
+	}
+	db.First(&user, id)
+
+	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForGuestByUserId(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
+
+}
+
 func UpdateMeeting(c echo.Context) error {
 
 	Meeting := models.Meeting{}

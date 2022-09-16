@@ -30,3 +30,63 @@ func GetMeetingsByUserId(UserId int) []Meeting {
 	return meetings
 }
 
+func GetConfirmedMeetingsForHostByUserId(UserId int) []Meeting {
+	meetings := []Meeting{}
+	db.Table("meetings").
+		Select("meetings.*").
+		Joins("inner join participants on participants.meeting_id = meetings.id").
+		Joins("inner join users on users.id = participants.user_id").
+		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 1).
+		Where("meetings.is_confirmed = ?", 1).
+		Find(&meetings)
+	return meetings
+}
+
+func GetNotConfirmedMeetingsForHostByUserId(UserId int) []Meeting {
+	meetings := []Meeting{}
+	db.Table("meetings").
+		Select("meetings.*").
+		Joins("inner join participants on participants.meeting_id = meetings.id").
+		Joins("inner join users on users.id = participants.user_id").
+		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 1).
+		Where("meetings.is_confirmed = ?", 0).
+		Find(&meetings)
+	return meetings
+}
+
+func GetConfirmedMeetingsForGuestByUserId(UserId int) []Meeting {
+	meetings := []Meeting{}
+	db.Table("meetings").
+		Select("meetings.*").
+		Joins("inner join participants on participants.meeting_id = meetings.id").
+		Joins("inner join users on users.id = participants.user_id").
+		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 0).
+		Where("meetings.is_confirmed = ?", 1).
+		Find(&meetings)
+	return meetings
+}
+
+func GetNotConfirmedMeetingsForGuestByUserId(UserId int) []Meeting {
+	meetings := []Meeting{}
+	db.Table("meetings").
+		Select("meetings.*").
+		Joins("inner join participants on participants.meeting_id = meetings.id").
+		Joins("inner join users on users.id = participants.user_id").
+		Where("participants.user_id = ? AND participants.is_host = ? AND participants.has_responded = ?", UserId, 0, 1).
+		Where("meetings.is_confirmed = ?", 0).
+		Find(&meetings)
+	return meetings
+}
+
+func GetNotRespondedMeetingsForGuestByUserId(UserId int) []Meeting {
+	meetings := []Meeting{}
+	db.Table("meetings").
+		Select("meetings.*").
+		Joins("inner join participants on participants.meeting_id = meetings.id").
+		Joins("inner join users on users.id = participants.user_id").
+		Where("participants.user_id = ? AND participants.is_host = ? AND participants.has_responded = ?", UserId, 0, 0).
+		Where("meetings.is_confirmed = ?", 0).
+		Find(&meetings)
+	return meetings
+}
+
