@@ -7,6 +7,7 @@ import DashBoard from '../views/Dashboard.vue'
 import NewMeeting from '../views/NewMeeting.vue'
 import HostConfirmedDashBoard from '../views/host/confirmed/HostConfirmedDashBoard.vue'
 import HostNotConfirmedDashBoard from '../views/host/not-confirmed/HostNotConfirmedDashBoard.vue'
+import HostNotRespondedDashBoard from '../views/host/not-responded/HostNotRespondedDashBoard.vue'
 import GuestConfirmedDashBoard from '../views/guest/confirmed/GuestConfirmedDashBoard.vue'
 import GuestNotConfirmedDashBoard from '../views/guest/not-confirmed/GuestNotConfirmedDashBoard.vue'
 import GuestNotRespondedDashBoard from '../views/guest/not-responded/GuestNotRespondedDashBoard.vue'
@@ -64,6 +65,14 @@ const router = createRouter({
       path: '/meeting/host/not-confirmed/dashboard',
       name: 'host-not-confirmed-dashboard',
       component: HostNotConfirmedDashBoard,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/meeting/host/not-responded/dashboard',
+      name: 'host-not-responded-dashboard',
+      component: HostNotRespondedDashBoard,
       meta: {
         requiresAuth: true
       }

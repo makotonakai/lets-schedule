@@ -34,9 +34,9 @@
             <div class="navbar-dropdown">
               <a class="navbar-item" href="/meeting/host/confirmed/dashboard"> 日時 確定済み </a>
               <hr class="navbar-divider" />
-              <a class="navbar-item" href="/meeting/host/all-participants-responded/dashboard"> 日時 未確定 </a>
+              <a class="navbar-item" href="/meeting/host/not-confirmed/dashboard"> 日時 未確定 </a>
               <hr class="navbar-divider" />
-              <a class="navbar-item" href="/meeting/host/not-confirmed/dashboard">  回答待ち </a>
+              <a class="navbar-item" href="/meeting/host/not-responded/dashboard">  回答待ち </a>
             </div>
           </div>
 
