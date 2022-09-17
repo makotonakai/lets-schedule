@@ -6,15 +6,18 @@ import (
 )
 
 type Meeting struct {
-	Id int `json:"id" param:"id"`
+	Id int `gorm:"primaryKey:not null:autoIncrement" json:"id"`
 	Title string `json:"title"`
 	Description string `json:"description"`
 	Type string `json:"type"`
 	Place string `json:"place"`
 	Url string `json:"url"`
+	AllParticipantsResponded bool `json:"all_participants_responded"`
 	IsConfirmed bool `json:"is_confirmed"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	StartTime time.Time `json:"start_time"`
+	EndTime time.Time `json:"end_time"`
+	CreatedAt time.Time `gorm:"autoCreateTime:int" json:"created_at"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`
 }
 
 var db = database.Connect()
