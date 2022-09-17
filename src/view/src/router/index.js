@@ -11,6 +11,7 @@ import HostNotRespondedDashBoard from '../views/host/not-responded/HostNotRespon
 import GuestConfirmedDashBoard from '../views/guest/confirmed/GuestConfirmedDashBoard.vue'
 import GuestNotConfirmedDashBoard from '../views/guest/not-confirmed/GuestNotConfirmedDashBoard.vue'
 import GuestNotRespondedDashBoard from '../views/guest/not-responded/GuestNotRespondedDashBoard.vue'
+import SetDateTime from '../views/SetDateTime.vue'
 import Friend from '../views/Friend.vue'
 
 
@@ -97,6 +98,15 @@ const router = createRouter({
       path: '/meeting/guest/not-responded/dashboard',
       name: 'guest-not-responded-dashboard',
       component: GuestNotRespondedDashBoard,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/meeting/host/:id/set-date-time',
+      name: 'set-date-time',
+      component: SetDateTime,
+      props: true,
       meta: {
         requiresAuth: true
       }
