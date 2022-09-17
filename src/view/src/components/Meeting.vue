@@ -16,9 +16,9 @@ export default {
     </header>
     <div class="card-content">
       <div class="meeting-description">
-        Description: {{ description }} <br>
-        Type: {{ type }} <br>
-        Place: {{ place }} <br>
+        概要: {{ description }} <br>
+        形式: {{ type }} <br>
+        開催場所: {{ place }} <br>
         URL: {{ url }} <br>
       </div>
     </div>

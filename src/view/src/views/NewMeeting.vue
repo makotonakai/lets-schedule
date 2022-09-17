@@ -2,7 +2,6 @@
 import VueCookies from "vue-cookies";
 import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
-import {GetMeetingType} from "../utils/Type"
 import {AddNewElement, DeleteLastElement, CreateDateTimeJSONList} from "../utils/Time"
 import {CreateParticipantJSONList} from "../utils/Participant"
 import Datepicker from "@vuepic/vue-datepicker";
@@ -44,7 +43,7 @@ export default {
       await axios.post("http://localhost:1323/api/restricted/meetings/new", {  
         title: this.Title,
         description: this.Description,
-        type: GetMeetingType(this.Type),
+        type: this.Type,
         place: this.Place,
         url: this.Url,
         is_confirmed: false
@@ -110,7 +109,7 @@ export default {
     DeleteParticipant(){
       DeleteLastElement(this.ParticipantList);
     },
-    
+
   }
 }
 
@@ -215,8 +214,8 @@ export default {
                 <div class="select">
                   <select v-model="Type">
                     <option>現地開催</option>
-                    <option>オンライン</option>
-                    <option>ハイブリッド</option>
+                    <option>オンライン開催</option>
+                    <option>ハイブリッド開催</option>
                   </select>
                 </div>
               </div>

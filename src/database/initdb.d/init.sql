@@ -27,11 +27,11 @@ create table if not exists meetings (
   primary key(id)
 );
 
-insert into meetings values (1, "meeting1", " description1", "physical", "place1", "", 1, current_timestamp, current_timestamp);
-insert into meetings values (2, "meeting2", " description2", "virtual", "", "http://meeting2-zoom.com", 0, current_timestamp, current_timestamp);
-insert into meetings values (3, "meeting3", " description3", "hybrid", "place3", "http://meeting3-zoom.com", 1, current_timestamp, current_timestamp);
-insert into meetings values (4, "meeting4", " description4", "hybrid", "place4", "http://meeting4-zoom.com", 0, current_timestamp, current_timestamp);
-insert into meetings values (5, "meeting5", " description5", "hybrid", "place5", "http://meeting5-zoom.com", 0, current_timestamp, current_timestamp);
+insert into meetings values (1, "meeting1", " description1", "物理開催", "place1", "", 1, current_timestamp, current_timestamp);
+insert into meetings values (2, "meeting2", " description2", "オンライン開催", "", "http://meeting2-zoom.com", 0, current_timestamp, current_timestamp);
+insert into meetings values (3, "meeting3", " description3", "ハイブリッド開催", "place3", "http://meeting3-zoom.com", 1, current_timestamp, current_timestamp);
+insert into meetings values (4, "meeting4", " description4", "ハイブリッド開催", "place4", "http://meeting4-zoom.com", 0, current_timestamp, current_timestamp);
+insert into meetings values (5, "meeting5", " description5", "ハイブリッド開催", "place5", "http://meeting5-zoom.com", 0, current_timestamp, current_timestamp);
 
 create table if not exists participants (
   `id` bigint(11) not null auto_increment,
