@@ -4,12 +4,14 @@ import AboutView from '../views/AboutView.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import DashBoard from '../views/Dashboard.vue'
+import NewMeeting from '../views/NewMeeting.vue'
 import HostConfirmedDashBoard from '../views/host/confirmed/HostConfirmedDashBoard.vue'
 import HostNotConfirmedDashBoard from '../views/host/not-confirmed/HostNotConfirmedDashBoard.vue'
 import GuestConfirmedDashBoard from '../views/guest/confirmed/GuestConfirmedDashBoard.vue'
 import GuestNotConfirmedDashBoard from '../views/guest/not-confirmed/GuestNotConfirmedDashBoard.vue'
 import GuestNotRespondedDashBoard from '../views/guest/not-responded/GuestNotRespondedDashBoard.vue'
-import NewMeeting from '../views/NewMeeting.vue'
+import Friend from '../views/Friend.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +40,14 @@ const router = createRouter({
       path: '/meeting/dashboard',
       name: 'dashboard',
       component: DashBoard,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/meeting/new',
+      name: 'new-meeting',
+      component: NewMeeting,
       meta: {
         requiresAuth: true
       }
@@ -83,9 +93,9 @@ const router = createRouter({
       }
     },
     {
-      path: '/meeting/new',
-      name: 'new-meeting',
-      component: NewMeeting,
+      path: '/friend',
+      name: 'friend',
+      component: Friend,
       meta: {
         requiresAuth: true
       }
