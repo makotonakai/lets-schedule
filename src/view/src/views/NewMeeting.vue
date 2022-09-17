@@ -31,15 +31,17 @@ export default {
       MeetingId: null
     }
   },
+
   methods: {
     async Register() {
       await this.RegisterBasicInfo();
       await this.RegisterCandidateTime();
       await this.RegisterParticipants();
     },
+
     async RegisterBasicInfo(){
-      await axios.post("http://localhost:1323/api/restricted/meetings/new", 
-      {  
+
+      await axios.post("http://localhost:1323/api/restricted/meetings/new", {  
         title: this.Title,
         description: this.Description,
         type: GetMeetingType(this.Type),
@@ -61,10 +63,10 @@ export default {
       });
     },
     async RegisterCandidateTime(){
+
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId),
-      await axios.post("http://localhost:1323/api/restricted/candidate_times/new", 
-      this.DateTimeJSONList,
-      {
+
+      await axios.post("http://localhost:1323/api/restricted/candidate_times/new", this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -77,10 +79,10 @@ export default {
       });
     },
     async RegisterParticipants() {
+
       this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
-      await axios.post("http://localhost:1323/api/restricted/participants/new", 
-      this.ParticipantJSONList,
-      {
+
+      await axios.post("http://localhost:1323/api/restricted/participants/new", this.ParticipantJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -92,18 +94,23 @@ export default {
         console.log(err);
       });
     },
+
     AddDateTime(){
       AddNewElement(this.DatetimeList);
     },
+
     DeleteDateTime(){
       DeleteLastElement(this.DatetimeList);
     },
+
     AddParticipant(){
       AddNewElement(this.ParticipantList);
     },
+
     DeleteParticipant(){
       DeleteLastElement(this.ParticipantList);
     },
+    
   }
 }
 
