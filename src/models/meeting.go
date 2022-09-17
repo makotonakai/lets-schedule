@@ -52,7 +52,19 @@ func GetNotConfirmedMeetingsForHostByUserId(UserId int) []Meeting {
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 1).
-		Where("meetings.is_confirmed = ?", 0).
+		Where("meetings.is_confirmed = ? AND meetings.all_participants_responded = ?", 0, 1).
+		Find(&meetings)
+	return meetings
+}
+
+func GetNotRespondedMeetingsForHostByUserId(UserId int) []Meeting {
+	meetings := []Meeting{}
+	db.Table("meetings").
+		Select("meetings.*").
+		Joins("inner join participants on participants.meeting_id = meetings.id").
+		Joins("inner join users on users.id = participants.user_id").
+		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 1).
+		Where("meetings.is_confirmed = ? AND meetings.all_participants_responded = ?", 0, 0).
 		Find(&meetings)
 	return meetings
 }

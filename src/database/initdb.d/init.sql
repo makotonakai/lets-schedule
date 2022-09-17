@@ -32,8 +32,8 @@ create table if not exists meetings (
 
 insert into meetings values (1, "第1回ミーティング", "アイデア出し", "物理開催", "会議室1", "なし", 1, 1, null, null, current_timestamp, current_timestamp);
 insert into meetings values (2, "第2回ミーティング", "要件定義", "オンライン開催", "なし", "http://meeting2-zoom.com", 1, 0, null, null, current_timestamp, current_timestamp);
-insert into meetings values (3, "第3回ミーティング", "技術選定", "ハイブリッド開催", "会議室", "http://meeting3-zoom.com", 0, 1, null, null, current_timestamp, current_timestamp);
-insert into meetings values (4, "第4回ミーティング", "DB設計", "ハイブリッド開催", "会議室", "http://meeting4-zoom.com", 0, 0, null, null, current_timestamp, current_timestamp);
+insert into meetings values (3, "第3回ミーティング", "技術選定", "ハイブリッド開催", "会議室", "http://meeting3-zoom.com", 0, 0, null, null, current_timestamp, current_timestamp);
+insert into meetings values (4, "第4回ミーティング", "DB設計", "ハイブリッド開催", "会議室", "http://meeting4-zoom.com", 1, 1, null, null, current_timestamp, current_timestamp);
 insert into meetings values (5, "第5回ミーティング", "実装", "ハイブリッド開催", "会議室", "http://meeting5-zoom.com", 0, 0, null, null, current_timestamp, current_timestamp);
 insert into meetings values (6, "第6回ミーティング", "デプロイ", "ハイブリッド開催", "会議室", "http://meeting6-zoom.com", 0, 0, null, null, current_timestamp, current_timestamp);
 
@@ -52,11 +52,11 @@ insert into participants values (1, 1, 1, 1, 1, current_timestamp, current_times
 insert into participants values (2, 2, 1, 0, 1, current_timestamp, current_timestamp);
 insert into participants values (3, 1, 2, 1, 1, current_timestamp, current_timestamp);
 insert into participants values (4, 2, 2, 0, 1, current_timestamp, current_timestamp);
-insert into participants values (5, 1, 3, 0, 1, current_timestamp, current_timestamp);
-insert into participants values (6, 2, 3, 1, 1, current_timestamp, current_timestamp);
+insert into participants values (5, 1, 3, 1, 1, current_timestamp, current_timestamp);
+insert into participants values (6, 2, 3, 0, 0, current_timestamp, current_timestamp);
 insert into participants values (7, 1, 4, 0, 1, current_timestamp, current_timestamp);
 insert into participants values (8, 2, 4, 1, 1, current_timestamp, current_timestamp);
-insert into participants values (9, 1, 5, 0, 0, current_timestamp, current_timestamp);
+insert into participants values (9, 1, 5, 0, 1, current_timestamp, current_timestamp);
 insert into participants values (10, 2, 5, 1, 1, current_timestamp, current_timestamp);
 insert into participants values (11, 1, 6, 0, 0, current_timestamp, current_timestamp);
 insert into participants values (12, 2, 6, 1, 1, current_timestamp, current_timestamp);

@@ -84,6 +84,25 @@ func GetNotConfirmedMeetingsForHost(c echo.Context) error {
 
 }
 
+func GetNotRespondedMeetingsForHost(c echo.Context) error {
+
+	user := models.User{}
+	id_str := c.Param("user_id")
+	id, err := strconv.Atoi(id_str)
+	if err != nil {
+		log.Fatal(err)
+	}
+	db.First(&user, id)
+
+	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForHostByUserId(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
+
+}
+
 func GetConfirmedMeetingsForGuest(c echo.Context) error {
 
 	user := models.User{}
