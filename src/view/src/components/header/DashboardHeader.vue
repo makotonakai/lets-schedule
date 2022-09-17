@@ -46,7 +46,7 @@
               <hr class="navbar-divider" />
               <a class="navbar-item" href="/meeting/guest/not-confirmed/dashboard"> 返信済み </a>
               <hr class="navbar-divider" />
-              <a class="navbar-item" href="/meeting/guest/not-responsed/dashboard"> 未対応 </a>
+              <a class="navbar-item" href="/meeting/guest/not-responded/dashboard"> 未対応 </a>
             </div>
           </div>
         </div>
