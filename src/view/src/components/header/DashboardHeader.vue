@@ -32,9 +32,11 @@
             <a class="navbar-link"> 主催ミーティング確認 </a>
 
             <div class="navbar-dropdown">
-              <a class="navbar-item" href="/meeting/host/confirmed/dashboard"> 確定済み </a>
+              <a class="navbar-item" href="/meeting/host/confirmed/dashboard"> 日時 確定済み </a>
               <hr class="navbar-divider" />
-              <a class="navbar-item" href="/meeting/host/not-confirmed/dashboard"> 未確定 </a>
+              <a class="navbar-item" href="/meeting/host/all-participants-responded/dashboard"> 日時 未確定 </a>
+              <hr class="navbar-divider" />
+              <a class="navbar-item" href="/meeting/host/not-confirmed/dashboard">  回答待ち </a>
             </div>
           </div>
 
@@ -42,11 +44,11 @@
             <a class="navbar-link"> 参加ミーティング確認 </a>
 
             <div class="navbar-dropdown">
-              <a class="navbar-item" href="/meeting/guest/confirmed/dashboard"> 確定済み </a>
+              <a class="navbar-item" href="/meeting/guest/confirmed/dashboard"> 日時 確定済み </a>
               <hr class="navbar-divider" />
-              <a class="navbar-item" href="/meeting/guest/not-confirmed/dashboard"> 返信済み </a>
+              <a class="navbar-item" href="/meeting/guest/not-confirmed/dashboard"> 候補日時 返信済み </a>
               <hr class="navbar-divider" />
-              <a class="navbar-item" href="/meeting/guest/not-responded/dashboard"> 未対応 </a>
+              <a class="navbar-item" href="/meeting/guest/not-responded/dashboard"> 候補日時 未返信 </a>
             </div>
           </div>
           <a class="navbar-item" href="/friend"> 友達追加 </a>
