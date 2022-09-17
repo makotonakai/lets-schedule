@@ -4,6 +4,7 @@ import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
 import {GetMeetingType} from "../utils/Type"
 import {AddNewElement, DeleteLastElement, CreateDateTimeJSONList} from "../utils/Time"
+import {CreateParticipantJSONList} from "../utils/Participant"
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import axios from "axios";
@@ -26,6 +27,7 @@ export default {
       DateTimeJSONList:[],
       Host:"",
       ParticipantList:[""],
+      ParticipantJSONList:[],
       MeetingId: null
     }
   },
@@ -33,6 +35,7 @@ export default {
     async Register() {
       await this.RegisterBasicInfo();
       await this.RegisterCandidateTime();
+      await this.RegisterParticipants();
     },
     async RegisterBasicInfo(){
       await axios.post("http://localhost:1323/api/restricted/meetings/new", 
@@ -51,6 +54,7 @@ export default {
       })
       .then((response) => {
         this.MeetingId = response.data["id"];
+        console.log(response.data)
         })
       .catch((err) => {
         console.log(err);
@@ -66,7 +70,23 @@ export default {
         }
       })
       .then((response) => {
-        this.MeetingId = response.data["id"];
+        console.log(response.data)
+        })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
+    async RegisterParticipants() {
+      this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
+      await axios.post("http://localhost:1323/api/restricted/participants/new", 
+      this.ParticipantJSONList,
+      {
+        headers: { 
+          Authorization: `Bearer ${this.Token}`
+        }
+      })
+      .then((response) => {
+        console.log(response.data)
         })
       .catch((err) => {
         console.log(err);
