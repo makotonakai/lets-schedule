@@ -2,14 +2,12 @@
 import VueCookies from "vue-cookies";
 import axios from "axios";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
-import Meeting from "../components/Meeting.vue";
 
 export default {
   // Properties returned from data() become reactive state
   // and will be exposed on `this`.
   components: {
     DashboardHeader,
-    Meeting
   },
 
   data() {
