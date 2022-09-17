@@ -42,18 +42,19 @@ func Login(c echo.Context) error {
 		Id: user.Id,
 		UserName: user.UserName,
 		StandardClaims: jwt.StandardClaims{
-				ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+				ExpiresAt: time.Now().Add(time.Hour).Unix(),
+				Issuer: "test",
 		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signingKey := []byte("secret")
 	t, err := token.SignedString(signingKey)
 	if err != nil {
 			return err
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{
+	return c.JSON(http.StatusOK, echo.Map{
 			"id": strconv.Itoa(user.Id),
 			"user_name": user.UserName,
 			"token": t,
