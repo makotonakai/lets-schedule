@@ -12,6 +12,7 @@ create table if not exists users (
 
 insert into users values (1, "makoto", "makoto@email.com", "password", 1, 1, current_timestamp, current_timestamp);
 insert into users values (2, "minoru", "minoru@email.com", "password", 1, 1, current_timestamp, current_timestamp);
+insert into users values (3, "user", "user@email.com", "password", 1, 1, current_timestamp, current_timestamp);
 
 create table if not exists meetings (
   `id` bigint(11) not null auto_increment,
@@ -76,3 +77,14 @@ insert into candidate_times values (7, 1, 4, current_timestamp, current_timestam
 insert into candidate_times values (8, 2, 4, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
 insert into candidate_times values (9, 1, 5, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
 insert into candidate_times values (10, 2, 5, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
+
+create table if not exists friends (
+  `id` bigint(11) not null auto_increment,
+  `user_id` bigint(11) not null,
+  `friend_user_id` bigint(11) not null,
+  `created_at` timestamp not null default current_timestamp,
+  `updated_at` timestamp not null default current_timestamp on update current_timestamp,
+  primary key(id)
+);
+
+insert into friends values (1, 1, 2, current_timestamp, current_timestamp);

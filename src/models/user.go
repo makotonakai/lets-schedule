@@ -15,4 +15,13 @@ type User struct {
 	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`	
 }
 
+func GetUserIdFromUserName(UserName string) int {
+	User := User{}
+	db.Table("users").
+		Select("users.id").
+		Where("users.user_name = ?", UserName).
+		Find(&User)
+	return User.Id
+}
+
 

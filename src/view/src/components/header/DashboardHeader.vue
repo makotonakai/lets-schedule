@@ -49,7 +49,7 @@
               <a class="navbar-item" href="/meeting/guest/not-responded/dashboard"> 未対応 </a>
             </div>
           </div>
-          <a class="navbar-item" href="/friend"> 友達登録 </a>
+          <a class="navbar-item" href="/friend"> 友達追加 </a>
         </div>
       </div>
 

@@ -38,8 +38,8 @@ export default {
                   placeholder="*****"
                   v-model="Friend"
                 />
-                <button class="button is-light" @click="DeleteParticipant">
-                  友達を検索
+                <button class="button is-light" @click="AddFriend">
+                  友達を追加
                 </button>
               </div>
             </div>
@@ -53,6 +53,5 @@ export default {
 <style scoped>
 #app {
   white-space: nowrap;
-  /* margin: 1cm; */
 }
 </style>
