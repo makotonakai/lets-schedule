@@ -34,7 +34,7 @@ insert into meetings values (4, "meeting4", " description4", "hybrid", "place4",
 insert into meetings values (5, "meeting5", " description5", "hybrid", "place5", "http://meeting5-zoom.com", 0, current_timestamp, current_timestamp);
 
 create table if not exists participants (
-  `id` bigint(11) not null,
+  `id` bigint(11) not null auto_increment,
   `user_id` bigint(11) not null,
   `meeting_id` bigint(11) not null,
   `is_host` boolean not null,

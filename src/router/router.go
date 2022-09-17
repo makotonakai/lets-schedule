@@ -44,6 +44,8 @@ func Initialize() *echo.Echo {
 
 	r.POST("/friends/new", controllers.CreateFriend)
 
+	r.POST("/participants/new", controllers.CreateParticipant)
+
 
 	return e
 

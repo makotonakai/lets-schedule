@@ -1,9 +1,8 @@
 package models
 
 type ParticipantWithUserName struct {
-	Id int `json:"id"`	
+	UserName string `json:"user_name"`
 	MeetingId int `json:"meeting_id"`
-	UserName int `json:"user_name"`
 	IsHost bool `json:"is_host"`
-	HasResponded bool `json:"has_reponded"`
+	HasResponded bool `json:"has_responded"`
 }
