@@ -2,7 +2,7 @@
 import VueCookies from "vue-cookies";
 import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
-import {AddNewElement, DeleteLastElement, CreateDateTimeJSONList} from "../utils/Time"
+import {AddNewElement, DeleteLastElement, CreateDateTimeJSONList} from "../utils/CandidateTime"
 import {CreateParticipantJSONList} from "../utils/Participant"
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";

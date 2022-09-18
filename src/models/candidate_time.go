@@ -13,3 +13,14 @@ type CandidateTime struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+func GetCandidateTimeByMeetingId(MeetingId int) []CandidateTime {
+
+	CandidateTimeList := []CandidateTime{}
+	db.Table("candidate_times").
+		Select("candidate_times.*").
+		Where("candidate_times.meeting_id = ?", MeetingId).
+		Find(&CandidateTimeList)
+	return CandidateTimeList
+
+}

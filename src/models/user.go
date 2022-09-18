@@ -24,4 +24,13 @@ func GetUserIdFromUserName(UserName string) int {
 	return User.Id
 }
 
+func GetUserNameFromUserId(UserId int) string {
+	User := User{}
+	db.Table("users").
+		Select("users.user_name").
+		Where("users.id = ?", UserId).
+		Find(&User)
+	return User.UserName
+}
+
 
