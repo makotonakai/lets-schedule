@@ -6,11 +6,6 @@ export default {
     type: String,
     place: String,
     url: String
-  },
-  methods: {
-    getURL() {
-      return "/meeting/host/" + this.id + "/set-date-time"
-    }
   }
 };
 </script>
@@ -28,9 +23,7 @@ export default {
       </div>
     </div>
     <footer class="card-footer">
-     <a href="#" class="card-footer-item">iCal</a>
-      <a href="#" class="card-footer-item">Google Calendar</a>
-      <a href="#" class="card-footer-item">Outlook Calendar</a>
+      <a href="#" class="card-footer-item">編集</a>
     </footer>
   </div>
 </template>

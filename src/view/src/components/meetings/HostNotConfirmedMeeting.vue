@@ -28,8 +28,10 @@ export default {
         URL: {{ url }} <br>
       </div>
     </div>
-   <div class="card-footer-item">
+   <footer class="card-footer">
+     <footer class="card-footer-item">
       <a :href="getURL()">詳細</a>
-    </div>
+     </footer>
+   </footer>
   </div>
 </template>

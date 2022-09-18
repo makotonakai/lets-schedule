@@ -2,14 +2,14 @@
 import VueCookies from "vue-cookies";
 import axios from "axios";
 import DashboardHeader from "../../../components/header/DashboardHeader.vue";
-import DefaultMeeting from "../../../components/meetings/DefaultMeeting.vue";
+import GuestNotRespondedMeeting from "../../../components/meetings/GuestNotRespondedMeeting.vue";
 
 export default {
   // Properties returned from data() become reactive state
   // and will be exposed on `this`.
   components: {
     DashboardHeader,
-    DefaultMeeting
+    GuestNotRespondedMeeting
   },
 
   data() {
@@ -57,13 +57,13 @@ export default {
                   v-for="meeting in Meetings"
                   :key="meeting.id"
                 >
-                  <DefaultMeeting
+                  <GuestNotRespondedMeeting
                     :title="meeting.title"
                     :description="meeting.description"
                     :type="meeting.type"
                     :place="meeting.place"
                     :url="meeting.url"
-                  ></DefaultMeeting>
+                  ></GuestNotRespondedMeeting>
                   <br>
                 </li>
               </div>
