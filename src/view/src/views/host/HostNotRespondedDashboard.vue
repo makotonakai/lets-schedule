@@ -1,15 +1,15 @@
 <script>
 import VueCookies from "vue-cookies";
 import axios from "axios";
-import DashboardHeader from "../../../components/header/DashboardHeader.vue";
-import GuestConfirmedMeeting from "../../../components/meetings/GuestConfirmedMeeting.vue";
+import DashboardHeader from "../../components/header/DashboardHeader.vue";
+import HostNotRespondedMeeting from "../../components/meetings/host/HostNotRespondedMeeting.vue";
 
 export default {
   // Properties returned from data() become reactive state
   // and will be exposed on `this`.
   components: {
     DashboardHeader,
-    GuestConfirmedMeeting
+    HostNotRespondedMeeting
   },
 
   data() {
@@ -28,7 +28,7 @@ export default {
   methods: {
       async getMeetings() {
         await axios
-      .get(`http://localhost:1323/api/restricted/meetings/guest/confirmed/${this.UserId}`, {
+      .get(`http://localhost:1323/api/restricted/meetings/host/not-responded/${this.UserId}`, {
         headers: {
           Authorization: `Bearer ${this.Token}`,
         },
@@ -57,13 +57,13 @@ export default {
                   v-for="meeting in Meetings"
                   :key="meeting.id"
                 >
-                  <GuestConfirmedMeeting
+                  <HostNotRespondedMeeting
                     :title="meeting.title"
                     :description="meeting.description"
                     :type="meeting.type"
                     :place="meeting.place"
                     :url="meeting.url"
-                  ></GuestConfirmedMeeting>
+                  ></HostNotRespondedMeeting>
                   <br>
                 </li>
               </div>
