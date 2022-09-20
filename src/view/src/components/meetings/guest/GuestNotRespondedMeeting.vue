@@ -1,11 +1,17 @@
 <script>
 export default {
   props: {
+    id: Number,
     title: String,
     description: String,
     type: String,
     place: String,
     url: String
+  },
+  methods: {
+    getURL() {
+      return "/meeting/" + this.id + "/new"
+    }
   }
 };
 </script>
@@ -23,7 +29,7 @@ export default {
       </div>
     </div>
     <footer class="card-footer">
-      <a href="#" class="card-footer-item">候補時間入力</a>
+      <a :href="getURL()" class="card-footer-item">候補時間入力</a>
     </footer>
   </div>
 </template>
