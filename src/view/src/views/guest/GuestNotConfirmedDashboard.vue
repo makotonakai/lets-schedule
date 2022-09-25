@@ -58,6 +58,7 @@ export default {
                   :key="meeting.id"
                 >
                   <GuestNotConfirmedMeeting
+                    :id="meeting.id"
                     :title="meeting.title"
                     :description="meeting.description"
                     :type="meeting.type"

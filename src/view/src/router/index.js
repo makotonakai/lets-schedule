@@ -15,6 +15,7 @@ import SetDateTime from '../views/SetDateTime.vue'
 import Friend from '../views/Friend.vue'
 import NewCandidateTime from '../views/NewCandidateTime.vue'
 import EditMeeting from '../views/EditMeeting.vue'
+import EditCandidateTime from '../views/EditCandidateTime.vue'
 
 
 const router = createRouter({
@@ -123,9 +124,18 @@ const router = createRouter({
       }
     },
     {
-      path: '/meeting/host/:id/edit',
+      path: '/meeting/:id/host/edit',
       name: 'edit-meeting',
       component: EditMeeting,
+      props: true,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/meeting/:id/guest/edit',
+      name: 'edit-candidate-time',
+      component: EditCandidateTime,
       props: true,
       meta: {
         requiresAuth: true

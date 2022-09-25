@@ -10,7 +10,7 @@ export default {
   },
   methods: {
     getURL() {
-      return "/meeting/host/" + this.id + "/edit"
+      return "/meeting/" + this.id + "/host/edit"
     }
   }
 };
