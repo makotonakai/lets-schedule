@@ -46,6 +46,20 @@ func GetAllMeetings(c echo.Context) error {
 
 }
 
+func GetMeetingById(c echo.Context) error {
+
+	meeting := models.Meeting{}
+	id_str := c.Param("id")
+	id, err := strconv.Atoi(id_str)
+	if err != nil {
+		log.Fatal(err)
+	}
+	db.First(&meeting, id)
+
+	return c.JSON(http.StatusOK, meeting)
+
+}
+
 func GetConfirmedMeetingsForHost(c echo.Context) error {
 
 	user := models.User{}

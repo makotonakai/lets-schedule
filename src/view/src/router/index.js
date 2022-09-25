@@ -14,6 +14,7 @@ import GuestNotRespondedDashBoard from '../views/guest/GuestNotRespondedDashBoar
 import SetDateTime from '../views/SetDateTime.vue'
 import Friend from '../views/Friend.vue'
 import NewCandidateTime from '../views/NewCandidateTime.vue'
+import EditMeeting from '../views/EditMeeting.vue'
 
 
 const router = createRouter({
@@ -116,6 +117,15 @@ const router = createRouter({
       path: '/meeting/:id/new',
       name: 'new-candidate-time',
       component: NewCandidateTime,
+      props: true,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/meeting/host/:id/edit',
+      name: 'edit-meeting',
+      component: EditMeeting,
       props: true,
       meta: {
         requiresAuth: true

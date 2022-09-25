@@ -29,7 +29,7 @@ export default {
 
       async getMeetings() {
 
-        await axios.get(`http://localhost:1323/api/restricted/meetings/${this.UserId}`, {
+        await axios.get(`http://localhost:1323/api/restricted/meetings/user/${this.UserId}`, {
           headers: {
             Authorization: `Bearer ${this.Token}`,
           },
