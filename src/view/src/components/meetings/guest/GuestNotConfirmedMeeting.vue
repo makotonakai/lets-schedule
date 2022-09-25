@@ -23,7 +23,7 @@ export default {
       </div>
     </div>
     <footer class="card-footer">
-      <a href="#" class="card-footer-item">編集</a>
+      <a href="#" class="card-footer-item">候補時間編集</a>
     </footer>
   </div>
 </template>
