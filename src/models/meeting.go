@@ -22,6 +22,16 @@ type Meeting struct {
 
 var db = database.Connect()
 
+func GetMeetingFromId(Id int) Meeting {
+	meeting := Meeting{}
+	db.Table("meetings").
+		Select("meetings.*").
+		Where("meetings.id = ?", Id).
+		Find(&meeting)
+	return meeting
+
+}
+
 func GetMeetingsByUserId(UserId int) []Meeting {
 	meetings := []Meeting{}
 	db.Table("meetings").
