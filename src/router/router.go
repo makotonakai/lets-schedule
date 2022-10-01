@@ -41,9 +41,12 @@ func Initialize() *echo.Echo {
 	r.GET("/meetings/guest/not-confirmed/:user_id", controllers.GetNotConfirmedMeetingsForGuest)
 	r.GET("/meetings/guest/not-responded/:user_id", controllers.GetNotRespondedMeetingsForGuest)
 	r.POST("/meetings/new", controllers.CreateMeeting)
+	r.PUT("/meetings/:id", controllers.UpdateMeetingById)
 
+	r.GET("/candidate_times/user/:user_id/meeting/:meeting_id", controllers.GetCandidateTimeByUserIdAndMeetingId)
 	r.GET("/candidate_times/meeting/:meeting_id", controllers.GetCandidateTimeWithUserNameByMeetingId)
 	r.POST("/candidate_times/new", controllers.CreateCandidateTime)
+	r.PUT("/candidate_times/user/:user_id/meeting/:meeting_id", controllers.UpdateCandidateTimeByUserIdAndMeetingId)
 	
 
 	r.POST("/friends/new", controllers.CreateFriend)

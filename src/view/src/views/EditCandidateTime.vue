@@ -2,7 +2,7 @@
 import VueCookies from "vue-cookies";
 import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
-import {AddNewElement, DeleteLastElement, CreateDateTimeJSONList} from "../utils/CandidateTime"
+import {AddNewElement, DeleteLastElement, CreateCandidateTimeList, CreateDateTimeJSONList} from "../utils/CandidateTime"
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import axios from "axios";
@@ -21,8 +21,26 @@ export default {
       DateTimeJSONList:[],
     }
   },
-
+  mounted() {
+    this.LoadInfo();
+  },
   methods: {
+
+    async LoadInfo() {
+
+      await axios.get(`http://localhost:1323/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
+        headers: { 
+          Authorization: `Bearer ${this.Token}`
+        }
+      })
+      .then((response) => {
+        this.DatetimeList = CreateCandidateTimeList(response.data);
+        console.log(this.DatetimeList)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
 
     async Register() {
       await this.RegisterCandidateTime();
@@ -30,9 +48,12 @@ export default {
 
     async RegisterCandidateTime(){
 
-      this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId),
+      console.log(this.DatetimeList)
 
-      await axios.post("http://localhost:1323/api/restricted/candidate_times/new", this.DateTimeJSONList,{
+      this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
+      console.log(this.DateTimeJSONList)
+
+      await axios.put(`http://localhost:1323/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -55,8 +76,6 @@ export default {
 
   }
 }
-
-
 </script>
 <template>
   <div>
@@ -99,7 +118,7 @@ export default {
                   class="button is-light"
                   @click="Register"
                 >
-                  新規作成
+                  編集
                 </router-link>
               </p>
               <p class="control">

@@ -27,11 +27,10 @@ export default {
       Host:"",
       ParticipantList:[""],
       ParticipantJSONList:[],
-      MeetingId: null
+      MeetingId: this.$route.params['id']
     }
   },
   mounted() {
-      this.MeetingId = this.$route.params['id'];
       this.Loadinfo();
   },
 

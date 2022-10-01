@@ -13,6 +13,7 @@ export function ConvertDateTimeToISO(time){
   return `${isoString.slice(0, -1)}${offset > 0 ? '-' : '+'}${String(Math.floor(offsetAbs / 60)).padStart(2, '0')}:${String(offsetAbs % 60).padStart(2, '0')}`
 }
 
+
 export function ConvertDateTimeListToISO(DateTimeList) {
   for(let i = 0; i < DateTimeList.length; i++){
     DateTimeList[i][0] = ConvertDateTimeToISO(DateTimeList[i][0]);
@@ -57,6 +58,17 @@ export function CreateCandidateTimeDict(CandidateTimeJSONList){
     }
   }
   return CandidateTimeDict
+}
+
+export function CreateCandidateTimeList(responseData) {
+  let candidateTimeList = []
+  for(let i = 0; i < responseData.length; i++){
+    let startTime = new Date(responseData[i]["start_time"])
+    let endTime = new Date(responseData[i]["end_time"])
+    let candidateTime = [startTime, endTime]
+    candidateTimeList.push(candidateTime)
+  }
+  return candidateTimeList
 }
 
 export function ChangeCandidateTimeFormat(CandidateTime){

@@ -16,7 +16,6 @@ import (
 func CreateCandidateTime(c echo.Context) error {
 	
 	newCandidateTime := []models.CandidateTime{}
-	
 	err := c.Bind(&newCandidateTime)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
@@ -60,17 +59,53 @@ func GetCandidateTimeWithUserNameByMeetingId(c echo.Context) error {
 	return c.JSON(http.StatusOK, CandidateTimeWithUserNameList)
 }
 
-func UpdateCandidateTime(c echo.Context) error {
+func GetCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 
-	CandidateTime := models.CandidateTime{}
-
-	err := c.Bind(&CandidateTime)
+	UserIdString := c.Param("user_id")
+	UserId, err := strconv.Atoi(UserIdString)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	db.Save(&CandidateTime)
-	return c.JSON(http.StatusOK, CandidateTime)
+	MeetingIdString := c.Param("meeting_id")
+	MeetingId, err := strconv.Atoi(MeetingIdString)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	CandidateTimeList := []models.CandidateTime{}
+	CandidateTimeList = models.GetCandidateTimeByMeetingIdAndUserId(MeetingId, UserId)
+
+	return c.JSON(http.StatusOK, CandidateTimeList)
+
+}
+
+func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
+
+	UserIdString := c.Param("user_id")
+	UserId, err := strconv.Atoi(UserIdString)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	
+	MeetingIdString := c.Param("meeting_id")
+	MeetingId, err := strconv.Atoi(MeetingIdString)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	OldCandidateTimeList := []models.CandidateTime{}
+	OldCandidateTimeList = models.GetCandidateTimeByMeetingIdAndUserId(MeetingId, UserId)
+	db.Delete(OldCandidateTimeList)
+
+	NewCandidateTimeList := []models.CandidateTime{}
+	err = c.Bind(&NewCandidateTimeList)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	db.Create(&NewCandidateTimeList)
+	return c.JSON(http.StatusOK, NewCandidateTimeList)
 
 }
 

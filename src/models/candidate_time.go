@@ -24,3 +24,16 @@ func GetCandidateTimeByMeetingId(MeetingId int) []CandidateTime {
 	return CandidateTimeList
 
 }
+
+func GetCandidateTimeByMeetingIdAndUserId(MeetingId int, UserId int) []CandidateTime {
+
+	CandidateTimeList := []CandidateTime{}
+	db.Table("candidate_times").
+		Select("candidate_times.*").
+		Where("candidate_times.meeting_id = ?", MeetingId).
+		Where("candidate_times.user_id = ?", UserId).
+		Find(&CandidateTimeList)
+	return CandidateTimeList
+
+}
+
