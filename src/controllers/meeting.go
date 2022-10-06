@@ -174,17 +174,22 @@ func GetNotRespondedMeetingsForGuest(c echo.Context) error {
 
 }
 
-func UpdateMeeting(c echo.Context) error {
+func UpdateMeetingById(c echo.Context) error {
 
-	Meeting := models.Meeting{}
-
-	err := c.Bind(&Meeting)
+	paramId := c.Param("id")
+	id, err := strconv.Atoi(paramId)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	db.Save(&Meeting)
-	return c.JSON(http.StatusOK, Meeting)
+	oldMeeting := models.Meeting{}
+	db.First(&oldMeeting, id)
+
+	newMeeting := models.Meeting{}
+	err = c.Bind(&newMeeting)
+	db.Model(&oldMeeting).Updates(newMeeting)
+
+	return c.JSON(http.StatusOK, newMeeting)
 
 }
 

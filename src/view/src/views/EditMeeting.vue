@@ -2,7 +2,7 @@
 import VueCookies from "vue-cookies";
 import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
-import {AddNewElement, DeleteLastElement, CreateDateTimeJSONList} from "../utils/CandidateTime"
+import {AddNewElement, DeleteLastElement, CreateCandidateTimeList, CreateDateTimeJSONList} from "../utils/CandidateTime"
 import {CreateParticipantJSONList} from "../utils/Participant"
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
@@ -22,6 +22,7 @@ export default {
       Type: "",
       Place: "",
       Url: "",
+      Hour: "",
       DatetimeList:[""],
       DateTimeJSONList:[],
       Host:"",
@@ -32,6 +33,7 @@ export default {
   },
   mounted() {
       this.Loadinfo();
+      this.LoadCandidateTime();
   },
 
   methods: {
@@ -50,26 +52,44 @@ export default {
           this.Place = data["place"];
           this.Url = data["url"];
           this.Host = data["host"];
+          this.Hour = data["hour"]
+          this.DatetimeList = CreateCandidateTimeList(data);
         })
         .catch((err) => {
           console.log(err);
       });
     },
+    async LoadCandidateTime() {
+      await axios.get(`http://localhost:1323/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
+          headers: { 
+            Authorization: `Bearer ${this.Token}`
+          }
+        })
+        .then((response) => {
+          this.DatetimeList = CreateCandidateTimeList(response.data);
+          console.log(this.DatetimeList)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     async Register() {
       await this.RegisterBasicInfo();
       await this.RegisterCandidateTime();
-      await this.RegisterParticipants();
+      // await this.RegisterParticipants();
     },
 
     async RegisterBasicInfo(){
 
-      await axios.post("http://localhost:1323/api/restricted/meetings/new", {  
+      await axios.put(`http://localhost:1323/api/restricted/meetings/${this.MeetingId}`, {  
         title: this.Title,
         description: this.Description,
         type: this.Type,
         place: this.Place,
         url: this.Url,
-        is_confirmed: false
+        is_confirmed: false,
+        hour: parseInt(this.Hour)
       },
       {
         headers: { 
@@ -86,9 +106,12 @@ export default {
     },
     async RegisterCandidateTime(){
 
-      this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId),
+      console.log(this.DatetimeList)
 
-      await axios.post("http://localhost:1323/api/restricted/candidate_times/new", this.DateTimeJSONList,{
+      this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
+      console.log(this.DateTimeJSONList)
+
+      await axios.put(`http://localhost:1323/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -100,6 +123,7 @@ export default {
         console.log(err);
       });
     },
+
     async RegisterParticipants() {
 
       this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
@@ -169,6 +193,20 @@ export default {
                 />
               </div>
             </div>
+
+            <div class="field">
+              <label class="label">時間</label>
+              <div class="control has-icons-left has-icons-right">
+                <input
+                  class="input"
+                  type="number"
+                  placeholder="E.g. Alice"
+                  v-model="Hour"
+                />
+              </div>
+            </div>
+
+
 
             <div class="field">
               <label class="label">日時</label>
