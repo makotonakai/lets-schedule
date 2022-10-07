@@ -28,7 +28,6 @@ func GetMeetingById(Id int) Meeting {
 		Where("meetings.id = ?", Id).
 		Find(&meeting)
 	return meeting
-
 }
 
 func GetMeetingsByUserId(UserId int) []Meeting {

@@ -187,8 +187,8 @@ func UpdateMeetingById(c echo.Context) error {
 
 	newMeeting := models.Meeting{}
 	err = c.Bind(&newMeeting)
+	
 	db.Model(&oldMeeting).Updates(newMeeting)
-
 	return c.JSON(http.StatusOK, newMeeting)
 
 }

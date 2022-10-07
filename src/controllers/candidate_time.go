@@ -82,30 +82,27 @@ func GetCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 
 func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 
-	UserIdString := c.Param("user_id")
-	UserId, err := strconv.Atoi(UserIdString)
+	pui := c.Param("user_id")
+	ui, err := strconv.Atoi(pui)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	
-	MeetingIdString := c.Param("meeting_id")
-	MeetingId, err := strconv.Atoi(MeetingIdString)
+	pmi := c.Param("meeting_id")
+	mi, err := strconv.Atoi(pmi)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	OldCandidateTimeList := []models.CandidateTime{}
-	OldCandidateTimeList = models.GetCandidateTimeByMeetingIdAndUserId(MeetingId, UserId)
-	db.Delete(OldCandidateTimeList)
+	ctList := []models.CandidateTime{}
+	ctList = models.GetCandidateTimeByMeetingIdAndUserId(mi, ui)
 
-	NewCandidateTimeList := []models.CandidateTime{}
-	err = c.Bind(&NewCandidateTimeList)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
+	newCTList := []models.CandidateTime{}
+	err = c.Bind(&newCTList)
 
-	db.Create(&NewCandidateTimeList)
-	return c.JSON(http.StatusOK, NewCandidateTimeList)
+	db.Model(&ctList).Updates(newCTList)
+
+	return c.JSON(http.StatusNoContent, newCTList)
 
 }
 

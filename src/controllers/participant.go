@@ -3,6 +3,7 @@ package controllers
 import (
 
 	"time"
+	"strconv"
 	"net/http"
 	"github.com/labstack/echo/v4"
 
@@ -54,17 +55,18 @@ func GetAllParticipant(c echo.Context) error {
 
 }
 
-func GetParticipantById(c echo.Context) error {
+func GetParticipantByMeetingId(c echo.Context) error {
 
-	participant := models.Participant{}
-	err := c.Bind(&participant)
-
+	pmi := c.Param("meeting_id")
+	mi, err := strconv.Atoi(pmi)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	db.First(&participant)
-	return c.JSON(http.StatusOK, participant)
+	pl := models.GetParticipantListByMeetingId(mi)
+	pwl := models.GetParticipantWithUserNameList(pl)
+
+	return c.JSON(http.StatusOK, pwl)
 
 }
 

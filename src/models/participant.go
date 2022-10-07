@@ -13,3 +13,33 @@ type Participant struct {
 	CreatedAt time.Time `gorm:"autoCreateTime:int" json:"created_at"`	
 	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`	
 }
+
+func GetParticipantListByMeetingId(Id int) []Participant {
+	participantList := []Participant{}
+	db.Table("participants").
+		Select("participants.*").
+		Where("participants.meeting_id = ?", Id).
+		Find(&participantList)
+	return participantList
+}
+
+func GetParticipantWithUserName(p Participant) ParticipantWithUserName {
+	pw := ParticipantWithUserName{}
+	pw.UserName = GetUserNameFromUserId(p.UserId)
+	pw.MeetingId = p.MeetingId
+	pw.IsHost = p.IsHost
+	pw.HasResponded = p.HasResponded
+	return pw
+}
+
+func GetParticipantWithUserNameList(plist []Participant) []ParticipantWithUserName {
+	pwl := []ParticipantWithUserName{}
+	for _, p := range plist {
+		pw := GetParticipantWithUserName(p)
+		pwl = append(pwl, pw)
+	}
+	return pwl
+}
+
+
+
