@@ -3,7 +3,7 @@ import VueCookies from "vue-cookies";
 import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
 import {AddNewElement, DeleteLastElement, CreateCandidateTimeList, CreateDateTimeJSONList} from "../utils/CandidateTime"
-import {CreateParticipantJSONList, GetHost} from "../utils/Participant"
+import {CreateParticipantJSONList, GetHost, GetParticipantList} from "../utils/Participant"
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import axios from "axios";
@@ -81,9 +81,11 @@ export default {
           }
         })
         .then((response) => {
-          let participantList = response.data
-          this.Host = GetHost(participantList);
-          console.log(this.Host)
+          let allParticipantList = response.data
+          this.Host = GetHost(allParticipantList);
+          this.ParticipantList = GetParticipantList(allParticipantList);
+          console.log(this.Host);
+          console.log(this.ParticipantList);
         })
         .catch((err) => {
           console.log(err);

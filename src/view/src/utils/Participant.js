@@ -24,11 +24,23 @@ export function CreateParticipantJSONList(Host, ParticipantList, MeetingId) {
 
 }
 
-export function GetHost(ParticipantList) {
-  for (let i = 0; i < ParticipantList.length; i++) {
-    let participant = ParticipantList[i]
+export function GetHost(allParticipantList) {
+  for (let i = 0; i < allParticipantList.length; i++) {
+    let participant = allParticipantList[i]
     if(participant["is_host"]){
       return participant["user_name"]
     }
   }
+}
+
+export function GetParticipantList(allParticipantList) {
+  let participantList = []
+  for (let i = 0; i < allParticipantList.length; i++) {
+    let participant = allParticipantList[i]
+    if(participant["is_host"] == false){
+      let username = participant["user_name"]
+      participantList.push(username)
+    }
+  }
+  return participantList
 }
