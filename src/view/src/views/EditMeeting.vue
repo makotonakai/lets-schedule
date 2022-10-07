@@ -3,7 +3,7 @@ import VueCookies from "vue-cookies";
 import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
 import {AddNewElement, DeleteLastElement, CreateCandidateTimeList, CreateDateTimeJSONList} from "../utils/CandidateTime"
-import {CreateParticipantJSONList} from "../utils/Participant"
+import {CreateParticipantJSONList, GetHost} from "../utils/Participant"
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import axios from "axios";
@@ -33,7 +33,8 @@ export default {
   },
   mounted() {
       this.Loadinfo();
-      this.LoadCandidateTime();
+      // this.LoadCandidateTime();
+      this.LoadParticipant();
   },
 
   methods: {
@@ -73,13 +74,26 @@ export default {
           console.log(err);
         });
     },
-
+    async LoadParticipant() {
+      await axios.get(`http://localhost:1323/api/restricted/participants/${this.MeetingId}`, {
+          headers: { 
+            Authorization: `Bearer ${this.Token}`
+          }
+        })
+        .then((response) => {
+          let participantList = response.data
+          this.Host = GetHost(participantList);
+          console.log(this.Host)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     async Register() {
       await this.RegisterBasicInfo();
       await this.RegisterCandidateTime();
       // await this.RegisterParticipants();
     },
-
     async RegisterBasicInfo(){
 
       await axios.put(`http://localhost:1323/api/restricted/meetings/${this.MeetingId}`, {  
