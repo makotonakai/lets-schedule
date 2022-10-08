@@ -5,6 +5,7 @@ import (
 	"time"
 	"strconv"
 	"net/http"
+	"gorm.io/gorm/clause"
 	"github.com/labstack/echo/v4"
 
 	"github.com/MakotoNakai/lets-schedule/models"
@@ -86,17 +87,37 @@ func UpdateParticipantByUserIdAndMeetingId(c echo.Context) error {
 
 	oldParticipantList := models.GetParticipantListByMeetingId(mi)
 	newParticipantList := []models.Participant{}
-	for i, oldp := range oldParticipantList {
+
+	db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&models.Participant{})
+
+	tx := db.Begin()
+	shorterLength := models.Min(len(oldParticipantList), len(participantWithUserNameList))
+	for i := 0; i < shorterLength; i++ {
+		oldp := oldParticipantList[i]
 		pw := participantWithUserNameList[i]
 		newp := models.ConvertToParticipant(pw)
-		result := db.Model(&oldp).Updates(newp)
-		if result.Error != nil {
-			return c.JSON(http.StatusBadRequest, result.Error)
-		}
+		tx.Model(&oldp).Updates(newp)
 		newParticipantList = append(newParticipantList, oldp)
 	}
-	return c.JSON(http.StatusOK, newParticipantList)
 
+	if len(oldParticipantList) < len(participantWithUserNameList) {
+		for i := len(oldParticipantList); i < len(participantWithUserNameList); i++ {
+			pw := participantWithUserNameList[i]
+			newp := models.ConvertToParticipant(pw)
+			tx.Create(&newp)
+			newParticipantList = append(newParticipantList, newp)
+		}
+	}
+
+	if len(oldParticipantList) > len(participantWithUserNameList) {
+		for i := len(participantWithUserNameList); i < len(oldParticipantList); i++ {
+			oldp := oldParticipantList[i]
+			tx.Delete(&oldp)
+		}
+	}
+	tx.Commit()
+
+	return c.JSON(http.StatusOK, newParticipantList)
 }
 
 func DeleteParticipant(c echo.Context) error {
