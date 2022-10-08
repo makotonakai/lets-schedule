@@ -23,7 +23,27 @@ func GetParticipantListByMeetingId(Id int) []Participant {
 	return participantList
 }
 
-func GetParticipantWithUserName(p Participant) ParticipantWithUserName {
+func GetParticipantByUserIdAndMeetingId(userId int, meetingId int) Participant {
+	p := Participant{}
+	db.Table("participants").
+		Select("participants.*").
+		Where("participants.user_id = ?", userId).
+		Where("participants.meeting_id = ?", meetingId).
+		Find(&p)
+	return p
+
+}
+
+func ConvertToParticipant(pw ParticipantWithUserName) Participant {
+	p := Participant{}
+	p.UserId = GetUserIdFromUserName(pw.UserName)
+	p.MeetingId = pw.MeetingId
+	p.IsHost = pw.IsHost
+	p.HasResponded = pw.HasResponded
+	return p
+}
+
+func ConvertToParticipantWithUserName(p Participant) ParticipantWithUserName {
 	pw := ParticipantWithUserName{}
 	pw.UserName = GetUserNameFromUserId(p.UserId)
 	pw.MeetingId = p.MeetingId
@@ -32,13 +52,22 @@ func GetParticipantWithUserName(p Participant) ParticipantWithUserName {
 	return pw
 }
 
-func GetParticipantWithUserNameList(plist []Participant) []ParticipantWithUserName {
+func ConvertToParticipantWithUserNameList(plist []Participant) []ParticipantWithUserName {
 	pwl := []ParticipantWithUserName{}
 	for _, p := range plist {
-		pw := GetParticipantWithUserName(p)
+		pw := ConvertToParticipantWithUserName(p)
 		pwl = append(pwl, pw)
 	}
 	return pwl
+}
+
+func ConvertToParticipantList(pwl []ParticipantWithUserName) []Participant {
+	pl := []Participant{}
+	for _, pw := range pwl {
+		p := ConvertToParticipant(pw)
+		pl = append(pl, p)
+	}
+	return pl
 }
 
 

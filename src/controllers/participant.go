@@ -64,23 +64,38 @@ func GetParticipantByMeetingId(c echo.Context) error {
 	}
 
 	pl := models.GetParticipantListByMeetingId(mi)
-	pwl := models.GetParticipantWithUserNameList(pl)
+	pwl := models.ConvertToParticipantWithUserNameList(pl)
 
 	return c.JSON(http.StatusOK, pwl)
 
 }
 
-func UpdateParticipant(c echo.Context) error {
+func UpdateParticipantByUserIdAndMeetingId(c echo.Context) error {
 
-	participant := models.Participant{}
-
-	err := c.Bind(&participant)
+	pmi := c.Param("meeting_id")
+	mi, err := strconv.Atoi(pmi)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	db.Save(&participant)
-	return c.JSON(http.StatusOK, participant)
+	participantWithUserNameList := []models.ParticipantWithUserName{}
+	err = c.Bind(&participantWithUserNameList)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	oldParticipantList := models.GetParticipantListByMeetingId(mi)
+	newParticipantList := []models.Participant{}
+	for i, oldp := range oldParticipantList {
+		pw := participantWithUserNameList[i]
+		newp := models.ConvertToParticipant(pw)
+		result := db.Model(&oldp).Updates(newp)
+		if result.Error != nil {
+			return c.JSON(http.StatusBadRequest, result.Error)
+		}
+		newParticipantList = append(newParticipantList, oldp)
+	}
+	return c.JSON(http.StatusOK, newParticipantList)
 
 }
 
