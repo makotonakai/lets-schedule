@@ -114,10 +114,6 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 
 	db.Clauses(
 		clause.Locking{Strength: "UPDATE"},
-		// clause.OnConflict{
-		// 	Columns:   []clause.Column{{Name: "id"}},
-		// 	DoUpdates: clause.AssignmentColumns([]string{"start_time", "end_time"}),
-		// },
 	).Find(&models.CandidateTime{})
 
 	oldlen := len(oldCTList)
