@@ -3,8 +3,9 @@ package controllers
 import (
 
 	"log"
-	"net/http"
 	"strconv"
+	"net/http"
+	
 	"github.com/labstack/echo/v4"
 
 	"github.com/MakotoNakai/lets-schedule/models"
@@ -189,7 +190,7 @@ func UpdateMeetingById(c echo.Context) error {
 	err = c.Bind(&newMeeting)
 	
 	db.Model(&oldMeeting).Updates(newMeeting)
-	return c.JSON(http.StatusOK, newMeeting)
+	return c.JSON(http.StatusOK, oldMeeting)
 
 }
 

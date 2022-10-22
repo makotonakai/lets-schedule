@@ -28,12 +28,12 @@ export default {
       Host:"",
       ParticipantList:[""],
       ParticipantJSONList:[],
-      MeetingId: this.$route.params['id']
+      MeetingId: parseInt(this.$route.params['id'])
     }
   },
   mounted() {
       this.Loadinfo();
-      // this.LoadCandidateTime();
+      this.LoadCandidateTime();
       this.LoadParticipant();
   },
 
@@ -67,8 +67,8 @@ export default {
           }
         })
         .then((response) => {
+          console.log(response.data)
           this.DatetimeList = CreateCandidateTimeList(response.data);
-          console.log(this.DatetimeList)
         })
         .catch((err) => {
           console.log(err);
@@ -84,19 +84,17 @@ export default {
           let allParticipantList = response.data
           this.Host = GetHost(allParticipantList);
           this.ParticipantList = GetParticipantList(allParticipantList);
-          console.log(this.Host);
-          console.log(this.ParticipantList);
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    async Register() {
-      await this.RegisterBasicInfo();
-      await this.RegisterCandidateTime();
-      // await this.RegisterParticipants();
+    async Edit() {
+      await this.EditBasicInfo();
+      await this.EditCandidateTime();
+      await this.EditParticipants();
     },
-    async RegisterBasicInfo(){
+    async EditBasicInfo(){
 
       await axios.put(`http://localhost:1323/api/restricted/meetings/${this.MeetingId}`, {  
         title: this.Title,
@@ -113,19 +111,17 @@ export default {
         }
       })
       .then((response) => {
-        this.MeetingId = response.data["id"];
+        // this.MeetingId = response.data["id"];
         console.log(response.data)
         })
       .catch((err) => {
         console.log(err);
       });
     },
-    async RegisterCandidateTime(){
-
-      console.log(this.DatetimeList)
+    async EditCandidateTime(){
 
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
-      console.log(this.DateTimeJSONList)
+      console.log(`http://localhost:1323/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`)
 
       await axios.put(`http://localhost:1323/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
         headers: { 
@@ -140,11 +136,11 @@ export default {
       });
     },
 
-    async RegisterParticipants() {
+    async EditParticipants() {
 
       this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
 
-      await axios.post("http://localhost:1323/api/restricted/participants/new", this.ParticipantJSONList,{
+      await axios.put(`http://localhost:1323/api/restricted/participants/meeting/${this.MeetingId}`, this.ParticipantJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -327,9 +323,9 @@ export default {
                 <router-link
                   to="/meeting/dashboard"
                   class="button is-light"
-                  @click="Register"
+                  @click="Edit"
                 >
-                  新規作成
+                  編集
                 </router-link>
               </p>
               <p class="control">

@@ -91,7 +91,10 @@ func UpdateParticipantByUserIdAndMeetingId(c echo.Context) error {
 	db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&models.Participant{})
 
 	tx := db.Begin()
+
 	shorterLength := models.Min(len(oldParticipantList), len(participantWithUserNameList))
+
+	// レコードをUpdateする
 	for i := 0; i < shorterLength; i++ {
 		oldp := oldParticipantList[i]
 		pw := participantWithUserNameList[i]
@@ -100,6 +103,15 @@ func UpdateParticipantByUserIdAndMeetingId(c echo.Context) error {
 		newParticipantList = append(newParticipantList, oldp)
 	}
 
+	// 編集前のレコード数が多い場合は、余分なレコードを削除する
+	if len(oldParticipantList) > len(participantWithUserNameList) {
+		for i := len(participantWithUserNameList); i < len(oldParticipantList); i++ {
+			oldp := oldParticipantList[i]
+			tx.Delete(&oldp)
+		}
+	}
+	
+	// 編集後のレコード数が多い場合は、余ったレコードを新規作成する
 	if len(oldParticipantList) < len(participantWithUserNameList) {
 		for i := len(oldParticipantList); i < len(participantWithUserNameList); i++ {
 			pw := participantWithUserNameList[i]
@@ -108,13 +120,7 @@ func UpdateParticipantByUserIdAndMeetingId(c echo.Context) error {
 			newParticipantList = append(newParticipantList, newp)
 		}
 	}
-
-	if len(oldParticipantList) > len(participantWithUserNameList) {
-		for i := len(participantWithUserNameList); i < len(oldParticipantList); i++ {
-			oldp := oldParticipantList[i]
-			tx.Delete(&oldp)
-		}
-	}
+	
 	tx.Commit()
 
 	return c.JSON(http.StatusOK, newParticipantList)

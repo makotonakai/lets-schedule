@@ -1,11 +1,11 @@
 package controllers
 
 import (
-
+	"fmt"
 	"strconv"
 	"net/http"
+	"gorm.io/gorm/clause"
 	"github.com/labstack/echo/v4"
-
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
@@ -94,15 +94,59 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	ctList := []models.CandidateTime{}
-	ctList = models.GetCandidateTimeByMeetingIdAndUserId(mi, ui)
+	oldCTList := []models.CandidateTime{}
+	oldCTList = models.GetCandidateTimeByMeetingIdAndUserId(mi, ui)
 
 	newCTList := []models.CandidateTime{}
 	err = c.Bind(&newCTList)
 
-	db.Model(&ctList).Updates(newCTList)
+	ctList := []models.CandidateTime{}
 
-	return c.JSON(http.StatusNoContent, newCTList)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	fmt.Println("Old CTList")
+	fmt.Println(oldCTList)
+	fmt.Println("New CTList (before insert)")
+	fmt.Println(newCTList)
+
+
+	db.Clauses(
+		clause.Locking{Strength: "UPDATE"},
+		// clause.OnConflict{
+		// 	Columns:   []clause.Column{{Name: "id"}},
+		// 	DoUpdates: clause.AssignmentColumns([]string{"start_time", "end_time"}),
+		// },
+	).Find(&models.CandidateTime{})
+
+	oldlen := len(oldCTList)
+	newlen := len(newCTList)
+	minlen := models.Min(oldlen, newlen)
+
+	tx := db.Begin()
+
+	for i := 0; i < minlen; i++ {
+		oldct := oldCTList[i]
+		newct := newCTList[i]
+		tx.Model(&oldct).Updates(newct)
+		ctList = append(ctList, oldct)
+	}
+
+	if oldlen < newlen {
+		newct := newCTList[oldlen:newlen]
+		db.Create(&newct)
+	}
+
+	if len(oldCTList) > len(newCTList) {
+		for i := len(newCTList); i < len(oldCTList); i++ {
+			oldp := oldCTList[i]
+			tx.Delete(&oldp)
+		}
+	}
+
+	tx.Commit()
+	return c.JSON(http.StatusOK, ctList)
 
 }
 
