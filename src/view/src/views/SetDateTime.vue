@@ -17,6 +17,7 @@ export default {
   mounted() {
     this.MeetingId = this.$route.params['id'];
     this.getMeetings();
+    this.getAvailableTime();
       
   },
   data() {
@@ -41,6 +42,21 @@ export default {
       .then((response) => {
         this.CandidateTimeDict = CreateCandidateTimeDict(response.data);
         [this.StartTime, this.EndTime] = FindAvailableTime(this.CandidateTimeDict);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
+    async getAvailableTime() {
+        await axios
+      .get(`http://localhost:1323/api/restricted/candidate_times/available-time/${this.MeetingId}`, {
+        headers: {
+          Authorization: `Bearer ${this.Token}`,
+        },
+      })
+      .then((response) => {
+        this.StartTime = response.data["start_time"]
+        this.EndTime = response.data["end_time"]
       })
       .catch((err) => {
         console.log(err);
