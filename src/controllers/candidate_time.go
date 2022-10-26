@@ -160,3 +160,14 @@ func DeleteCandidateTime(c echo.Context) error {
 
 }
 
+func GetAvailableTimeByMeetingId(c echo.Context) error {
+
+	pmi := c.Param("meeting_id")
+	mi, err := strconv.Atoi(pmi)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	availableTimeList := models.GetAvailableTimeByMeetingId(mi)
+	return c.JSON(http.StatusOK, availableTimeList)
+}
+

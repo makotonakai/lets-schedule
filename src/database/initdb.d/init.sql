@@ -74,7 +74,7 @@ create table if not exists candidate_times (
 
 insert into candidate_times values (1, 1, 1, "2022-09-02 21:26:00", current_timestamp, current_timestamp, current_timestamp);
 insert into candidate_times values (2, 2, 1, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
-insert into candidate_times values (3, 1, 2, "2022-09-19 18:00:00", "2022-09-19 21:00:00", current_timestamp, current_timestamp);
+insert into candidate_times values (3, 1, 2, "2022-09-19 18:00:00", "2022-09-19 20:00:00", current_timestamp, current_timestamp);
 insert into candidate_times values (4, 2, 2, "2022-09-19 19:00:00", "2022-09-19 22:00:00", current_timestamp, current_timestamp);
 insert into candidate_times values (5, 1, 3, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
 insert into candidate_times values (6, 2, 3, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
@@ -82,6 +82,7 @@ insert into candidate_times values (7, 1, 4, current_timestamp, current_timestam
 insert into candidate_times values (8, 2, 4, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
 insert into candidate_times values (9, 1, 5, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
 insert into candidate_times values (10, 2, 5, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
+insert into candidate_times values (11, 1, 2, "2022-09-19 21:00:00", "2022-09-19 23:00:00", current_timestamp, current_timestamp);
 
 create table if not exists friends (
   `id` bigint(11) not null auto_increment,

@@ -37,3 +37,52 @@ func GetCandidateTimeByMeetingIdAndUserId(MeetingId int, UserId int) []Candidate
 
 }
 
+func GetAvailableTimeByMeetingId(MeetingId int) []CandidateTime {
+
+	candidateTimeList := []CandidateTime{}
+	db.Table("candidate_times").
+		Select("candidate_times.*").
+		Where("candidate_times.meeting_id = ?", MeetingId).
+		Find(&candidateTimeList)
+
+	availableTimeList := []CandidateTime{}
+
+	if len(candidateTimeList) == 2 {
+
+		time1 := candidateTimeList[0]
+		time2 := candidateTimeList[1]
+
+		availableTime := CandidateTime{}
+		availableTime.StartTime = max(time1.StartTime, time2.StartTime)
+		availableTime.EndTime = min(time1.EndTime, time2.EndTime)
+
+		availableTimeList = append(availableTimeList, availableTime)
+		return availableTimeList
+
+	}else{
+
+		return nil
+
+	}
+	
+}
+
+func min(Time1, Time2 time.Time) time.Time {
+	if Time1.Equal(Time2) {
+		return Time1
+	}else if Time1.Before(Time2) {
+		return Time1
+	}else{
+		return Time2
+	}
+}
+
+func max(Time1, Time2 time.Time) time.Time {
+	if Time1.Equal(Time2) {
+		return Time1
+	}else if Time1.Before(Time2) {
+		return Time2
+	}else{
+		return Time1
+	}
+}
