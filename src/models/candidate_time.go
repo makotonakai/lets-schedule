@@ -1,7 +1,9 @@
 package models
 
 import (
+	"sort"
 	"time"
+	"reflect"
 )
 
 type CandidateTime struct {
@@ -13,6 +15,7 @@ type CandidateTime struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
 
 func GetCandidateTimeByMeetingId(MeetingId int) []CandidateTime {
 
@@ -45,44 +48,86 @@ func GetAvailableTimeByMeetingId(MeetingId int) []CandidateTime {
 		Where("candidate_times.meeting_id = ?", MeetingId).
 		Find(&candidateTimeList)
 
+	userIdList := createUserIdList(candidateTimeList)
+	userIdNum := len(userIdList)
+
+	candidateTimeNum := len(candidateTimeList)
+	maxIndex := candidateTimeNum - userIdNum + 1
+
 	availableTimeList := []CandidateTime{}
 
-	if len(candidateTimeList) == 2 {
+	for index := 0; index < maxIndex; index++  {
 
-		time1 := candidateTimeList[0]
-		time2 := candidateTimeList[1]
+		_candidateTimeList := candidateTimeList[index:index+userIdNum]
+		_userIdList := createUserIdList(_candidateTimeList)
 
-		availableTime := CandidateTime{}
-		availableTime.StartTime = max(time1.StartTime, time2.StartTime)
-		availableTime.EndTime = min(time1.EndTime, time2.EndTime)
+		if isSameSlice(userIdList, _userIdList) {
 
-		availableTimeList = append(availableTimeList, availableTime)
-		return availableTimeList
+			sortByStartTime(_candidateTimeList)
+			startTime := getLatestStartTime(_candidateTimeList)
+			endTime := getEarliestEndTime(_candidateTimeList)
 
-	}else{
+			availableTime := CandidateTime{}
+			availableTime.StartTime = startTime
+			availableTime.EndTime = endTime
+			availableTimeList = append(availableTimeList, availableTime)
 
-		return nil
-
+		}
 	}
-	
+	return availableTimeList
 }
 
-func min(Time1, Time2 time.Time) time.Time {
-	if Time1.Equal(Time2) {
-		return Time1
-	}else if Time1.Before(Time2) {
-		return Time1
-	}else{
-		return Time2
+func include(numList []int, num int) bool {
+	for _, val := range numList {
+		if val == num {
+			return true
+		}
 	}
+	return false
 }
 
-func max(Time1, Time2 time.Time) time.Time {
-	if Time1.Equal(Time2) {
-		return Time1
-	}else if Time1.Before(Time2) {
-		return Time2
-	}else{
-		return Time1
+func getLatestStartTime(candidateTimeList []CandidateTime) time.Time {
+	latestStartTime := candidateTimeList[0].StartTime
+	for i := 1; i < len(candidateTimeList); i++ {
+		startTime := candidateTimeList[i].StartTime
+		if startTime.After(latestStartTime) {
+			latestStartTime = startTime
+		}
 	}
+	return latestStartTime
 }
+
+func getEarliestEndTime(candidateTimeList []CandidateTime) time.Time {
+	earliestEndTime := candidateTimeList[0].EndTime
+	for i := 1; i < len(candidateTimeList); i++ {
+		endTime := candidateTimeList[i].EndTime
+		if endTime.Before(earliestEndTime) {
+			earliestEndTime = endTime
+		}
+	}
+	return earliestEndTime
+}
+
+func createUserIdList(candidateTimeList []CandidateTime) []int {
+	userIdList := []int{}
+	for _, candidateTime := range candidateTimeList {
+		userId := candidateTime.UserId
+		if !include(userIdList, userId) {
+			userIdList = append(userIdList, userId)
+		}
+	}
+	return userIdList
+}
+
+func isSameSlice(slice1, slice2 []int) bool {
+	sort.Ints(slice1)
+	sort.Ints(slice2)
+	return reflect.DeepEqual(slice1, slice2)
+}
+
+func sortByStartTime (candidateTimeList []CandidateTime) {
+	sort.Slice(candidateTimeList[:], func(i, j int) bool {
+		return candidateTimeList[i].StartTime.Before(candidateTimeList[j].StartTime) 
+	})
+}
+

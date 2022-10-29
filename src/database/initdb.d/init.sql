@@ -10,9 +10,9 @@ create table if not exists users (
   primary key(id)
 );
 
-insert into users values (1, "makoto", "makoto@email.com", "password", 1, 1, current_timestamp, current_timestamp);
-insert into users values (2, "minoru", "minoru@email.com", "password", 1, 1, current_timestamp, current_timestamp);
-insert into users values (3, "user", "user@email.com", "password", 1, 1, current_timestamp, current_timestamp);
+insert into users values (1, "user1", "user1@email.com", "password", 1, 1, current_timestamp, current_timestamp);
+insert into users values (2, "user2", "user2@email.com", "password", 1, 1, current_timestamp, current_timestamp);
+insert into users values (3, "user3", "user3@email.com", "password", 1, 1, current_timestamp, current_timestamp);
 
 create table if not exists meetings (
   `id` bigint(11) not null auto_increment,
@@ -51,14 +51,15 @@ insert into participants values (1, 1, 1, 1, 1, current_timestamp, current_times
 insert into participants values (2, 2, 1, 0, 1, current_timestamp, current_timestamp);
 insert into participants values (3, 1, 2, 1, 1, current_timestamp, current_timestamp);
 insert into participants values (4, 2, 2, 0, 1, current_timestamp, current_timestamp);
-insert into participants values (5, 1, 3, 1, 1, current_timestamp, current_timestamp);
-insert into participants values (6, 2, 3, 0, 0, current_timestamp, current_timestamp);
-insert into participants values (7, 1, 4, 0, 1, current_timestamp, current_timestamp);
-insert into participants values (8, 2, 4, 1, 1, current_timestamp, current_timestamp);
-insert into participants values (9, 1, 5, 0, 1, current_timestamp, current_timestamp);
-insert into participants values (10, 2, 5, 1, 1, current_timestamp, current_timestamp);
-insert into participants values (11, 1, 6, 0, 0, current_timestamp, current_timestamp);
-insert into participants values (12, 2, 6, 1, 1, current_timestamp, current_timestamp);
+insert into participants values (5, 3, 2, 0, 1, current_timestamp, current_timestamp);
+insert into participants values (6, 1, 3, 1, 1, current_timestamp, current_timestamp);
+insert into participants values (7, 2, 3, 0, 0, current_timestamp, current_timestamp);
+insert into participants values (8, 1, 4, 0, 1, current_timestamp, current_timestamp);
+insert into participants values (9, 2, 4, 1, 1, current_timestamp, current_timestamp);
+insert into participants values (10, 1, 5, 0, 1, current_timestamp, current_timestamp);
+insert into participants values (11, 2, 5, 1, 1, current_timestamp, current_timestamp);
+insert into participants values (12, 1, 6, 0, 0, current_timestamp, current_timestamp);
+insert into participants values (13, 2, 6, 1, 1, current_timestamp, current_timestamp);
 
 
 create table if not exists candidate_times (
@@ -74,15 +75,16 @@ create table if not exists candidate_times (
 
 insert into candidate_times values (1, 1, 1, "2022-09-02 21:26:00", current_timestamp, current_timestamp, current_timestamp);
 insert into candidate_times values (2, 2, 1, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
-insert into candidate_times values (3, 1, 2, "2022-09-19 18:00:00", "2022-09-19 20:00:00", current_timestamp, current_timestamp);
-insert into candidate_times values (4, 2, 2, "2022-09-19 19:00:00", "2022-09-19 22:00:00", current_timestamp, current_timestamp);
-insert into candidate_times values (5, 1, 3, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
-insert into candidate_times values (6, 2, 3, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
-insert into candidate_times values (7, 1, 4, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
-insert into candidate_times values (8, 2, 4, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
-insert into candidate_times values (9, 1, 5, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
-insert into candidate_times values (10, 2, 5, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
-insert into candidate_times values (11, 1, 2, "2022-09-19 21:00:00", "2022-09-19 23:00:00", current_timestamp, current_timestamp);
+insert into candidate_times values (3, 1, 2, "2022-09-19 19:00:00", "2022-09-19 22:00:00", current_timestamp, current_timestamp);
+insert into candidate_times values (4, 2, 2, "2022-09-19 18:00:00", "2022-09-19 21:00:00", current_timestamp, current_timestamp);
+insert into candidate_times values (5, 3, 2, "2022-09-19 17:00:00", "2022-09-19 20:00:00", current_timestamp, current_timestamp);
+insert into candidate_times values (6, 1, 3, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
+insert into candidate_times values (7, 2, 3, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
+insert into candidate_times values (8, 1, 4, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
+insert into candidate_times values (9, 2, 4, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
+insert into candidate_times values (10, 1, 5, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
+insert into candidate_times values (11, 2, 5, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
+insert into candidate_times values (12, 1, 2, "2022-09-19 21:00:00", "2022-09-19 23:00:00", current_timestamp, current_timestamp);
 
 create table if not exists friends (
   `id` bigint(11) not null auto_increment,
