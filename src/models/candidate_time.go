@@ -47,6 +47,8 @@ func GetAvailableTimeByMeetingId(MeetingId int) []CandidateTime {
 		Select("candidate_times.*").
 		Where("candidate_times.meeting_id = ?", MeetingId).
 		Find(&candidateTimeList)
+		
+	sortByStartTime(candidateTimeList)
 
 	userIdList := createUserIdList(candidateTimeList)
 	userIdNum := len(userIdList)
@@ -63,7 +65,6 @@ func GetAvailableTimeByMeetingId(MeetingId int) []CandidateTime {
 
 		if isSameSlice(userIdList, _userIdList) {
 
-			sortByStartTime(_candidateTimeList)
 			startTime := getLatestStartTime(_candidateTimeList)
 			endTime := getEarliestEndTime(_candidateTimeList)
 
