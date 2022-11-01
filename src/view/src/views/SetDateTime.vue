@@ -4,7 +4,7 @@ import axios from "axios";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
 import CandidateTime from "../components/CandidateTime.vue";
 import AvailableTime from "../components/AvailableTime.vue";
-import {CreateCandidateTimeDict, FindAvailableTime} from "../utils/CandidateTime"
+import { CreateCandidateTimeDict, CreateAvailableTimeList} from "../utils/CandidateTime"
 
 export default {
   // Properties returned from data() become reactive state
@@ -27,8 +27,7 @@ export default {
       UserName: $cookies.get("user_name"),
       MeetingId: "",
       CandidateTimeDict: {},
-      StartTime: "",
-      EndTime: ""
+      AvailableTimeList: []
     }
   },
   methods: {
@@ -41,7 +40,6 @@ export default {
       })
       .then((response) => {
         this.CandidateTimeDict = CreateCandidateTimeDict(response.data);
-        [this.StartTime, this.EndTime] = FindAvailableTime(this.CandidateTimeDict);
       })
       .catch((err) => {
         console.log(err);
@@ -55,8 +53,8 @@ export default {
         },
       })
       .then((response) => {
-        this.StartTime = response.data["start_time"]
-        this.EndTime = response.data["end_time"]
+        console.log(response.data)
+        this.AvailableTimeList = CreateAvailableTimeList(response.data)
       })
       .catch((err) => {
         console.log(err);
@@ -79,21 +77,19 @@ export default {
                   <div class="box">
                     <b>参加者</b>
                     <li
-                    v-for="(value, key, index) in CandidateTimeDict"
-                    :key="index"
+                    v-for="(value, key) in CandidateTimeDict"
+                    :key="key"
                     >
                     <CandidateTime
                       :user_name="key"
-                      :start_time="value.start_time"
-                      :end_time="value.end_time"
+                      :time_period_list="value"
                     ></CandidateTime>
                     </li>
                     <br>
                     <b>ミーティング可能時間</b>
                     <AvailableTime
-                      :start_time="StartTime"
-                      :end_time="EndTime">
-                    </AvailableTime>
+                      :available_time_list="AvailableTimeList"
+                    ></AvailableTime>
                     <br>
                     <b>ミーティング時間</b>
                     <br>

@@ -1,8 +1,15 @@
 <script>
 export default {
   props: {
-    start_time: String,
-    end_time: String
+    available_time_list: Array
+  },
+  methods: {
+    getStartTime(time_period) {
+      return time_period["start_time"]
+    },
+    getEndTime(time_period) {
+      return time_period["end_time"]
+    },
   }
 };
 </script>
@@ -10,7 +17,9 @@ export default {
   <div class="card">
     <div class="card-content">
       <div class="meeting-description">
-        {{ start_time }} - {{ end_time }} <br>
+        <div v-for="(available_time, key) in available_time_list" :key="key">
+          {{ this.getStartTime(available_time) }} -  {{ this.getEndTime(available_time) }} 
+        </div>
       </div>
     </div>
   </div>

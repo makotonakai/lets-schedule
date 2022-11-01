@@ -54,7 +54,7 @@ export function CreateCandidateTimeDict(CandidateTimeJSONList){
     if (UserName in CandidateTimeDict) {
       CandidateTimeDict[UserName].push(CandidateTime)
     }else{
-      CandidateTimeDict[UserName] = CandidateTime
+      CandidateTimeDict[UserName] = [CandidateTime]
     }
   }
   return CandidateTimeDict
@@ -77,26 +77,12 @@ export function ChangeCandidateTimeFormat(CandidateTime){
   return Date + " " + Hour
 }
 
-export function FindAvailableTime(CandidateTimeDict){
-
-  let StartTime = null
-  let EndTime = null
-
-  let User1 = Object.keys(CandidateTimeDict)[0]
-  let User2 = Object.keys(CandidateTimeDict)[1]
-
-  let User1StartTime = new Date(CandidateTimeDict[User1]["start_time"])
-  let User1EndTime = new Date(CandidateTimeDict[User1]["end_time"])
-
-  let User2StartTime = new Date(CandidateTimeDict[User2]["start_time"])
-  let User2EndTime = new Date(CandidateTimeDict[User2]["end_time"])
-
-  if (User1StartTime <= User2EndTime && User2StartTime <= User1EndTime){
-    StartTime = GetStringFromDate(User2StartTime)
-    EndTime = GetStringFromDate(User1EndTime)
+export function CreateAvailableTimeList(responseData){
+  for(let i = 0; i < responseData.length; i++){
+    responseData[i]["start_time"] = ChangeCandidateTimeFormat(responseData[i]["start_time"])
+    responseData[i]["end_time"] = ChangeCandidateTimeFormat(responseData[i]["end_time"])
   }
-
-  return [StartTime, EndTime]
+  return responseData
 }
 
 //日付から文字列に変換する関数
