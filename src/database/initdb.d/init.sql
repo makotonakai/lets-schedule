@@ -31,7 +31,7 @@ create table if not exists meetings (
   primary key(id)
 );
 
-insert into meetings values (1, "第1回ミーティング", "アイデア出し", "物理開催", "会議室1", "なし", 1, 1, null, null, 1, current_timestamp, current_timestamp);
+insert into meetings values (1, "第1回ミーティング", "アイデア出し", "物理開催", "会議室1", "なし", 1, 1, "2022-09-19 19:00:00", "2022-09-19 22:00:00", 1, current_timestamp, current_timestamp);
 insert into meetings values (2, "第2回ミーティング", "要件定義", "オンライン開催", "なし", "http://meeting2-zoom.com", 1, 0, null, null, 1, current_timestamp, current_timestamp);
 insert into meetings values (3, "第3回ミーティング", "技術選定", "ハイブリッド開催", "会議室", "http://meeting3-zoom.com", 0, 0, null, null, 1, current_timestamp, current_timestamp);
 insert into meetings values (4, "第4回ミーティング", "DB設計", "ハイブリッド開催", "会議室", "http://meeting4-zoom.com", 1, 1, null, null, 1, current_timestamp, current_timestamp);
