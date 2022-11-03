@@ -14,6 +14,8 @@ type Meeting struct {
 	Url string `json:"url"`
 	AllParticipantsResponded bool `json:"all_participants_responded"`
 	IsConfirmed bool `json:"is_confirmed"`
+	StartTime time.Time `json:"start_time"`
+	EndTime time.Time `json:"end_time"`
 	Hour int `json:"hour"`
 	CreatedAt time.Time `gorm:"autoCreateTime:int" json:"created_at"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`
