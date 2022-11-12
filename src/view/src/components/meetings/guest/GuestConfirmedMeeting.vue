@@ -26,7 +26,7 @@ export default {
       return ics(this.event)
     },
     goToGoogleCalendar() {
-      return ics(this.event)
+      return google(this.event)
     }
   }
 };
