@@ -1,4 +1,6 @@
 <script>
+import { google, outlook, ics } from "calendar-link"
+
 export default {
   props: {
     title: String,
@@ -7,9 +9,27 @@ export default {
     place: String,
     url: String
   },
+  data() {
+    return {
+      event: {
+        title: this.title,
+        location: this.place,
+        description: this.description,
+        start: this.start_time,
+        end: this.end_time,
+        url: this.url
+      }
+    }
+  },
   methods: {
-    getURL() {
-      return "/meeting/host/" + this.id + "/set-date-time"
+    getICSFile() {
+      return ics(this.event)
+    },
+    goToGoogleCalendar() {
+      return google(this.event)
+    },
+    goToOutlookCalendar() {
+      return outlook(this.event)
     }
   }
 };
@@ -28,9 +48,9 @@ export default {
       </div>
     </div>
     <footer class="card-footer">
-     <a href="#" class="card-footer-item">iCal</a>
-      <a href="#" class="card-footer-item">Google Calendar</a>
-      <a href="#" class="card-footer-item">Outlook Calendar</a>
+      <a :href="this.getICSFile()" class="card-footer-item">iCal</a>
+      <a :href="this.goToGoogleCalendar()" class="card-footer-item">Google Calendar</a>
+      <a :href="this.goToOutlookCalendar()" class="card-footer-item">Outlook Calendar</a>
     </footer>
   </div>
 </template>
