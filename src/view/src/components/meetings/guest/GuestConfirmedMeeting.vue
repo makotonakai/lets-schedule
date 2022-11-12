@@ -24,12 +24,9 @@ export default {
   methods: {
     getICSFile() {
       return ics(this.event)
-    },
+    }
     goToGoogleCalendar() {
-      return google(this.event)
-    },
-    goToOutlookCalendar() {
-      return outlook(this.event)
+      return ics(this.event)
     }
   }
 };
@@ -50,7 +47,7 @@ export default {
     <footer class="card-footer">
       <a :href="this.getICSFile()" class="card-footer-item">iCal</a>
       <a :href="this.goToGoogleCalendar()" class="card-footer-item">Google Calendar</a>
-      <a :href="this.goToOutlookCalendar()" class="card-footer-item">Outlook Calendar</a>
+      <a href="" class="card-footer-item">Outlook Calendar</a>
     </footer>
   </div>
 </template>
