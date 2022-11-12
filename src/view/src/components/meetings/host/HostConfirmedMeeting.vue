@@ -47,8 +47,6 @@ export default {
         形式: {{ type }} <br>
         開催場所: {{ place }} <br>
         URL: {{ url }} <br>
-        開始時間 {{ start_time }}<br>
-        終了時間 {{ end_time }}<br>
       </div>
     </div>
     <footer class="card-footer">
