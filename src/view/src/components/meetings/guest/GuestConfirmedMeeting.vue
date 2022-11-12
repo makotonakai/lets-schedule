@@ -7,7 +7,9 @@ export default {
     description: String,
     type: String,
     place: String,
-    url: String
+    url: String,
+    start_time: String,
+    end_time: String
   },
   data() {
     return {

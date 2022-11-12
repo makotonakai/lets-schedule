@@ -63,6 +63,8 @@ export default {
                     :type="meeting.type"
                     :place="meeting.place"
                     :url="meeting.url"
+                    :start_time="meeting.start_time"
+                    :end_time="meeting.end_time"
                   ></GuestConfirmedMeeting>
                   <br>
                 </li>
