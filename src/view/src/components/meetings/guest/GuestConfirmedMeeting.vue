@@ -24,7 +24,7 @@ export default {
   methods: {
     getICSFile() {
       return ics(this.event)
-    }
+    },
     goToGoogleCalendar() {
       return ics(this.event)
     }
