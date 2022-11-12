@@ -1,4 +1,6 @@
 <script>
+import { google, outlook, office365, yahoo, ics } from "calendar-link"
+
 export default {
   props: {
     title: String,
@@ -9,20 +11,21 @@ export default {
     start_time: String,
     end_time: String
   },
-  data () {
+  data() {
     return {
-      startTimeForGoogleScholar: this.changeTimeForGoogleCalendar(this.start_time),
-      endTimeForGoogleScholar: this.changeTimeForGoogleCalendar(this.end_time)
+      event: {
+        title: this.title,
+        location: this.place,
+        description: this.description,
+        start: this.start_time,
+        end: this.end_time,
+        url: this.url
+      }
     }
   },
   methods: {
-    changeTimeForGoogleCalendar(fullTime){
-      let [year, month, dayTimeDifference] = fullTime.split("-")
-      let [day, timeDifference] = dayTimeDifference.split("T")
-      let [time, difference] = timeDifference.split("+")
-      let [hour, minute, second] = time.split(":")
-      let timeForGoogleCalendar = year + month + day + hour + minute + second
-      return timeForGoogleCalendar
+    getICSFile() {
+      return ics(this.event)
     }
   }
 };
@@ -43,8 +46,8 @@ export default {
       </div>
     </div>
     <footer class="card-footer">
-     <a href="#" class="card-footer-item">iCal</a>
-      <a href="http://www.google.com/calendar/event?action=TEMPLATE&" onclick="location.href=this.href+text='this.title'&detail='this.description'&location='this.place'&dates='startTimeForGoogleScholar'/'endTimeForGoogleScholar';return false;" target="_blank" class="card-footer-item">Google Calendar</a>
+     <a :href="this.getICSFile()" class="card-footer-item">iCal</a>
+      <a href="#" target="_blank" class="card-footer-item">Google Calendar</a>
       <a href="#" class="card-footer-item">Outlook Calendar</a>
     </footer>
   </div>
