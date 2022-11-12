@@ -1,5 +1,5 @@
 <script>
-import { google, outlook, office365, yahoo, ics } from "calendar-link"
+import { google, outlook, ics } from "calendar-link"
 
 export default {
   props: {
@@ -29,6 +29,9 @@ export default {
     },
     goToGoogleCalendar() {
       return google(this.event)
+    },
+    goToOutlookCalendar() {
+      return outlook(this.event)
     }
   }
 };
@@ -49,9 +52,9 @@ export default {
       </div>
     </div>
     <footer class="card-footer">
-     <a :href="this.getICSFile()" class="card-footer-item">iCal</a>
+      <a :href="this.getICSFile()" class="card-footer-item">iCal</a>
       <a :href="this.goToGoogleCalendar()" target="_blank" class="card-footer-item">Google Calendar</a>
-      <a href="#" class="card-footer-item">Outlook Calendar</a>
+      <a :href="this.goToOutlookCalendar()" class="card-footer-item">Outlook Calendar</a>
     </footer>
   </div>
 </template>
