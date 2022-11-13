@@ -23,6 +23,7 @@ func Initialize() *echo.Echo {
 	// versionを取得して埋め込みして、version非依存にする
 	api.GET("/", handlers.Accessible)
 	api.POST("/login", handlers.Login)
+	api.POST("/signup", controllers.CreateUser)
 
 	r := e.Group("/api/restricted")
 	config := middleware.JWTConfig{
