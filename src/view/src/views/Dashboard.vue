@@ -26,9 +26,7 @@ export default {
   },
 
   methods: {
-
       async getMeetings() {
-
         await axios.get(`http://localhost:1323/api/restricted/meetings/user/${this.UserId}`, {
           headers: {
             Authorization: `Bearer ${this.Token}`,
