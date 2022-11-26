@@ -2,6 +2,7 @@ package controllers
 
 import (
 
+	"strconv"
 	"net/http"
 	"github.com/labstack/echo/v4"
 
@@ -74,4 +75,27 @@ func DeleteUser(c echo.Context) error {
 
 	db.Delete(&user)
 	return c.JSON(http.StatusNoContent, user)
+}
+
+func ResetPassword(c echo.Context) error {
+
+	id_str := c.Param("id")
+	id, err := strconv.Atoi(id_str)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	np := models.NewPassword{}
+	err = c.Bind(&np)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	err = models.ResetPassword(id, np.NewPassword)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, np.NewPassword)
+
 }
