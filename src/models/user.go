@@ -15,6 +15,14 @@ type User struct {
 	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`	
 }
 
+type EmailAddress struct {
+	EmailAddress string `json:"email_address"`
+}
+
+type NewPassword struct {
+	NewPassword string `json:"new_password"`
+}
+
 func GetUserIdFromUserName(UserName string) int {
 	User := User{}
 	db.Table("users").
@@ -32,5 +40,20 @@ func GetUserNameFromUserId(UserId int) string {
 		Find(&User)
 	return User.UserName
 }
+
+func GetUserIdFromEmailAddress(EmailAddress string) int {
+	User := User{}
+	db.Table("users").
+		Select("users.id").
+		Where("users.email_address = ?", EmailAddress).
+		Find(&User)
+	return User.Id
+}
+
+func ResetPassword(Id int, NewPassword string) error {
+	err := db.Model(&User{}).Where("id = ?", Id).Update("password", NewPassword).Error
+	return err
+}
+
 
 
