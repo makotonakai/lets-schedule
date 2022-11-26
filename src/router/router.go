@@ -24,6 +24,8 @@ func Initialize() *echo.Echo {
 	api.GET("/", handlers.Accessible)
 	api.POST("/login", handlers.Login)
 	api.POST("/signup", controllers.CreateUser)
+	api.POST("/send-email", handlers.SendEmail)
+	api.POST("/user/:id/reset-password", controllers.ResetPassword)
 
 	r := e.Group("/api/restricted")
 	config := middleware.JWTConfig{
