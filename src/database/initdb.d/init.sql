@@ -10,7 +10,7 @@ create table if not exists users (
   primary key(id)
 );
 
-insert into users values (1, "user1", "user1@email.com", "password", 1, 1, current_timestamp, current_timestamp);
+insert into users values (1, "user", "user@email.com", "password", 1, 1, current_timestamp, current_timestamp);
 insert into users values (2, "user2", "user2@email.com", "password", 1, 1, current_timestamp, current_timestamp);
 insert into users values (3, "user3", "user3@email.com", "password", 1, 1, current_timestamp, current_timestamp);
 
