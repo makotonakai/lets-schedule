@@ -5,6 +5,8 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import DashBoard from '../views/Dashboard.vue'
 import NewMeeting from '../views/NewMeeting.vue'
+import SendEmail from '../views/SendEmail.vue'
+import ResetPassword from '../views/ResetPassword.vue'
 import HostConfirmedDashBoard from '../views/host/HostConfirmedDashBoard.vue'
 import HostNotConfirmedDashBoard from '../views/host/HostNotConfirmedDashBoard.vue'
 import HostNotRespondedDashBoard from '../views/host/HostNotRespondedDashBoard.vue'
@@ -40,6 +42,16 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/send-email',
+      name: 'send-email',
+      component: SendEmail
+    },
+    {
+      path: '/:id/reset-password',
+      name: 'reset-password',
+      component: ResetPassword
     },
     {
       path: '/meeting/dashboard',
