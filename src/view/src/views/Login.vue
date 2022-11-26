@@ -35,7 +35,7 @@ export default {
       });
     },
     setCredential(response) {
-      $cookies.set("token", response.data["token"]);
+      $cookies.set("token", response.data["token"], 0);
       $cookies.set("user_id", response.data["id"]);
       $cookies.set("user_name", response.data["user_name"]);
     },
@@ -92,6 +92,9 @@ export default {
                     Login
                   </button>
                 </div>
+                <router-link to="/send-email" class="button is-success">
+                    Forget your password?
+                </router-link>
               </form>
             </div>
           </div>
