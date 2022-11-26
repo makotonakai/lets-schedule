@@ -39,6 +39,13 @@ services:
     volumes:
       - ./phpmyadmin/sessions:/sessions
 
+  smtp:
+    image: mailhog/mailhog
+    container_name: smtp_server
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
   # api-server:
   #   image: api-server
   #   build:
