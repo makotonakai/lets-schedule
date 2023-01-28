@@ -58,7 +58,7 @@ export default {
             <div class="column is-5-tablet is-4-desktop is-3-widescreen">
               <form action="" class="box">
                 <div class="field">
-                  <label for="" class="label">UserName </label>
+                  <label for="" class="label">Username </label>
                   <div class="control has-icons-left">
                     <input
                       v-model="UserName"
@@ -88,7 +88,7 @@ export default {
                   </div>
                 </div>
                 <div class="field">
-                  <button @click="Login" class="button is-success">
+                  <button type="button" @click="Login" class="button is-success">
                     Login
                   </button>
                 </div>
