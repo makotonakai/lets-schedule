@@ -1,7 +1,6 @@
 package controllers
 
 import (
-
 	"strconv"
 	"net/http"
 	"github.com/labstack/echo/v4"
@@ -24,6 +23,11 @@ func CreateUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
+	n := models.AlreadyExist(newUser)
+	if n == true {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	
 	db.Create(&newUser)
 	return c.JSON(http.StatusCreated, newUser)
 	

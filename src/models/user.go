@@ -23,6 +23,18 @@ type NewPassword struct {
 	NewPassword string `json:"new_password"`
 }
 
+func AlreadyExist(u User) bool {
+	
+	err := db.First(&u, "user_name = ?", u.UserName).Error
+
+	if err != nil {
+		return false
+	}
+
+	return true
+
+}
+
 func GetUserIdFromUserName(UserName string) int {
 	User := User{}
 	db.Table("users").
