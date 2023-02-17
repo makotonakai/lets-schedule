@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"github.com/labstack/echo/v4"
 
+	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/models"
 	"github.com/MakotoNakai/lets-schedule/database"
 )
@@ -23,9 +24,16 @@ func CreateUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	n := models.AlreadyExist(newUser)
-	if n == true {
-		return c.JSON(http.StatusBadRequest, err.Error())
+	if models.IsEmailAddressEmpty(newUser) == true {
+		return c.JSON(http.StatusBadRequest, config.EmailAddressIsEmpty)
+	}
+
+	if models.IsUserNameEmpty(newUser) == true {
+		return c.JSON(http.StatusBadRequest, config.UserNameIsEmpty)
+	}
+
+	if models.AlreadyExists(newUser) == true {
+		return c.JSON(http.StatusBadRequest, config.UserAlreadyExists)
 	}
 	
 	db.Create(&newUser)

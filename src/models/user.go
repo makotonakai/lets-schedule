@@ -1,7 +1,9 @@
 package models
 
 import (
+	// "fmt"
 	"time"
+	"github.com/MakotoNakai/lets-schedule/database"
 )
 
 type User struct {	
@@ -23,16 +25,30 @@ type NewPassword struct {
 	NewPassword string `json:"new_password"`
 }
 
-func AlreadyExist(u User) bool {
-	
-	err := db.First(&u, "user_name = ?", u.UserName).Error
+var db = database.Connect()
 
-	if err != nil {
+func IsEmailAddressEmpty(u User) bool {
+	return u.EmailAddress == ""
+}
+
+func IsUserNameEmpty(u User) bool {
+	return u.UserName == ""
+}
+
+
+func AlreadyExists(u User) bool {
+
+	var sameEmailAddress User
+	var sameUserName User
+
+	db.Table("users").Select("*").Where("users.email_address = ?", u.EmailAddress).Find(&sameEmailAddress)
+	db.Table("users").Select("*").Where("users.email_address = ?", u.UserName).Find(&sameUserName)
+
+	// If the user with either the given email addresss or the given username exists, returns true
+	if sameEmailAddress.Id == 0 && sameUserName.Id == 0 {
 		return false
 	}
-
 	return true
-
 }
 
 func GetUserIdFromUserName(UserName string) int {

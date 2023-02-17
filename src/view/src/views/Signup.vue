@@ -1,5 +1,6 @@
 <script>
 import SignupHeader from "../components/header/SignupHeader.vue";
+import { BadRequestStatus } from "../utils/StatusCode.js";
 import axios from "axios";
 
 export default {
@@ -13,6 +14,7 @@ export default {
       EmailAddress: "",
       UserName: "",
       Password: "",
+      ErrorMessage: ""
     }
   },
 
@@ -27,20 +29,24 @@ export default {
         email_address: this.EmailAddress,
         user_name: this.UserName,
         password: this.Password,
-        is_admin:false,
-        can_login:true
-      },
-      this.goToLoginPage()
-      )
+        is_admin: false,
+        can_login: true
+      })
+      
       .then((response) => {
         console.log(response.data);
-      },)
-      .catch((err) => {
-        console.log(err);
-      });
+      })
+      .catch((error) => {
+        if (error.response.status == BadRequestStatus) {
+          this.ErrorMessage = "There is something wrong in your input";
+        };
+      })
     },
-    goToLoginPage() {
+    GoToLoginPage() {
       this.$router.push("/login");
+    },
+    GoToSignUpPage() {
+      this.$router.push("/signup");
     }
   }
 }
@@ -101,9 +107,12 @@ export default {
                       <i class="fa fa-lock"></i>
                     </span>
                   </div>
+                  <p class="help is-danger">
+                    {{ ErrorMessage }}
+                  </p>
                 </div>
                 <div class="field">
-                  <button @click="SignUp" class="button is-success">Sign up</button>
+                  <button type="button" @click="SignUp()" class="button is-success">Sign up</button>
                 </div>
               </form>
             </div>
