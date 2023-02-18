@@ -13,6 +13,7 @@ export default {
     return {
       UserName: "",
       Password: "",
+      ErrorMessage: ""
     }
   },
 
@@ -27,11 +28,13 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.setCredential(response);
-        },
-        this.goToDashboard()
-        )
-      .catch((err) => {
-        console.log(err);
+        this.goToDashboard();
+        }
+      )
+      .catch((error) => {
+        if (error.response.status == 401) {
+          this.ErrorMessage = "Login failed";
+        };
       });
     },
     setCredential(response) {
@@ -86,6 +89,9 @@ export default {
                       <i class="fas fa-lock"></i>
                     </span>
                   </div>
+                  <p class="help is-danger">
+                    {{ ErrorMessage }}
+                  </p>
                 </div>
                 <div class="field">
                   <button type="button" @click="Login" class="button is-success">
