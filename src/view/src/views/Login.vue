@@ -24,7 +24,7 @@ export default {
     async Login(){
       await axios.post("http://localhost:1323/api/login", {
         user_name: this.UserName,
-        Password: this.Password,
+        password: this.Password,
       })
       .then((response) => {
         console.log(response.data);
