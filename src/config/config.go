@@ -6,4 +6,5 @@ var (
 	PasswordIsEmpty = "Password is empty"
 	UserAlreadyExists = "The given user already exists"
 	LoginFailed = "Login failed"
+	AvailableTimeNotFound = "Available time is not found"
 )
