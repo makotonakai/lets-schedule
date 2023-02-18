@@ -77,5 +77,21 @@ func Min(a, b int) int {
 	return b
 }
 
+func HostIsInParticipant(plist []Participant) bool {
+
+	host := Participant{}
+	for _, p := range plist {
+		if p.IsHost == true {
+			host = p
+		}
+		if host.Id == p.Id {
+			return true
+		}
+	}
+
+	return false
+
+}
+
 
 
