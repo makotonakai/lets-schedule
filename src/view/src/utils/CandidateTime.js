@@ -7,6 +7,11 @@ export function DeleteLastElement(list){
 }
 
 export function ConvertDateTimeToISO(time){
+
+  // 時間が入力されていなければスルーする (エラー処理は全て任せる)
+  if (time == "") {
+    return ""
+  }
   let offset = time.getTimezoneOffset()
   let offsetAbs = Math.abs(offset)
   let isoString = new Date(time.getTime() - offset * 60 * 1000).toISOString()
