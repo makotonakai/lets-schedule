@@ -22,6 +22,7 @@ export default {
       Type: "",
       Place: "なし",
       Url: "なし",
+      Hour: "",
       DatetimeList:[""],
       DateTimeJSONList:[],
       Host:"",
@@ -146,6 +147,19 @@ export default {
                 />
               </div>
             </div>
+
+            <div class="field">
+              <label class="label">時間</label>
+              <div class="control">
+                <textarea
+                  class="input"
+                  type="text"
+                  placeholder="E.g. 1"
+                  v-model="Hour"
+                ></textarea>
+              </div>
+            </div>
+
 
             <div class="field">
               <label class="label">日時</label>
