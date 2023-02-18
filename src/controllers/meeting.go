@@ -23,6 +23,22 @@ func CreateMeeting(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
+	if models.IsTitleBlank(newMeeting) == true{
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	if models.IsOnsiteButNoPlaceSpecified(newMeeting) == true {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	if models.IsOnlineButNoURLSpecified(newMeeting) {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	if models.IsHybridButNeitherPlaceOrURLSpecified(newMeeting) {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
 	db.Create(&newMeeting)
 	return c.JSON(http.StatusCreated, newMeeting)
 	

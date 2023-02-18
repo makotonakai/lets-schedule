@@ -2,7 +2,6 @@ package models
 
 import (
 	"time"
-	"github.com/MakotoNakai/lets-schedule/database"
 )
 
 type Meeting struct {
@@ -21,7 +20,21 @@ type Meeting struct {
 	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`
 }
 
-var db = database.Connect()
+func IsTitleBlank(m Meeting) bool {
+	return m.Title == ""
+}
+
+func IsOnsiteButNoPlaceSpecified(m Meeting) bool {
+	return m.Type == "物理開催" && m.Place == "なし"
+}
+
+func IsOnlineButNoURLSpecified(m Meeting) bool {
+	return m.Type == "オンライン開催" && m.Url == "なし"
+}
+
+func IsHybridButNeitherPlaceOrURLSpecified(m Meeting) bool {
+	return m.Type == "ハイブリッド開催" && m.Place == "なし" && m.Url == "なし"
+}
 
 func GetMeetingById(Id int) Meeting {
 	meeting := Meeting{}
@@ -114,4 +127,5 @@ func GetNotRespondedMeetingsForGuestByUserId(UserId int) []Meeting {
 		Find(&meetings)
 	return meetings
 }
+
 
