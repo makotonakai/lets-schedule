@@ -5,6 +5,7 @@ import DashboardHeader from "../components/header/DashboardHeader.vue";
 import CandidateTime from "../components/CandidateTime.vue";
 import AvailableTime from "../components/AvailableTime.vue";
 import { CreateCandidateTimeDict, CreateAvailableTimeList} from "../utils/CandidateTime"
+import { BadRequestStatus } from "../utils/StatusCode.js";
 
 export default {
   // Properties returned from data() become reactive state
@@ -27,7 +28,8 @@ export default {
       UserName: $cookies.get("user_name"),
       MeetingId: "",
       CandidateTimeDict: {},
-      AvailableTimeList: []
+      AvailableTimeList: [],
+      ErrorMessage: ""
     }
   },
   methods: {
@@ -57,6 +59,9 @@ export default {
         this.AvailableTimeList = CreateAvailableTimeList(response.data)
       })
       .catch((err) => {
+        if (err.response.status == BadRequestStatus) {
+          this.ErrorMessage = "No available time found";
+        };
         console.log(err);
       });
     }
@@ -87,6 +92,9 @@ export default {
                     </li>
                     <br>
                     <b>ミーティング可能時間</b>
+                      <p class="help is-danger">
+                        {{ ErrorMessage }}
+                      </p>
                     <AvailableTime
                       :available_time_list="AvailableTimeList"
                     ></AvailableTime>

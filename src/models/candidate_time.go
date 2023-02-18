@@ -126,9 +126,17 @@ func isSameSlice(slice1, slice2 []int) bool {
 	return reflect.DeepEqual(slice1, slice2)
 }
 
-func sortByStartTime (candidateTimeList []CandidateTime) {
+func sortByStartTime(candidateTimeList []CandidateTime) {
 	sort.Slice(candidateTimeList[:], func(i, j int) bool {
 		return candidateTimeList[i].StartTime.Before(candidateTimeList[j].StartTime) 
 	})
 }
 
+func overlapExist(candidateTimeList []CandidateTime) bool {
+	sortByStartTime(candidateTimeList)
+	return true
+}
+
+func NoAvailableTimeFound(candidateTimeList []CandidateTime) bool {
+	return len(candidateTimeList) == 0
+}
