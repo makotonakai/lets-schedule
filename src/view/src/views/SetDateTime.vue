@@ -60,7 +60,7 @@ export default {
       })
       .catch((err) => {
         if (err.response.status == BadRequestStatus) {
-          this.ErrorMessage = "No available time found";
+          this.ErrorMessage = err.response.data;
         };
         console.log(err);
       });
