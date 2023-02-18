@@ -1,6 +1,7 @@
 <script>
 import VueCookies from "vue-cookies";
 import axios from "axios";
+import { UnauthorizedStatus } from "../utils/StatusCode.js";
 import LoginHeader from "../components/header/LoginHeader.vue";
 
 export default {
@@ -32,7 +33,7 @@ export default {
         }
       )
       .catch((error) => {
-        if (error.response.status == 401) {
+        if (error.response.status == UnauthorizedStatus) {
           this.ErrorMessage = "Login failed";
         };
       });
