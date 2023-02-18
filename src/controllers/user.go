@@ -34,7 +34,7 @@ func CreateUser(c echo.Context) error {
 	}
 
 	if models.IsPasswordEmpty(newUser) == true {
-		errorMessageList = append(errorMessageList, config.UserNameIsEmpty)
+		errorMessageList = append(errorMessageList, config.PasswordIsEmpty)
 	}
 
 	if models.AlreadyExists(newUser) == true {
