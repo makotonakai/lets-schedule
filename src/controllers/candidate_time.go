@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"gorm.io/gorm/clause"
 	"github.com/labstack/echo/v4"
+	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
@@ -161,8 +162,8 @@ func GetAvailableTimeByMeetingId(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	availableTimeList := models.GetAvailableTimeByMeetingId(mi)
-	if models.NoAvailableTimeFound(availableTimeList) {
-		return c.JSON(http.StatusBadRequest, nil)
+	if models.AvailableTimeIsNotFound(availableTimeList) {
+		return c.JSON(http.StatusBadRequest, config.AvailableTimeNotFound)
 	}
 	return c.JSON(http.StatusOK, availableTimeList)
 }
