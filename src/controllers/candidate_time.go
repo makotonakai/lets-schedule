@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"strconv"
 	"net/http"
 	"gorm.io/gorm/clause"
@@ -105,12 +104,6 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-
-	fmt.Println("Old CTList")
-	fmt.Println(oldCTList)
-	fmt.Println("New CTList (before insert)")
-	fmt.Println(newCTList)
-
 
 	db.Clauses(
 		clause.Locking{Strength: "UPDATE"},
