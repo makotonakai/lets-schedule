@@ -137,6 +137,6 @@ func overlapExist(candidateTimeList []CandidateTime) bool {
 	return true
 }
 
-func NoAvailableTimeFound(candidateTimeList []CandidateTime) bool {
+func AvailableTimeIsNotFound(candidateTimeList []CandidateTime) bool {
 	return len(candidateTimeList) == 0
 }
