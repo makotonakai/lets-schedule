@@ -42,6 +42,10 @@ func CreateParticipant(c echo.Context) error {
 
 	}
 
+	if models.HostIsInParticipant(newParticipantList) == true {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
 	db.Create(&newParticipantList)
 	return c.JSON(http.StatusCreated, newParticipantList)
 
