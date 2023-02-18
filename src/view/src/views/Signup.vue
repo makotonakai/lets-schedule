@@ -1,7 +1,6 @@
 <script>
 import SignupHeader from "../components/header/SignupHeader.vue";
 import { BadRequestStatus } from "../utils/StatusCode.js";
-import { EmailAddressAndPasswordAreEmpty } from "../utils/ErrorMessage.js";
 import axios from "axios";
 
 export default {
