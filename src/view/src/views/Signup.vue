@@ -1,6 +1,7 @@
 <script>
 import SignupHeader from "../components/header/SignupHeader.vue";
 import { BadRequestStatus } from "../utils/StatusCode.js";
+import { EmailAddressAndPasswordAreEmpty } from "../utils/ErrorMessage.js";
 import axios from "axios";
 
 export default {
@@ -14,7 +15,7 @@ export default {
       EmailAddress: "",
       UserName: "",
       Password: "",
-      ErrorMessage: ""
+      ErrorMessageList: []
     }
   },
 
@@ -32,15 +33,18 @@ export default {
         is_admin: false,
         can_login: true
       })
-      
       .then((response) => {
         console.log(response.data);
       })
       .catch((error) => {
         if (error.response.status == BadRequestStatus) {
-          this.ErrorMessage = "There is something wrong in your input";
-        };
-      })
+          for(let x = 0; x < error.response.data.length; x++){
+              let errorMessage = error.response.data[x];
+              this.ErrorMessageList.push(errorMessage);
+            };
+          };
+        }
+      )
     },
     GoToLoginPage() {
       this.$router.push("/login");
@@ -108,7 +112,11 @@ export default {
                     </span>
                   </div>
                   <p class="help is-danger">
+                    <li
+                  v-for="ErrorMessage in ErrorMessageList"
+                  :key="ErrorMessage.id">
                     {{ ErrorMessage }}
+                    </li>
                   </p>
                 </div>
                 <div class="field">

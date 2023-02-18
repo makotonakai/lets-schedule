@@ -14,6 +14,7 @@ import (
 // Handlers
 //----------
 var db = database.Connect()
+var errorMessageList = []string{}
 
 func CreateUser(c echo.Context) error {
 	
@@ -25,15 +26,23 @@ func CreateUser(c echo.Context) error {
 	}
 
 	if models.IsEmailAddressEmpty(newUser) == true {
-		return c.JSON(http.StatusBadRequest, config.EmailAddressIsEmpty)
+		errorMessageList = append(errorMessageList, config.EmailAddressIsEmpty)
 	}
 
 	if models.IsUserNameEmpty(newUser) == true {
-		return c.JSON(http.StatusBadRequest, config.UserNameIsEmpty)
+		errorMessageList = append(errorMessageList, config.UserNameIsEmpty)
+	}
+
+	if models.IsPasswordEmpty(newUser) == true {
+		errorMessageList = append(errorMessageList, config.UserNameIsEmpty)
 	}
 
 	if models.AlreadyExists(newUser) == true {
-		return c.JSON(http.StatusBadRequest, config.UserAlreadyExists)
+		errorMessageList = append(errorMessageList, config.UserAlreadyExists)
+	}
+
+	if models.ErrorsExist(errorMessageList) {
+		return c.JSON(http.StatusBadRequest, errorMessageList)
 	}
 	
 	db.Create(&newUser)

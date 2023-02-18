@@ -35,6 +35,14 @@ func IsUserNameEmpty(u User) bool {
 	return u.UserName == ""
 }
 
+func IsPasswordEmpty(u User) bool {
+	return u.Password == ""
+}
+
+func ErrorsExist(errorMessageList []string) bool {
+	return len(errorMessageList) != 0
+}
+
 
 func AlreadyExists(u User) bool {
 
