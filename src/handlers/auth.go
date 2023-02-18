@@ -10,9 +10,12 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 
+	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/models"
 	"github.com/MakotoNakai/lets-schedule/database"
 )
+
+var errorMessageList = []string{}
 
 type JWTCustomClaims struct {
 	Id int `json:"uid"`
@@ -30,12 +33,24 @@ func Login(c echo.Context) error {
 		log.Fatal(err);
 	}
 
+	if models.IsUserNameEmpty(u) == true {
+		errorMessageList = append(errorMessageList, config.UserNameIsEmpty)
+	}
+
+	if models.IsPasswordEmpty(u) == true {
+		errorMessageList = append(errorMessageList, config.PasswordIsEmpty)
+	}
+
+	if models.ErrorsExist(errorMessageList) {
+		return c.JSON(http.StatusBadRequest, errorMessageList)
+	}
+
 	user := models.User{}
 	db.Where("user_name = ?", u.UserName).Find(&user)
 
 	// if user doesn't exist
 	if user.Id == 0 || u.Password != user.Password {
-		return c.JSON(http.StatusUnauthorized, user)
+		return c.JSON(http.StatusUnauthorized, config.LoginFailed)
 	}
 
 	claims := JWTCustomClaims{

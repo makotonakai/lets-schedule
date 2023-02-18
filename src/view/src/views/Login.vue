@@ -1,7 +1,7 @@
 <script>
 import VueCookies from "vue-cookies";
 import axios from "axios";
-import { UnauthorizedStatus } from "../utils/StatusCode.js";
+import { BadRequestStatus, UnauthorizedStatus } from "../utils/StatusCode.js";
 import LoginHeader from "../components/header/LoginHeader.vue";
 
 export default {
@@ -14,7 +14,7 @@ export default {
     return {
       UserName: "",
       Password: "",
-      ErrorMessage: ""
+      ErrorMessageList: []
     }
   },
 
@@ -33,8 +33,14 @@ export default {
         }
       )
       .catch((error) => {
-        if (error.response.status == UnauthorizedStatus) {
-          this.ErrorMessage = "Login failed";
+        if (error.response.status == BadRequestStatus) {
+          for(let x = 0; x < error.response.data.length; x++){
+              let errorMessage = error.response.data[x];
+              this.ErrorMessageList.push(errorMessage);
+            };
+          } else if (error.response.status == UnauthorizedStatus) {
+            let errorMessage = error.response.data;
+            this.ErrorMessageList.push(errorMessage);
         };
       });
     },
@@ -91,7 +97,11 @@ export default {
                     </span>
                   </div>
                   <p class="help is-danger">
+                    <li
+                  v-for="ErrorMessage in ErrorMessageList"
+                  :key="ErrorMessage.id">
                     {{ ErrorMessage }}
+                    </li>
                   </p>
                 </div>
                 <div class="field">
