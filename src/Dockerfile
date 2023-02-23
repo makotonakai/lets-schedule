@@ -1,8 +1,7 @@
 FROM golang:1.18
 
-COPY ./ /app
-
 WORKDIR /app
+COPY ./ /app
 RUN go install
 
 EXPOSE 1323
