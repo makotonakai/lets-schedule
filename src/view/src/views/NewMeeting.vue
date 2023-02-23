@@ -19,7 +19,7 @@ export default {
       UserId: parseInt($cookies.get("user_id")),
       Title: "",
       Description: "",
-      Type: "",
+      Type: "現地開催",
       Place: "なし",
       Url: "なし",
       Hour: "",
