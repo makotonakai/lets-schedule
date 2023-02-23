@@ -9,9 +9,10 @@ export function DeleteLastElement(list){
 export function ConvertDateTimeToISO(time){
 
   // 時間が入力されていなければスルーする (エラー処理は全て任せる)
-  if (time == "") {
+  if (IsNotDefined(time)) {
     return ""
   }
+
   let offset = time.getTimezoneOffset()
   let offsetAbs = Math.abs(offset)
   let isoString = new Date(time.getTime() - offset * 60 * 1000).toISOString()
@@ -20,6 +21,7 @@ export function ConvertDateTimeToISO(time){
 
 
 export function ConvertDateTimeListToISO(DateTimeList) {
+
   for(let i = 0; i < DateTimeList.length; i++){
     DateTimeList[i][0] = ConvertDateTimeToISO(DateTimeList[i][0]);
     DateTimeList[i][1] = ConvertDateTimeToISO(DateTimeList[i][1]);
@@ -111,3 +113,8 @@ function GetStringFromDate(date) {
   
   return format_str;
  };
+
+ 
+function IsNotDefined(time) {
+  return time == null
+}
