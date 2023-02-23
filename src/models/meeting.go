@@ -20,7 +20,7 @@ type Meeting struct {
 	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`
 }
 
-func IsTitleBlank(m Meeting) bool {
+func IsTitleEmpty(m Meeting) bool {
 	return m.Title == ""
 }
 
