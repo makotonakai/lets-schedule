@@ -7,4 +7,8 @@ var (
 	UserAlreadyExists = "The given user already exists"
 	LoginFailed = "Login failed"
 	AvailableTimeNotFound = "Available time is not found"
+	TitleIsEmpty = "Meeting title is empty"
+	PlaceIsNotSpecified = "Place is not specified"
+	URLIsNotSpecified = "URL is not specified"
+	NeitherPlaceOrURLIsSpecified = "Neither place or url is specified"
 )
