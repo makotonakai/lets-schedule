@@ -8,8 +8,8 @@ export function DeleteLastElement(list){
 
 export function ConvertDateTimeToISO(time){
 
-  // 時間が入力されていなければスルーする (エラー処理は全て任せる)
-  if (IsNotDefined(time)) {
+  // 時間が入力されければ空文字列を返す
+  if (IsDateTimeNotDefined(time)) {
     return ""
   }
 
@@ -21,6 +21,10 @@ export function ConvertDateTimeToISO(time){
 
 
 export function ConvertDateTimeListToISO(DateTimeList) {
+
+  if (IsDateTimeListNotDefined(DateTimeList)) {
+    return []
+  }
 
   for(let i = 0; i < DateTimeList.length; i++){
     DateTimeList[i][0] = ConvertDateTimeToISO(DateTimeList[i][0]);
@@ -115,6 +119,10 @@ function GetStringFromDate(date) {
  };
 
  
-function IsNotDefined(time) {
+function IsDateTimeNotDefined(time) {
   return time == null
+}
+
+function IsDateTimeListNotDefined(DateTimeList) {
+  return DateTimeList[0] == ""
 }
