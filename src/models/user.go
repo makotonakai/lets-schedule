@@ -25,8 +25,6 @@ type NewPassword struct {
 	NewPassword string `json:"new_password"`
 }
 
-var db = database.Connect()
-
 func IsEmailAddressEmpty(u User) bool {
 	return u.EmailAddress == ""
 }
