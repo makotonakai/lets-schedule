@@ -133,11 +133,6 @@ func SortByStartTime(candidateTimeList []CandidateTime) {
 	})
 }
 
-func OverlapExist(candidateTimeList []CandidateTime) bool {
-	SortByStartTime(candidateTimeList)
-	return true
-}
-
 func AvailableTimeIsNotFound(candidateTimeList []CandidateTime) bool {
 	return len(candidateTimeList) == 0
 }
