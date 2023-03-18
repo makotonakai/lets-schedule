@@ -7,7 +7,7 @@ import (
 	"net/http"
 	
 	"github.com/labstack/echo/v4"
-
+	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
@@ -23,20 +23,25 @@ func CreateMeeting(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	if models.IsTitleBlank(newMeeting) == true{
-		return c.JSON(http.StatusBadRequest, err.Error())
+	if models.IsTitleEmpty(newMeeting) {
+		errorMessageList = append(errorMessageList, config.TitleIsEmpty)
 	}
 
-	if models.IsOnsiteButNoPlaceSpecified(newMeeting) == true {
-		return c.JSON(http.StatusBadRequest, err.Error())
+	if models.IsOnsiteButNoPlaceSpecified(newMeeting) {
+		errorMessageList = append(errorMessageList, config.PlaceIsNotSpecified)
 	}
 
 	if models.IsOnlineButNoURLSpecified(newMeeting) {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		errorMessageList = append(errorMessageList, config.URLIsNotSpecified)
+		return c.JSON(http.StatusBadRequest, config.URLIsNotSpecified)
 	}
 
 	if models.IsHybridButNeitherPlaceOrURLSpecified(newMeeting) {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		errorMessageList = append(errorMessageList, config.NeitherPlaceOrURLIsSpecified)
+	}
+
+	if models.ErrorsExist(errorMessageList) {
+		return c.JSON(http.StatusBadRequest, errorMessageList)
 	}
 
 	db.Create(&newMeeting)
