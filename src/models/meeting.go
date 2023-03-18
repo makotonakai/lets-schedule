@@ -2,6 +2,7 @@ package models
 
 import (
 	"time"
+	"gorm.io/gorm"
 )
 
 type Meeting struct {
@@ -36,7 +37,7 @@ func IsHybridButNeitherPlaceOrURLSpecified(m Meeting) bool {
 	return m.Type == "ハイブリッド開催" && m.Place == "なし" && m.Url == "なし"
 }
 
-func GetMeetingById(Id int) Meeting {
+func GetMeetingById(db *gorm.DB, Id int) Meeting {
 	meeting := Meeting{}
 	db.Table("meetings").
 		Select("meetings.*").
@@ -45,7 +46,7 @@ func GetMeetingById(Id int) Meeting {
 	return meeting
 }
 
-func GetMeetingsByUserId(UserId int) []Meeting {
+func GetMeetingsByUserId(db *gorm.DB, UserId int) []Meeting {
 	meetings := []Meeting{}
 	db.Table("meetings").
 		Select("meetings.*").
@@ -56,7 +57,7 @@ func GetMeetingsByUserId(UserId int) []Meeting {
 	return meetings
 }
 
-func GetConfirmedMeetingsForHostByUserId(UserId int) []Meeting {
+func GetConfirmedMeetingsForHostByUserId(db *gorm.DB, UserId int) []Meeting {
 	meetings := []Meeting{}
 	db.Table("meetings").
 		Select("meetings.*").
@@ -68,7 +69,7 @@ func GetConfirmedMeetingsForHostByUserId(UserId int) []Meeting {
 	return meetings
 }
 
-func GetNotConfirmedMeetingsForHostByUserId(UserId int) []Meeting {
+func GetNotConfirmedMeetingsForHostByUserId(db *gorm.DB, UserId int) []Meeting {
 	meetings := []Meeting{}
 	db.Table("meetings").
 		Select("meetings.*").
@@ -80,7 +81,7 @@ func GetNotConfirmedMeetingsForHostByUserId(UserId int) []Meeting {
 	return meetings
 }
 
-func GetNotRespondedMeetingsForHostByUserId(UserId int) []Meeting {
+func GetNotRespondedMeetingsForHostByUserId(db *gorm.DB, UserId int) []Meeting {
 	meetings := []Meeting{}
 	db.Table("meetings").
 		Select("meetings.*").
@@ -92,7 +93,7 @@ func GetNotRespondedMeetingsForHostByUserId(UserId int) []Meeting {
 	return meetings
 }
 
-func GetConfirmedMeetingsForGuestByUserId(UserId int) []Meeting {
+func GetConfirmedMeetingsForGuestByUserId(db *gorm.DB, UserId int) []Meeting {
 	meetings := []Meeting{}
 	db.Table("meetings").
 		Select("meetings.*").
@@ -104,7 +105,7 @@ func GetConfirmedMeetingsForGuestByUserId(UserId int) []Meeting {
 	return meetings
 }
 
-func GetNotConfirmedMeetingsForGuestByUserId(UserId int) []Meeting {
+func GetNotConfirmedMeetingsForGuestByUserId(db *gorm.DB, UserId int) []Meeting {
 	meetings := []Meeting{}
 	db.Table("meetings").
 		Select("meetings.*").
@@ -116,7 +117,7 @@ func GetNotConfirmedMeetingsForGuestByUserId(UserId int) []Meeting {
 	return meetings
 }
 
-func GetNotRespondedMeetingsForGuestByUserId(UserId int) []Meeting {
+func GetNotRespondedMeetingsForGuestByUserId(db *gorm.DB, UserId int) []Meeting {
 	meetings := []Meeting{}
 	db.Table("meetings").
 		Select("meetings.*").

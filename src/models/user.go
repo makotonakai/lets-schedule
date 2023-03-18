@@ -1,9 +1,8 @@
 package models
 
 import (
-	// "fmt"
 	"time"
-	"github.com/MakotoNakai/lets-schedule/database"
+	"gorm.io/gorm"
 )
 
 type User struct {	
@@ -42,13 +41,13 @@ func ErrorsExist(errorMessageList []string) bool {
 }
 
 
-func AlreadyExists(u User) bool {
+func AlreadyExists(db *gorm.DB, u User) bool {
 
 	var sameEmailAddress User
 	var sameUserName User
 
 	db.Table("users").Select("*").Where("users.email_address = ?", u.EmailAddress).Find(&sameEmailAddress)
-	db.Table("users").Select("*").Where("users.email_address = ?", u.UserName).Find(&sameUserName)
+	db.Table("users").Select("*").Where("users.user_name = ?", u.UserName).Find(&sameUserName)
 
 	// If the user with either the given email addresss or the given username exists, returns true
 	if sameEmailAddress.Id == 0 && sameUserName.Id == 0 {
@@ -57,25 +56,25 @@ func AlreadyExists(u User) bool {
 	return true
 }
 
-func GetUserIdFromUserName(UserName string) int {
-	User := User{}
+func GetUserIdFromUserName(db *gorm.DB, UserName string) int {
+	user := User{}
 	db.Table("users").
 		Select("users.id").
 		Where("users.user_name = ?", UserName).
-		Find(&User)
-	return User.Id
+		Find(&user)
+	return user.Id
 }
 
-func GetUserNameFromUserId(UserId int) string {
-	User := User{}
+func GetUserNameFromUserId(db *gorm.DB, UserId int) string {
+	user := User{}
 	db.Table("users").
 		Select("users.user_name").
 		Where("users.id = ?", UserId).
-		Find(&User)
-	return User.UserName
+		Find(&user)
+	return user.UserName
 }
 
-func GetUserIdFromEmailAddress(EmailAddress string) int {
+func GetUserIdFromEmailAddress(db *gorm.DB, EmailAddress string) int {
 	User := User{}
 	db.Table("users").
 		Select("users.id").
@@ -84,7 +83,8 @@ func GetUserIdFromEmailAddress(EmailAddress string) int {
 	return User.Id
 }
 
-func ResetPassword(Id int, NewPassword string) error {
+func ResetPassword(db *gorm.DB, Id int, NewPassword string) error {
+
 	err := db.Model(&User{}).Where("id = ?", Id).Update("password", NewPassword).Error
 	return err
 }

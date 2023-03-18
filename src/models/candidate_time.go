@@ -4,6 +4,7 @@ import (
 	"sort"
 	"time"
 	"reflect"
+	"gorm.io/gorm"
 )
 
 type CandidateTime struct {
@@ -17,7 +18,7 @@ type CandidateTime struct {
 }
 
 
-func GetCandidateTimeByMeetingId(MeetingId int) []CandidateTime {
+func GetCandidateTimeByMeetingId(db *gorm.DB, MeetingId int) []CandidateTime {
 
 	CandidateTimeList := []CandidateTime{}
 	db.Table("candidate_times").
@@ -28,7 +29,7 @@ func GetCandidateTimeByMeetingId(MeetingId int) []CandidateTime {
 
 }
 
-func GetCandidateTimeByMeetingIdAndUserId(MeetingId int, UserId int) []CandidateTime {
+func GetCandidateTimeByMeetingIdAndUserId(db *gorm.DB, MeetingId int, UserId int) []CandidateTime {
 
 	CandidateTimeList := []CandidateTime{}
 	db.Table("candidate_times").
@@ -40,7 +41,7 @@ func GetCandidateTimeByMeetingIdAndUserId(MeetingId int, UserId int) []Candidate
 
 }
 
-func GetAvailableTimeByMeetingId(MeetingId int) []CandidateTime {
+func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) []CandidateTime {
 
 	candidateTimeList := []CandidateTime{}
 	db.Table("candidate_times").
@@ -48,9 +49,9 @@ func GetAvailableTimeByMeetingId(MeetingId int) []CandidateTime {
 		Where("candidate_times.meeting_id = ?", MeetingId).
 		Find(&candidateTimeList)
 		
-	sortByStartTime(candidateTimeList)
+	SortByStartTime(candidateTimeList)
 
-	userIdList := createUserIdList(candidateTimeList)
+	userIdList := CreateUserIdList(candidateTimeList)
 	userIdNum := len(userIdList)
 
 	candidateTimeNum := len(candidateTimeList)
@@ -61,12 +62,12 @@ func GetAvailableTimeByMeetingId(MeetingId int) []CandidateTime {
 	for index := 0; index < maxIndex; index++  {
 
 		_candidateTimeList := candidateTimeList[index:index+userIdNum]
-		_userIdList := createUserIdList(_candidateTimeList)
+		_userIdList := CreateUserIdList(_candidateTimeList)
 
-		if isSameSlice(userIdList, _userIdList) {
+		if IsSameSlice(userIdList, _userIdList) {
 
-			startTime := getLatestStartTime(_candidateTimeList)
-			endTime := getEarliestEndTime(_candidateTimeList)
+			startTime := GetLatestStartTime(_candidateTimeList)
+			endTime := GetEarliestEndTime(_candidateTimeList)
 
 			availableTime := CandidateTime{}
 			availableTime.StartTime = startTime
@@ -78,7 +79,7 @@ func GetAvailableTimeByMeetingId(MeetingId int) []CandidateTime {
 	return availableTimeList
 }
 
-func include(numList []int, num int) bool {
+func Include(numList []int, num int) bool {
 	for _, val := range numList {
 		if val == num {
 			return true
@@ -87,7 +88,7 @@ func include(numList []int, num int) bool {
 	return false
 }
 
-func getLatestStartTime(candidateTimeList []CandidateTime) time.Time {
+func GetLatestStartTime(candidateTimeList []CandidateTime) time.Time {
 	latestStartTime := candidateTimeList[0].StartTime
 	for i := 1; i < len(candidateTimeList); i++ {
 		startTime := candidateTimeList[i].StartTime
@@ -98,7 +99,7 @@ func getLatestStartTime(candidateTimeList []CandidateTime) time.Time {
 	return latestStartTime
 }
 
-func getEarliestEndTime(candidateTimeList []CandidateTime) time.Time {
+func GetEarliestEndTime(candidateTimeList []CandidateTime) time.Time {
 	earliestEndTime := candidateTimeList[0].EndTime
 	for i := 1; i < len(candidateTimeList); i++ {
 		endTime := candidateTimeList[i].EndTime
@@ -109,31 +110,31 @@ func getEarliestEndTime(candidateTimeList []CandidateTime) time.Time {
 	return earliestEndTime
 }
 
-func createUserIdList(candidateTimeList []CandidateTime) []int {
+func CreateUserIdList(candidateTimeList []CandidateTime) []int {
 	userIdList := []int{}
 	for _, candidateTime := range candidateTimeList {
 		userId := candidateTime.UserId
-		if !include(userIdList, userId) {
+		if !Include(userIdList, userId) {
 			userIdList = append(userIdList, userId)
 		}
 	}
 	return userIdList
 }
 
-func isSameSlice(slice1, slice2 []int) bool {
+func IsSameSlice(slice1, slice2 []int) bool {
 	sort.Ints(slice1)
 	sort.Ints(slice2)
 	return reflect.DeepEqual(slice1, slice2)
 }
 
-func sortByStartTime(candidateTimeList []CandidateTime) {
+func SortByStartTime(candidateTimeList []CandidateTime) {
 	sort.Slice(candidateTimeList[:], func(i, j int) bool {
 		return candidateTimeList[i].StartTime.Before(candidateTimeList[j].StartTime) 
 	})
 }
 
-func overlapExist(candidateTimeList []CandidateTime) bool {
-	sortByStartTime(candidateTimeList)
+func OverlapExist(candidateTimeList []CandidateTime) bool {
+	SortByStartTime(candidateTimeList)
 	return true
 }
 
