@@ -3,9 +3,9 @@ package database
 import (
 	"os"
 	"fmt"
-	"github.com/joho/godotenv"
-  "gorm.io/driver/mysql"
   "gorm.io/gorm"
+	"gorm.io/driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 func Connect() *gorm.DB {
