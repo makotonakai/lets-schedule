@@ -17,12 +17,12 @@ services:
       - ./database/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./database/initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - "3306:3306"
-    healthcheck:
-      test: mysqladmin ping -h localhost -u $$MYSQL_ROOT_USER --password=$$MYSQL_ROOT_PASSWORD
-      interval: 2s
-      timeout: 10s
-      retries: 5
+      - 3306:3306
+    # healthcheck:
+    #   test: mysqladmin ping -h localhost -u $$MYSQL_ROOT_USER --password=$$MYSQL_ROOT_PASSWORD
+    #   interval: 2s
+    #   timeout: 10s
+    #   retries: 5
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -35,7 +35,7 @@ services:
       - PMA_USER=root
       - PMA_PASSWORD=root
     ports:
-      - "8080:80"
+      - 8080:80
     volumes:
       - ./phpmyadmin/sessions:/sessions
 
@@ -43,23 +43,31 @@ services:
     image: mailhog/mailhog
     container_name: smtp_server
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - 1025:1025
+      - 8025:8025
 
-  # api-server:
-  #   image: api-server
+  # web-server:
+  #   image: web-server
   #   build:
   #     context: .
-  #     dockerfile: ./Dockerfile
-  #   container_name: api-server_container
-  #   depends_on:
-  #     mariadb:
-  #       condition: service_healthy
-  #   environment:
-  #     - DB_HOST=mariadb_container
-  #     - DB_USER=user
-  #     - DB_PASSWORD=password
-  #     - DB_PORT=3306
-  #     - DB_NAME=db
+  #     dockerfile: ./view/Dockerfile
+  #   container_name: web-server_container
   #   ports:
-  #     - "1323:1323"
+  #     - "3000:3000"
+
+  api-server:
+    image: api-server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: api-server_container
+    depends_on:
+      - mariadb
+    environment:
+      - DB_HOST=mariadb_container
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_PORT=3306
+      - DB_NAME=db
+    ports:
+      - 1323:1323
