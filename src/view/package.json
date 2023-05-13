@@ -9,7 +9,7 @@
   "dependencies": {
     "@johmun/vue-tags-input": "^2.1.0",
     "@vuepic/vue-datepicker": "^3.2.1",
-    "axios": "^0.27.2",
+    "axios": "^1.2.2",
     "bulma": "^0.9.4",
     "calendar-link": "^2.4.0",
     "jsonwebtoken": "^8.5.1",
