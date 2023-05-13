@@ -75,8 +75,8 @@ create table if not exists candidate_times (
   primary key(id)
 );
 
-insert into candidate_times values (1, 1, 1, "2022-09-02 21:26:00", current_timestamp, current_timestamp, current_timestamp);
-insert into candidate_times values (2, 2, 1, current_timestamp, current_timestamp, current_timestamp, current_timestamp);
+insert into candidate_times values (1, 1, 1, "2022-09-02 10:00:00", "2022-09-02 12:00:00", current_timestamp, current_timestamp);
+insert into candidate_times values (2, 2, 1, "2022-09-02 11:00:00", "2022-09-02 13:00:00", current_timestamp, current_timestamp);
 insert into candidate_times values (3, 1, 2, "2022-09-19 19:00:00", "2022-09-19 22:00:00", current_timestamp, current_timestamp);
 insert into candidate_times values (4, 2, 2, "2022-09-19 18:00:00", "2022-09-19 21:00:00", current_timestamp, current_timestamp);
 insert into candidate_times values (5, 3, 2, "2022-09-19 17:00:00", "2022-09-19 20:00:00", current_timestamp, current_timestamp);
