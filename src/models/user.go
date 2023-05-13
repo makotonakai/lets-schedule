@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+	"strings"
+	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
 )
 
@@ -24,16 +26,31 @@ type NewPassword struct {
 	NewPassword string `json:"new_password"`
 }
 
-func IsEmailAddressEmpty(u User) bool {
-	return u.EmailAddress == ""
+func IsEmailAddressEmptyOrNull(u User) bool {
+	if govalidator.IsNull(u.EmailAddress) {
+		return true
+	}else {
+		u.EmailAddress = strings.ReplaceAll(u.EmailAddress, " ", "")
+		return u.EmailAddress == ""
+	}
 }
 
-func IsUserNameEmpty(u User) bool {
-	return u.UserName == ""
+func IsUserNameEmptyOrNull(u User) bool {
+	if govalidator.IsNull(u.UserName) {
+		return true
+	}else {
+		u.EmailAddress = strings.ReplaceAll(u.UserName, " ", "")
+		return u.UserName == ""
+	}
 }
 
-func IsPasswordEmpty(u User) bool {
-	return u.Password == ""
+func IsPasswordEmptyOrNull(u User) bool {
+	if govalidator.IsNull(u.Password) {
+		return true
+	}else {
+		u.EmailAddress = strings.ReplaceAll(u.Password, " ", "")
+		return u.Password == ""
+	}
 }
 
 func ErrorsExist(errorMessageList []string) bool {
