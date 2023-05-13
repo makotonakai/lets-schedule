@@ -1,22 +1,24 @@
 package models_test
 
 import (
+	"io"
 	"os"
 	"fmt"
-	"log"
+	// "log"
 	"time"
 	"context"
 	"testing"
 	"path/filepath"
 
 	"gorm.io/gorm"
-	"gorm.io/driver/mysql"
+	// "gorm.io/driver/mysql"
 
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
 
-	"github.com/ory/dockertest/v3"
-	"github.com/ory/dockertest/v3/docker"
+	// "github.com/ory/dockertest/v3"
+	// "github.com/ory/dockertest/v3/docker"
 	"github.com/stretchr/testify/assert"
 	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/models"
@@ -69,86 +71,70 @@ func MariaDBExists() bool {
 
 func TestMain(m *testing.M) {
 	// uses a sensible default on windows (tcp/http) and linux/osx (socket)
-	endpoint := "unix:///Users/makotonakai/.docker/run/docker.sock"
-	pool, err := dockertest.NewPool(endpoint)
-	if err != nil {
-		log.Fatalf("Could not construct pool: %s", err)
-	}
+	// endpoint := "unix:///Users/makotonakai/.docker/run/docker.sock"
+	// pool, err := dockertest.NewPool(endpoint)
+	// if err != nil {
+	// 	log.Fatalf("Could not construct pool: %s", err)
+	// }
 
-	// uses pool to try to connect to Docker
-	err = pool.Client.Ping()
-	if err != nil {
-		log.Fatalf("Could not connect to Docker: %s", err)
-	}
-
-	pwd, err := os.Getwd()
-	if err != nil {
-    panic(err)
-	}
-	parent := filepath.Dir(pwd)
+	// // uses pool to try to connect to Docker
+	// err = pool.Client.Ping()
+	// if err != nil {
+	// 	log.Fatalf("Could not connect to Docker: %s", err)
+	// }
 
 	mariaDBExists := MariaDBExists()
 
 	// A new MariaDB container will be created if one is not found
 	if mariaDBExists == true {
-		continue 
 	} else {
-		runOptions := &dockertest.RunOptions{
-			Repository: "mariadb",
-			Tag: "10.2",
-			// latest だと本番とマッチしなくなる場合があるのでバージョン指定
-			// ポート番号は固定せずに 0 で listen する
+		ctx := context.Background()
+		cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+		if err != nil {
+			panic(err)
+		}
+		cli.NegotiateAPIVersion(ctx)
+
+		imageName := "mariadb:10.2"
+		out, err := cli.ImagePull(ctx, imageName, types.ImagePullOptions{})
+		if err != nil {
+			panic(err)
+		}
+		io.Copy(os.Stdout, out)
+
+		pwd, err := os.Getwd()
+		if err != nil {
+			panic(err)
+		}
+		parent := filepath.Dir(pwd)
+
+		resp, err := cli.ContainerCreate(ctx, &container.Config{
+			Image: "mariadb:10.2",
+			ExposedPorts: []string{
+				"3306",
+			},
 			Env: []string{
 				"MYSQL_ROOT_HOST=%",
 				"MYSQL_DATABASE=test",
 				"MYSQL_ROOT_PASSWORD=secret",
 			},
-			ExposedPorts: []string {
-				"3306",
-			},
-			PortBindings: map[docker.Port][]docker.PortBinding{
-				"3306/tcp": {{HostIP: "localhost", HostPort: "3306/tcp"}},
-			},
-			// ここでデータベースの初期化ファイルを渡す
-			Mounts: []string{
-				parent + "/db/init.sql:/docker-entrypoint-initdb.d/init.sql",
-			},
-		}
+			Volumes: map[string]{
+				parent + "/db/init.sql": "/docker-entrypoint-initdb.d/init.sql"
+			}
 
-		resource, err := pool.RunWithOptions(runOptions,
-			func(config *docker.HostConfig) {
-				// 処理が終了したらインスタンスを削除する
-				config.AutoRemove = true
-				config.RestartPolicy = docker.RestartPolicy{
-					Name: "no",
-				}
-			})
+
+		}, nil, nil, nil, "")
 		if err != nil {
-			log.Fatalf("Could not start resource: %s", err)
+			panic(err)
 		}
 
-	if err := pool.Retry(func() error {
-		var err error
-		dsn := fmt.Sprintf("root:secret@tcp(localhost:%s)/test?charset=utf8mb4&parseTime=True&loc=Local", resource.GetPort("3306/tcp"))
-		mockDB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-		if err != nil {
-			return err
+		if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
+			panic(err)
 		}
-		db, _ := mockDB.DB()
-		return db.Ping()
-	}); err != nil {
-		log.Fatalf("Could not connect to database: %s", err)
-	}
 
-	code := m.Run()
-
-	// You can't defer this because os.Exit doesn't care for defer
-	if err := pool.Purge(resource); err != nil {
-		log.Fatalf("Could not purge resource: %s", err)
-	}
-
-	os.Exit(code)
-
+			fmt.Println(resp.ID)
+		}
+		
 }
 
 func TestIsEmailAddressEmptySuccess(t *testing.T) {
