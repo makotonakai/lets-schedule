@@ -27,7 +27,7 @@ const (
 
 	image = "mariadb:10.2"
 	containerName = "testdb"
-	architecture = "amd4"
+	architecture = "linux/arm64/v8"
 )
 
 var mockDB *gorm.DB
@@ -143,9 +143,6 @@ func createDBContainer(ctx context.Context, cli *client.Client) container.Create
 	return resp
 }
 
-
-
-
 func TestMain(m *testing.M) {
 
 	ctx := context.Background()
@@ -166,8 +163,74 @@ func TestMain(m *testing.M) {
 		if err != nil {
 				panic(err)
 		}
+
+		// code := m.Run()
+
 	}
 		
+}
+
+func TestIsEmailValid(t *testing.T) {
+	emailAddress := "user@email.com"
+	result := models.IsEmailAddressValid(emailAddress)
+	expectedResult := true
+	assert.Equal(t, result, expectedResult)
+}
+
+func TestIsEmailInValidFirst(t *testing.T) {
+	emailAddress := "user"
+	result := models.IsEmailAddressValid(emailAddress)
+	expectedResult := false
+	assert.Equal(t, result, expectedResult)
+}
+
+func TestIsEmailInValidAt(t *testing.T) {
+	emailAddress := "@"
+	result := models.IsEmailAddressValid(emailAddress)
+	expectedResult := false
+	assert.Equal(t, result, expectedResult)
+}
+
+func TestIsEmailInValidFirstAt(t *testing.T) {
+	emailAddress := "user@"
+	result := models.IsEmailAddressValid(emailAddress)
+	expectedResult := false
+	assert.Equal(t, result, expectedResult)
+}
+
+func TestIsEmailInValidPeriodSecond(t *testing.T) {
+	emailAddress := "@email"
+	result := models.IsEmailAddressValid(emailAddress)
+	expectedResult := true
+	assert.Equal(t, result, expectedResult)
+}
+
+func TestIsEmailInValidFirstPeriod(t *testing.T) {
+	emailAddress := "email."
+	result := models.IsEmailAddressValid(emailAddress)
+	expectedResult := false
+	assert.Equal(t, result, expectedResult)
+}
+
+func TestIsEmailInValidPeriod(t *testing.T) {
+	emailAddress := "."
+	result := models.IsEmailAddressValid(emailAddress)
+	expectedResult := false
+	assert.Equal(t, result, expectedResult)
+}
+
+func TestIsEmailInValidDotCom(t *testing.T) {
+	emailAddress := ".com"
+	result := models.IsEmailAddressValid(emailAddress)
+	expectedResult := false
+	assert.Equal(t, result, expectedResult)
+}
+
+func TestIsEmailInValidEmpty(t *testing.T) {
+	emailAddress := ""
+	result := models.IsEmailAddressValid(emailAddress)
+	expectedResult := false
+	assert.Equal(t, result, expectedResult)
 }
 
 func TestIsEmailAddressEmptySuccess(t *testing.T) {
