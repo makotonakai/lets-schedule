@@ -7,22 +7,6 @@ import (
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
-var emptyMeeting = models.Meeting {
-	Id: 1, 
-	Title: "",
-	Description: "",
-	Type: "",
-	Place: "",
-	Url: "",
-	AllParticipantsResponded: true,
-	IsConfirmed: true,
-	StartTime: time.Now(),
-	EndTime: time.Now(),
-	Hour: 1, 
-	CreatedAt: time.Now(),
-	UpdatedAt: time.Now(),
-}
-
 var meeting = models.Meeting {
 	Id: 1, 
 	Title: "meeting",
@@ -40,6 +24,9 @@ var meeting = models.Meeting {
 }
 
 func TestIsTitleEmptySuccess(t *testing.T) {
+	emptyMeeting := models.Meeting {
+		Title: "",
+	}
 	result := models.IsTitleEmpty(emptyMeeting)
 	expectedResult := true
 	assert.Equal(t, result, expectedResult)
