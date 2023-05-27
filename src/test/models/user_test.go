@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"gorm.io/gorm"
-	// "gorm.io/driver/mysql"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/go-connections/nat"
@@ -17,8 +16,6 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/opencontainers/image-spec/specs-go/v1"
 
-	// "github.com/ory/dockertest/v3"
-	// "github.com/ory/dockertest/v3/docker"
 	"github.com/stretchr/testify/assert"
 	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/models"
