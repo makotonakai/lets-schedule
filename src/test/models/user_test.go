@@ -1,27 +1,36 @@
 package models_test
 
 import (
-	"io"
-	"os"
+
 	"fmt"
-	// "log"
 	"time"
+	"bytes"
 	"context"
 	"testing"
-	"path/filepath"
 
 	"gorm.io/gorm"
 	// "gorm.io/driver/mysql"
-
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/go-connections/nat"
+	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/api/types/container"
+	"github.com/opencontainers/image-spec/specs-go/v1"
 
 	// "github.com/ory/dockertest/v3"
 	// "github.com/ory/dockertest/v3/docker"
 	"github.com/stretchr/testify/assert"
 	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/models"
+)
+
+const (
+	host = "localhost"
+	port = "3306"
+
+	image = "mariadb:10.2"
+	containerName = "testdb"
+	architecture = "amd4"
 )
 
 var mockDB *gorm.DB
@@ -48,7 +57,9 @@ var user = models.User{
 	UpdatedAt: time.Now(),
 }
 
-func MariaDBExists() bool {
+
+
+func MariaDBDoesNotExist() bool {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
@@ -63,77 +74,102 @@ func MariaDBExists() bool {
 
 	for _, container := range containers {
 		if container.Image == "mariadb:10.2" {
-			return true
+			return false
 		}
 	}
-	return false
+	return true
 }
 
+func pullNewImage(ctx context.Context, cli *client.Client) (error) {
+
+	read, err := cli.ImagePull(ctx, image, types.ImagePullOptions{})
+	if err != nil {
+		fmt.Printf("Error: %s\n", err.Error())
+		return err
+	}
+
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(read)
+	imageRespBytes := buf.String()
+	imageRespString := string(imageRespBytes)
+	fmt.Printf("%s\n", imageRespString)
+
+	return nil
+}
+
+func createDBContainer(ctx context.Context, cli *client.Client) container.CreateResponse {
+
+	containerConfig := &container.Config{
+		Image:        image,
+		ExposedPorts: nat.PortSet{port: struct{}{}},
+		Env: []string{
+			"MYSQL_ROOT_HOST=%",
+			"MYSQL_ROOT_USER=root",
+			"MYSQL_ROOT_PASSWORD=root",
+			"MYSQL_USER=user",
+      "MYSQL_PASSWORD=password",
+			"MYSQL_DATABASE=test",
+		},
+	}
+
+	portBindings := map[nat.Port][]nat.PortBinding{nat.Port(port): {{HostIP: host, HostPort: port}}}
+	hostConfig := &container.HostConfig{
+		PortBindings: portBindings,
+		Mounts: []mount.Mount{
+			{
+				Type: mount.TypeBind,
+				Source: "/Users/makotonakai/golang-docker/database/data",
+				Target: "/var/lib/mariadb",
+			},
+			{
+				Type: mount.TypeBind,
+				Source: "/Users/makotonakai/golang-docker/database/my.cnf",
+				Target: "/etc/mysql/conf.d/my.cnf",
+			},
+			{
+				Type: mount.TypeBind,
+				Source: "/Users/makotonakai/golang-docker/database/initdb.d",
+				Target: "/docker-entrypoint-initdb.d",
+			},
+		},
+	}
+
+	platform := &v1.Platform{
+		Architecture: architecture,
+	}
+
+	resp, err := cli.ContainerCreate(ctx, containerConfig, hostConfig, nil, platform, containerName)
+	if err != nil {
+			panic(err)
+	}
+
+	return resp
+}
+
+
+
+
 func TestMain(m *testing.M) {
-	// uses a sensible default on windows (tcp/http) and linux/osx (socket)
-	// endpoint := "unix:///Users/makotonakai/.docker/run/docker.sock"
-	// pool, err := dockertest.NewPool(endpoint)
-	// if err != nil {
-	// 	log.Fatalf("Could not construct pool: %s", err)
-	// }
 
-	// // uses pool to try to connect to Docker
-	// err = pool.Client.Ping()
-	// if err != nil {
-	// 	log.Fatalf("Could not connect to Docker: %s", err)
-	// }
-
-	mariaDBExists := MariaDBExists()
-
-	// A new MariaDB container will be created if one is not found
-	if mariaDBExists == true {
-	} else {
-		ctx := context.Background()
-		cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-		if err != nil {
-			panic(err)
-		}
-		cli.NegotiateAPIVersion(ctx)
-
-		imageName := "mariadb:10.2"
-		out, err := cli.ImagePull(ctx, imageName, types.ImagePullOptions{})
-		if err != nil {
-			panic(err)
-		}
-		io.Copy(os.Stdout, out)
-
-		pwd, err := os.Getwd()
-		if err != nil {
-			panic(err)
-		}
-		parent := filepath.Dir(pwd)
-
-		resp, err := cli.ContainerCreate(ctx, &container.Config{
-			Image: "mariadb:10.2",
-			ExposedPorts: []string{
-				"3306",
-			},
-			Env: []string{
-				"MYSQL_ROOT_HOST=%",
-				"MYSQL_DATABASE=test",
-				"MYSQL_ROOT_PASSWORD=secret",
-			},
-			Volumes: map[string]{
-				parent + "/db/init.sql": "/docker-entrypoint-initdb.d/init.sql"
-			}
-
-
-		}, nil, nil, nil, "")
+	ctx := context.Background()
+	mariaDBDoesNotExist := MariaDBDoesNotExist()
+	if (mariaDBDoesNotExist) {
+		cli, err := client.NewClientWithOpts(client.FromEnv)
 		if err != nil {
 			panic(err)
 		}
 
-		if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
+		err = pullNewImage(ctx, cli)
+		if err != nil {
 			panic(err)
 		}
 
-			fmt.Println(resp.ID)
+		resp := createDBContainer(ctx, cli)
+		err = cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{})
+		if err != nil {
+				panic(err)
 		}
+	}
 		
 }
 
