@@ -2,6 +2,7 @@ package models
 
 import (
 	"time"
+	"regexp"
 	"strings"
 	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
@@ -24,6 +25,11 @@ type EmailAddress struct {
 
 type NewPassword struct {
 	NewPassword string `json:"new_password"`
+}
+
+func IsEmailAddressValid(e string) bool {
+	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$`)
+	return emailRegex.MatchString(e)
 }
 
 func IsEmailAddressEmptyOrNull(u User) bool {
