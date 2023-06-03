@@ -47,7 +47,7 @@ func GetCandidateTimeWithUserNameByMeetingId(c echo.Context) error {
 			CandidateTimeWithUserName := models.CandidateTimeWithUserName{}
 			UserId := CandidateTime.UserId
 
-			CandidateTimeWithUserName.UserName = models.GetUserNameFromUserId(UserId)
+			CandidateTimeWithUserName.UserName = models.GetUserNameFromUserId(db, UserId)
 			CandidateTimeWithUserName.MeetingId = CandidateTime.MeetingId
 			CandidateTimeWithUserName.StartTime = CandidateTime.StartTime
 			CandidateTimeWithUserName.EndTime = CandidateTime.EndTime
@@ -74,7 +74,7 @@ func GetCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 	}
 
 	CandidateTimeList := []models.CandidateTime{}
-	CandidateTimeList = models.GetCandidateTimeByMeetingIdAndUserId(MeetingId, UserId)
+	CandidateTimeList = models.GetCandidateTimeByMeetingIdAndUserId(db, MeetingId, UserId)
 
 	return c.JSON(http.StatusOK, CandidateTimeList)
 
@@ -95,7 +95,7 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 	}
 
 	oldCTList := []models.CandidateTime{}
-	oldCTList = models.GetCandidateTimeByMeetingIdAndUserId(mi, ui)
+	oldCTList = models.GetCandidateTimeByMeetingIdAndUserId(db, mi, ui)
 
 	newCTList := []models.CandidateTime{}
 	err = c.Bind(&newCTList)
@@ -161,7 +161,7 @@ func GetAvailableTimeByMeetingId(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	availableTimeList := models.GetAvailableTimeByMeetingId(mi)
+	availableTimeList := models.GetAvailableTimeByMeetingId(db, mi)
 	if models.AvailableTimeIsNotFound(availableTimeList) {
 		return c.JSON(http.StatusBadRequest, config.AvailableTimeNotFound)
 	}

@@ -37,7 +37,7 @@ func CreateUser(c echo.Context) error {
 		errorMessageList = append(errorMessageList, config.PasswordIsEmpty)
 	}
 
-	if models.AlreadyExists(newUser) == true {
+	if models.AlreadyExists(db, newUser) == true {
 		errorMessageList = append(errorMessageList, config.UserAlreadyExists)
 	}
 
@@ -112,7 +112,7 @@ func ResetPassword(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	err = models.ResetPassword(id, np.NewPassword)
+	err = models.ResetPassword(db, id, np.NewPassword)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}

@@ -29,7 +29,7 @@ func CreateParticipant(c echo.Context) error {
 
 		Participant := models.Participant{}
 		UserName := ParticipantWithUserName.UserName
-		Participant.UserId = models.GetUserIdFromUserName(UserName)
+		Participant.UserId = models.GetUserIdFromUserName(db, UserName)
 
 		Participant.MeetingId = ParticipantWithUserName.MeetingId
 		Participant.IsHost = ParticipantWithUserName.IsHost
@@ -68,8 +68,8 @@ func GetParticipantByMeetingId(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	pl := models.GetParticipantListByMeetingId(mi)
-	pwl := models.ConvertToParticipantWithUserNameList(pl)
+	pl := models.GetParticipantListByMeetingId(db, mi)
+	pwl := models.ConvertToParticipantWithUserNameList(db, pl)
 
 	return c.JSON(http.StatusOK, pwl)
 
@@ -89,7 +89,7 @@ func UpdateParticipantByUserIdAndMeetingId(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	oldParticipantList := models.GetParticipantListByMeetingId(mi)
+	oldParticipantList := models.GetParticipantListByMeetingId(db, mi)
 	newParticipantList := []models.Participant{}
 
 	db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&models.Participant{})
@@ -102,7 +102,7 @@ func UpdateParticipantByUserIdAndMeetingId(c echo.Context) error {
 	for i := 0; i < shorterLength; i++ {
 		oldp := oldParticipantList[i]
 		pw := participantWithUserNameList[i]
-		newp := models.ConvertToParticipant(pw)
+		newp := models.ConvertToParticipant(db, pw)
 		tx.Model(&oldp).Updates(newp)
 		newParticipantList = append(newParticipantList, oldp)
 	}
@@ -119,7 +119,7 @@ func UpdateParticipantByUserIdAndMeetingId(c echo.Context) error {
 	if len(oldParticipantList) < len(participantWithUserNameList) {
 		for i := len(oldParticipantList); i < len(participantWithUserNameList); i++ {
 			pw := participantWithUserNameList[i]
-			newp := models.ConvertToParticipant(pw)
+			newp := models.ConvertToParticipant(db, pw)
 			tx.Create(&newp)
 			newParticipantList = append(newParticipantList, newp)
 		}

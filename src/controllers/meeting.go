@@ -59,7 +59,7 @@ func GetAllMeetings(c echo.Context) error {
 	}
 	db.First(&user, id)
 
-	meetings := models.GetMeetingsByUserId(id)
+	meetings := models.GetMeetingsByUserId(db, id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -92,7 +92,7 @@ func GetConfirmedMeetingsForHost(c echo.Context) error {
 	}
 	db.First(&user, id)
 
-	confirmedMeetingsForHost := models.GetConfirmedMeetingsForHostByUserId(id)
+	confirmedMeetingsForHost := models.GetConfirmedMeetingsForHostByUserId(db, id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -111,7 +111,7 @@ func GetNotConfirmedMeetingsForHost(c echo.Context) error {
 	}
 	db.First(&user, id)
 
-	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForHostByUserId(id)
+	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForHostByUserId(db, id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -130,7 +130,7 @@ func GetNotRespondedMeetingsForHost(c echo.Context) error {
 	}
 	db.First(&user, id)
 
-	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForHostByUserId(id)
+	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForHostByUserId(db, id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -149,7 +149,7 @@ func GetConfirmedMeetingsForGuest(c echo.Context) error {
 	}
 	db.First(&user, id)
 
-	confirmedMeetingsForHost := models.GetConfirmedMeetingsForGuestByUserId(id)
+	confirmedMeetingsForHost := models.GetConfirmedMeetingsForGuestByUserId(db, id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -168,7 +168,7 @@ func GetNotConfirmedMeetingsForGuest(c echo.Context) error {
 	}
 	db.First(&user, id)
 
-	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForGuestByUserId(id)
+	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForGuestByUserId(db, id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -187,7 +187,7 @@ func GetNotRespondedMeetingsForGuest(c echo.Context) error {
 	}
 	db.First(&user, id)
 
-	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForGuestByUserId(id)
+	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForGuestByUserId(db, id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
