@@ -25,15 +25,15 @@ func CreateUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	if models.IsEmailAddressEmpty(newUser) == true {
+	if models.IsEmailAddressEmptyOrNull(newUser) == true {
 		errorMessageList = append(errorMessageList, config.EmailAddressIsEmpty)
 	}
 
-	if models.IsUserNameEmpty(newUser) == true {
+	if models.IsUserNameEmptyOrNull(newUser) == true {
 		errorMessageList = append(errorMessageList, config.UserNameIsEmpty)
 	}
 
-	if models.IsPasswordEmpty(newUser) == true {
+	if models.IsPasswordEmptyOrNull(newUser) == true {
 		errorMessageList = append(errorMessageList, config.PasswordIsEmpty)
 	}
 
