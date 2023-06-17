@@ -1,43 +1,41 @@
 package handlers
 
 import (
-
 	"log"
-	"time"
-	"strconv"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 
 	"github.com/MakotoNakai/lets-schedule/config"
-	"github.com/MakotoNakai/lets-schedule/models"
 	"github.com/MakotoNakai/lets-schedule/database"
+	"github.com/MakotoNakai/lets-schedule/models"
 )
 
 var errorMessageList = []string{}
+var db = database.Connect()
 
 type JWTCustomClaims struct {
-	Id int `json:"uid"`
+	Id       int    `json:"uid"`
 	UserName string `json:"name"`
 	jwt.StandardClaims
 }
 
 func Login(c echo.Context) error {
 
-	db := database.Connect()
-
 	u := models.User{}
 	err := c.Bind(&u)
 	if err != nil {
-		log.Fatal(err);
+		log.Fatal(err)
 	}
 
-	if models.IsUserNameEmpty(u) == true {
+	if models.IsEmailAddressEmptyOrNull(u) == true {
 		errorMessageList = append(errorMessageList, config.UserNameIsEmpty)
 	}
 
-	if models.IsPasswordEmpty(u) == true {
+	if models.IsPasswordEmptyOrNull(u) == true {
 		errorMessageList = append(errorMessageList, config.PasswordIsEmpty)
 	}
 
@@ -54,11 +52,11 @@ func Login(c echo.Context) error {
 	}
 
 	claims := JWTCustomClaims{
-		Id: user.Id,
+		Id:       user.Id,
 		UserName: user.UserName,
 		StandardClaims: jwt.StandardClaims{
-				ExpiresAt: time.Now().Add(time.Hour).Unix(),
-				Issuer: "test",
+			ExpiresAt: time.Now().Add(time.Hour).Unix(),
+			Issuer:    "test",
 		},
 	}
 
@@ -66,13 +64,13 @@ func Login(c echo.Context) error {
 	signingKey := []byte("secret")
 	t, err := token.SignedString(signingKey)
 	if err != nil {
-			return err
+		return err
 	}
 
 	return c.JSON(http.StatusOK, echo.Map{
-			"id": strconv.Itoa(user.Id),
-			"user_name": user.UserName,
-			"token": t,
+		"id":        strconv.Itoa(user.Id),
+		"user_name": user.UserName,
+		"token":     t,
 	})
 
 }
@@ -85,5 +83,5 @@ func Restricted(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(*JWTCustomClaims)
 	name := claims.UserName
-	return c.JSON(http.StatusOK, "Welcome " + name + "!")
+	return c.JSON(http.StatusOK, "Welcome "+name+"!")
 }
