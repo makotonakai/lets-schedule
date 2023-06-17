@@ -1,25 +1,26 @@
 package controllers
 
 import (
-	"strconv"
 	"net/http"
+	"strconv"
+
 	"github.com/labstack/echo/v4"
 
 	"github.com/MakotoNakai/lets-schedule/config"
-	"github.com/MakotoNakai/lets-schedule/models"
 	"github.com/MakotoNakai/lets-schedule/database"
+	"github.com/MakotoNakai/lets-schedule/models"
 )
 
-//----------
+// ----------
 // Handlers
-//----------
+// ----------
 var db = database.Connect()
 var errorMessageList = []string{}
 
 func CreateUser(c echo.Context) error {
-	
+
 	newUser := models.User{}
-	
+
 	err := c.Bind(&newUser)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
@@ -44,15 +45,15 @@ func CreateUser(c echo.Context) error {
 	if models.ErrorsExist(errorMessageList) {
 		return c.JSON(http.StatusBadRequest, errorMessageList)
 	}
-	
+
 	db.Create(&newUser)
 	return c.JSON(http.StatusCreated, newUser)
-	
+
 }
 
 func GetAllUser(c echo.Context) error {
 
-	userList:= []models.User{}
+	userList := []models.User{}
 
 	db.Find(&userList)
 	return c.JSON(http.StatusOK, userList)
@@ -88,7 +89,7 @@ func UpdateUser(c echo.Context) error {
 func DeleteUser(c echo.Context) error {
 
 	user := models.User{}
-	
+
 	err := c.Bind(&user)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
