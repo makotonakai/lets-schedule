@@ -4,16 +4,16 @@ import (
 	// "net/http"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	
-	"github.com/MakotoNakai/lets-schedule/handlers"
+
 	"github.com/MakotoNakai/lets-schedule/controllers"
+	"github.com/MakotoNakai/lets-schedule/handlers"
 )
 
 func Initialize() *echo.Echo {
 
 	e := echo.New()
 	e.Use(middleware.Logger())
-  e.Use(middleware.Recover())
+	e.Use(middleware.Recover())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
@@ -25,6 +25,7 @@ func Initialize() *echo.Echo {
 	api.POST("/login", handlers.Login)
 	api.POST("/signup", controllers.CreateUser)
 	api.POST("/send-email", handlers.SendEmail)
+
 	api.POST("/user/:id/reset-password", controllers.ResetPassword)
 
 	r := e.Group("/api/restricted")
@@ -52,14 +53,11 @@ func Initialize() *echo.Echo {
 	r.PUT("/candidate_times/user/:user_id/meeting/:meeting_id", controllers.UpdateCandidateTimeByUserIdAndMeetingId)
 	r.GET("/candidate_times/available-time/:meeting_id", controllers.GetAvailableTimeByMeetingId)
 
-	
-
 	r.POST("/friends/new", controllers.CreateFriend)
 
 	r.POST("/participants/new", controllers.CreateParticipant)
 	r.GET("/participants/:meeting_id", controllers.GetParticipantByMeetingId)
 	r.PUT("/participants/meeting/:meeting_id", controllers.UpdateParticipantByUserIdAndMeetingId)
-
 
 	return e
 

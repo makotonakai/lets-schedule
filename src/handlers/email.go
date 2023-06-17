@@ -3,12 +3,12 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+
 	"github.com/labstack/echo/v4"
-  gomail "gopkg.in/gomail.v2"
+	gomail "gopkg.in/gomail.v2"
 
 	"github.com/MakotoNakai/lets-schedule/models"
 )
-
 
 func SendEmail(c echo.Context) error {
 
@@ -19,7 +19,7 @@ func SendEmail(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	ui := models.GetUserIdFromEmailAddress(ea.EmailAddress)
+	ui := models.GetUserIdFromEmailAddress(db, ea.EmailAddress)
 
 	m := gomail.NewMessage()
 	m.SetHeader("From", "from@email.com")
@@ -28,7 +28,7 @@ func SendEmail(c echo.Context) error {
 	m.SetBody("text/plain", fmt.Sprintf("http://localhost:3000/%d/reset-password", ui))
 
 	d := gomail.Dialer{Host: "localhost", Port: 1025}
-	err = d.DialAndSend(m) 
+	err = d.DialAndSend(m)
 	if err != nil {
 		fmt.Println(err.Error())
 		return c.JSON(http.StatusBadRequest, "There is some problem with sending your email")
