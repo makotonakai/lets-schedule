@@ -25,7 +25,7 @@ export default {
       await this.CreateUser()
     },
     async CreateUser(){
-      await axios.post("http://localhost:1323/api/signup", {
+      await axios.post("http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/signup", {
         email_address: this.EmailAddress,
         user_name: this.UserName,
         password: this.Password,

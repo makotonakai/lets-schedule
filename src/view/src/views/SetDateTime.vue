@@ -35,7 +35,7 @@ export default {
   methods: {
     async getMeetings() {
         await axios
-      .get(`http://localhost:1323/api/restricted/candidate_times/meeting/${this.MeetingId}`, {
+      .get(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/restricted/candidate_times/meeting/${this.MeetingId}`, {
         headers: {
           Authorization: `Bearer ${this.Token}`,
         },
@@ -49,7 +49,7 @@ export default {
     },
     async getAvailableTime() {
         await axios
-      .get(`http://localhost:1323/api/restricted/candidate_times/available-time/${this.MeetingId}`, {
+      .get(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/restricted/candidate_times/available-time/${this.MeetingId}`, {
         headers: {
           Authorization: `Bearer ${this.Token}`,
         },

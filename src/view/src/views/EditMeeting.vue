@@ -39,7 +39,7 @@ export default {
 
   methods: {
     async Loadinfo() {
-      await axios.get(`http://localhost:1323/api/restricted/meetings/${this.MeetingId}`, {
+      await axios.get(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/restricted/meetings/${this.MeetingId}`, {
           headers: {
             Authorization: `Bearer ${this.Token}`,
           },
@@ -61,7 +61,7 @@ export default {
       });
     },
     async LoadCandidateTime() {
-      await axios.get(`http://localhost:1323/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
+      await axios.get(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
           headers: { 
             Authorization: `Bearer ${this.Token}`
           }
@@ -75,7 +75,7 @@ export default {
         });
     },
     async LoadParticipant() {
-      await axios.get(`http://localhost:1323/api/restricted/participants/${this.MeetingId}`, {
+      await axios.get(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/restricted/participants/${this.MeetingId}`, {
           headers: { 
             Authorization: `Bearer ${this.Token}`
           }
@@ -96,7 +96,7 @@ export default {
     },
     async EditBasicInfo(){
 
-      await axios.put(`http://localhost:1323/api/restricted/meetings/${this.MeetingId}`, {  
+      await axios.put(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/restricted/meetings/${this.MeetingId}`, {  
         title: this.Title,
         description: this.Description,
         type: this.Type,
@@ -121,9 +121,9 @@ export default {
     async EditCandidateTime(){
 
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
-      console.log(`http://localhost:1323/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`)
+      console.log(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`)
 
-      await axios.put(`http://localhost:1323/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
+      await axios.put(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -140,7 +140,7 @@ export default {
 
       this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
 
-      await axios.put(`http://localhost:1323/api/restricted/participants/meeting/${this.MeetingId}`, this.ParticipantJSONList,{
+      await axios.put(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/restricted/participants/meeting/${this.MeetingId}`, this.ParticipantJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }

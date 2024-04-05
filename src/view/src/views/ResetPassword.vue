@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     async ResetPassword(){
-      await axios.post(`http://localhost:1323/api/user/${this.$route.params.id}/reset-password`, {
+      await axios.post(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/user/${this.$route.params.id}/reset-password`, {
         new_password: this.NewPassword
       })
       .then((response) => {
