@@ -27,7 +27,6 @@ export default {
         password: this.Password,
       })
       .then((response) => {
-        console.log(response.data);
         this.setCredential(response);
         this.goToDashboard();
         }
