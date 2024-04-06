@@ -31,7 +31,7 @@ func Login(c echo.Context) error {
 		log.Fatal(err)
 	}
 
-	if models.IsEmailAddressEmptyOrNull(u) == true {
+	if models.IsUserNameEmptyOrNull(u) == true {
 		errorMessageList = append(errorMessageList, config.UserNameIsEmpty)
 	}
 
