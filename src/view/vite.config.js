@@ -4,9 +4,13 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) => {
-  process.env = {...process.env, ...loadEnv(mode, process.cwd())};
+  const env = loadEnv(mode, process.cwd(), '');
   
   return {
+  define: {
+    'process.env.HOST': JSON.stringify(env.HOST),
+    'process.env.PORT': JSON.stringify(env.PORT),
+  },
   plugins: [vue()],
   resolve: {
     alias: {
@@ -16,7 +20,7 @@ export default defineConfig(({mode}) => {
   server: {
     proxy: {
       '/api': {
-        target: `http://${process.env.HOST}:${process.env.PORT}`,
+        target: `${process.env.HOST}:${process.env.PORT}`,
         changeOrigin: true
       }
     }
