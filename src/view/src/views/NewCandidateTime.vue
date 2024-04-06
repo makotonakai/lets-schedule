@@ -32,7 +32,7 @@ export default {
 
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId),
 
-      await axios.post("http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/restricted/candidate_times/new", this.DateTimeJSONList,{
+      await axios.post(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/new`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }

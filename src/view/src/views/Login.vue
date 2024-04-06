@@ -22,7 +22,7 @@ export default {
   // They can be bound as event listeners in templates.
   methods: {
     async Login(){
-      await axios.post(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/login`, {
+      await axios.post(`${process.env.HOST}:${process.env.PORT}/api/login`, {
         user_name: this.UserName,
         password: this.Password,
       })
@@ -33,7 +33,6 @@ export default {
         }
       )
       .catch((error) => {
-        console.log(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/login`);
         if (error.response.status == BadRequestStatus) {
           for(let x = 0; x < error.response.data.length; x++){
               let errorMessage = error.response.data[x];

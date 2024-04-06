@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     async SendEmail(){
-      await axios.post("http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/send-email", {
+      await axios.post(`${process.env.HOST}:${process.env.PORT}/api/send-email`, {
         email_address: this.EmailAddress
       })
       .then((response) => {
