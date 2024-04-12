@@ -32,6 +32,7 @@ export default {
         }
       )
       .catch((error) => {
+        console.log(error);
         if (error.response.status == BadRequestStatus) {
           for(let x = 0; x < error.response.data.length; x++){
               let errorMessage = error.response.data[x];
