@@ -9,6 +9,9 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 
+	"github.com/gorilla/sessions"
+  "github.com/labstack/echo-contrib/session"
+
 	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/database"
 	"github.com/MakotoNakai/lets-schedule/models"
@@ -66,6 +69,17 @@ func Login(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+
+	session, _ := session.Get("session", c)
+	session.Options = &sessions.Options{
+		Path:     "/login",
+		MaxAge:   86400 * 7,
+		HttpOnly: true,
+	}
+	session.Values["id"] = strconv.Itoa(user.Id)
+	session.Values["user_name"] = user.UserName
+	session.Values["token"] = t
+	session.Save(c.Request(), c.Response())
 
 	return c.JSON(http.StatusOK, echo.Map{
 		"id":        strconv.Itoa(user.Id),

@@ -5,6 +5,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
+	"github.com/gorilla/sessions"
+  "github.com/labstack/echo-contrib/session"
+
 	"github.com/MakotoNakai/lets-schedule/controllers"
 	"github.com/MakotoNakai/lets-schedule/handlers"
 )
@@ -18,6 +21,7 @@ func Initialize() *echo.Echo {
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
 	}))
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
 	api := e.Group("/api")
 	// versionを取得して埋め込みして、version非依存にする
