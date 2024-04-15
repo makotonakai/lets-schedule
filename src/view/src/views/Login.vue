@@ -22,7 +22,7 @@ export default {
   // They can be bound as event listeners in templates.
   methods: {
     async Login(){
-      await axios.post(`${process.env.HOST}:${process.env.PORT}/api/login`, {
+      await axios.post(`${process.env.HOST}/api/login`, {
         user_name: this.UserName,
         password: this.Password,
       })

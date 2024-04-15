@@ -20,7 +20,7 @@ export default defineConfig(({mode}) => {
   server: {
     proxy: {
       '/api': {
-        target: `${process.env.HOST}:${process.env.PORT}`,
+        target: `${process.env.HOST}`,
         changeOrigin: true
       }
     }

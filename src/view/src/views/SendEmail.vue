@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     async SendEmail(){
-      await axios.post(`${process.env.HOST}:${process.env.PORT}/api/send-email`, {
+      await axios.post(`${process.env.HOST}/api/send-email`, {
         email_address: this.EmailAddress
       })
       .then((response) => {
