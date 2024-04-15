@@ -39,7 +39,7 @@ export default {
 
   methods: {
     async Loadinfo() {
-      await axios.get(`${process.env.HOST}/api/restricted/meetings/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}/YXBp/restricted/meetings/${this.MeetingId}`, {
           headers: {
             Authorization: `Bearer ${this.Token}`,
           },
@@ -61,7 +61,7 @@ export default {
       });
     },
     async LoadCandidateTime() {
-      await axios.get(`${process.env.HOST}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}/YXBp/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
           headers: { 
             Authorization: `Bearer ${this.Token}`
           }
@@ -75,7 +75,7 @@ export default {
         });
     },
     async LoadParticipant() {
-      await axios.get(`${process.env.HOST}/api/restricted/participants/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}/YXBp/restricted/participants/${this.MeetingId}`, {
           headers: { 
             Authorization: `Bearer ${this.Token}`
           }
@@ -96,7 +96,7 @@ export default {
     },
     async EditBasicInfo(){
 
-      await axios.put(`${process.env.HOST}/api/restricted/meetings/${this.MeetingId}`, {  
+      await axios.put(`${process.env.HOST}/YXBp/restricted/meetings/${this.MeetingId}`, {  
         title: this.Title,
         description: this.Description,
         type: this.Type,
@@ -121,9 +121,9 @@ export default {
     async EditCandidateTime(){
 
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
-      console.log(`${process.env.HOST}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`)
+      console.log(`${process.env.HOST}/YXBp/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`)
 
-      await axios.put(`${process.env.HOST}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
+      await axios.put(`${process.env.HOST}/YXBp/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -140,7 +140,7 @@ export default {
 
       this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
 
-      await axios.put(`${process.env.HOST}/api/restricted/participants/meeting/${this.MeetingId}`, this.ParticipantJSONList,{
+      await axios.put(`${process.env.HOST}/YXBp/restricted/participants/meeting/${this.MeetingId}`, this.ParticipantJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }

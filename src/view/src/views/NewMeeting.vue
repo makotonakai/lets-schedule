@@ -41,7 +41,7 @@ export default {
 
     async RegisterBasicInfo(){
 
-      await axios.post(`${process.env.HOST}/api/restricted/meetings/new`, {  
+      await axios.post(`${process.env.HOST}/YXBp/restricted/meetings/new`, {  
         title: this.Title,
         description: this.Description,
         type: this.Type,
@@ -66,7 +66,7 @@ export default {
 
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId),
 
-      await axios.post(`${process.env.HOST}/api/restricted/candidate_times/new`, this.DateTimeJSONList,{
+      await axios.post(`${process.env.HOST}/YXBp/restricted/candidate_times/new`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -82,7 +82,7 @@ export default {
 
       this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
 
-      await axios.post(`${process.env.HOST}/api/restricted/participants/new`, this.ParticipantJSONList,{
+      await axios.post(`${process.env.HOST}/YXBp/restricted/participants/new`, this.ParticipantJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }

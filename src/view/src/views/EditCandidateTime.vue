@@ -28,7 +28,7 @@ export default {
 
     async LoadInfo() {
 
-      await axios.get(`${process.env.HOST}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}/YXBp/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -53,7 +53,7 @@ export default {
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
       console.log(this.DateTimeJSONList)
 
-      await axios.put(`${process.env.HOST}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
+      await axios.put(`${process.env.HOST}/YXBp/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }

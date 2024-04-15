@@ -35,7 +35,7 @@ export default {
   methods: {
     async getMeetings() {
         await axios
-      .get(`${process.env.HOST}/api/restricted/candidate_times/meeting/${this.MeetingId}`, {
+      .get(`${process.env.HOST}/YXBp/restricted/candidate_times/meeting/${this.MeetingId}`, {
         headers: {
           Authorization: `Bearer ${this.Token}`,
         },
@@ -49,7 +49,7 @@ export default {
     },
     async getAvailableTime() {
         await axios
-      .get(`${process.env.HOST}/api/restricted/candidate_times/available-time/${this.MeetingId}`, {
+      .get(`${process.env.HOST}/YXBp/restricted/candidate_times/available-time/${this.MeetingId}`, {
         headers: {
           Authorization: `Bearer ${this.Token}`,
         },
