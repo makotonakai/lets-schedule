@@ -65,8 +65,8 @@ export default {
     async RegisterCandidateTime(){
 
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId),
-
-      await axios.post(`${process.env.HOST}/YXBp/restricted/candidate_times/new`, this.DateTimeJSONList,{
+      // api/restricted/candidate_times/new
+      await axios.post(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL25ldw==`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }

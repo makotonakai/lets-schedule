@@ -95,8 +95,8 @@ export default {
       await this.EditParticipants();
     },
     async EditBasicInfo(){
-
-      await axios.put(`${process.env.HOST}/YXBp/restricted/meetings/${this.MeetingId}`, {  
+      // api/restricted/meetings
+      await axios.put(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3M=/${this.MeetingId}`, {  
         title: this.Title,
         description: this.Description,
         type: this.Type,

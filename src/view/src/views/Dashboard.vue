@@ -27,7 +27,8 @@ export default {
 
   methods: {
       async getMeetings() {
-        await axios.get(`${process.env.HOST}/YXBp/restricted/meetings/user/${this.UserId}`, {
+        // api/restricted/meetings/user
+        await axios.get(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvdXNlcg==/${this.UserId}`, {
           headers: {
             Authorization: `Bearer ${this.Token}`,
           },

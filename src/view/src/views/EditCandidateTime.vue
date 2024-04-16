@@ -27,8 +27,8 @@ export default {
   methods: {
 
     async LoadInfo() {
-
-      await axios.get(`${process.env.HOST}/YXBp/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
+      // api/restricted/candidate_times/user
+      await axios.get(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL3VzZXI=/${this.UserId}/meeting/${this.MeetingId}`, {
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }

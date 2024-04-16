@@ -34,8 +34,9 @@ export default {
   },
   methods: {
     async getMeetings() {
+      // api/restricted/candidate_times/meeting
         await axios
-      .get(`${process.env.HOST}/YXBp/restricted/candidate_times/meeting/${this.MeetingId}`, {
+      .get(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL21lZXRpbmc=/${this.MeetingId}`, {
         headers: {
           Authorization: `Bearer ${this.Token}`,
         },

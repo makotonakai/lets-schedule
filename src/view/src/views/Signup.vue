@@ -25,7 +25,8 @@ export default {
       await this.CreateUser()
     },
     async CreateUser(){
-      await axios.post(`${process.env.HOST}/YXBp/signup`, {
+      // api/signup
+      await axios.post(`${process.env.HOST}/YXBpL3NpZ251cA==`, {
         email_address: this.EmailAddress,
         user_name: this.UserName,
         password: this.Password,

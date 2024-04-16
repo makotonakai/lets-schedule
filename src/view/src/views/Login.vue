@@ -22,7 +22,8 @@ export default {
   // They can be bound as event listeners in templates.
   methods: {
     async Login(){
-      await axios.post(`${process.env.HOST}/YXBp/login`, {
+      // /api/login
+      await axios.post(`${process.env.HOST}/YXBpL2xvZ2lu`, {
         user_name: this.UserName,
         password: this.Password,
       })
