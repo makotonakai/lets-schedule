@@ -82,7 +82,7 @@ export default {
 
       this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
 
-      await axios.post(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/participants/new`, this.ParticipantJSONList,{
+      await axios.post(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/cGFydGljaXBhbnRz/bmV3`, this.ParticipantJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }

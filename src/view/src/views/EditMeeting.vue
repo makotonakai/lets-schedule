@@ -39,7 +39,7 @@ export default {
 
   methods: {
     async Loadinfo() {
-      await axios.get(`${process.env.HOST}/YXBp/restricted/meetings/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/bWVldGluZ3M=/${this.MeetingId}`, {
           headers: {
             Authorization: `Bearer ${this.Token}`,
           },
@@ -61,7 +61,7 @@ export default {
       });
     },
     async LoadCandidateTime() {
-      await axios.get(`${process.env.HOST}/YXBp/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/Y2FuZGlkYXRlX3RpbWVz/dXNlcg==/${this.UserId}/bWVldGluZw==/${this.MeetingId}`, {
           headers: { 
             Authorization: `Bearer ${this.Token}`
           }
@@ -75,7 +75,7 @@ export default {
         });
     },
     async LoadParticipant() {
-      await axios.get(`${process.env.HOST}/YXBp/restricted/participants/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/cGFydGljaXBhbnRz/${this.MeetingId}`, {
           headers: { 
             Authorization: `Bearer ${this.Token}`
           }
