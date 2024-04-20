@@ -50,7 +50,7 @@ export default {
     },
     async getAvailableTime() {
         await axios
-      .get(`${process.env.HOST}/YXBp/restricted/candidate_times/available-time/${this.MeetingId}`, {
+      .get(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/Y2FuZGlkYXRlX3RpbWVz/YXZhaWxhYmxlLXRpbWU=/${this.MeetingId}`, {
         headers: {
           Authorization: `Bearer ${this.Token}`,
         },
