@@ -1,7 +1,10 @@
 package router
 
 import (
-	// "net/http"
+
+	"os"
+	"fmt"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -12,11 +15,31 @@ import (
 	"github.com/MakotoNakai/lets-schedule/handlers"
 )
 
+func bodyDumpHandler(c echo.Context, reqBody, resBody []byte) {
+	f, err := os.Create("logs/debug.log")
+  if err != nil {
+		panic(err)
+	}
+  defer f.Close()
+
+	req := fmt.Sprintf("Request Body: %s\n", string(reqBody))
+	res := fmt.Sprintf("Response Body: %s\n", string(resBody))
+	_, err = f.Write([]byte(req))
+	if err != nil {
+		panic(err)
+	}
+	_, err = f.Write([]byte(res))
+	if err != nil {
+		panic(err)
+	}
+}
+
 func Initialize() *echo.Echo {
 
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.BodyDump(bodyDumpHandler))
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
