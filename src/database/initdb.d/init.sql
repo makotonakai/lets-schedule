@@ -1,12 +1,12 @@
 create table if not exists users (
-  `id` bigint(11) not null auto_increment,
-  `user_name` varchar(191) not null,
-  `email_address` varchar(191) not null,
-  `password` varchar(191) not null,
-  `is_admin` boolean,
-  `can_login` boolean,
-  `created_at` timestamp not null default current_timestamp,
-  `updated_at` timestamp not null default current_timestamp on update current_timestamp,
+  id bigint(11) not null auto_increment,
+  user_name varchar(191) not null,
+  email_address varchar(191) not null,
+  password varchar(191) not null,
+  is_admin boolean,
+  can_login boolean,
+  created_at timestamp not null default current_timestamp,
+  updated_at timestamp not null default current_timestamp on update current_timestamp,
   primary key(id)
 );
 
@@ -15,19 +15,19 @@ insert into users values (2, "user2", "user2@email.com", "password", 1, 1, curre
 insert into users values (3, "user3", "user3@email.com", "password", 1, 1, current_timestamp, current_timestamp);
 
 create table if not exists meetings (
-  `id` bigint(11) not null auto_increment,
-  `title` varchar(191) not null,
-  `description` text,
-  `type` varchar(191),
-  `place` varchar(191),
-  `url` varchar(191),
-  `all_participants_responded` boolean not null,
-  `is_confirmed` boolean not null,
-  `start_time` timestamp null default null,
-  `end_time` timestamp null default null,
-  `hour` decimal not null,
-  `created_at` timestamp not null default current_timestamp,
-  `updated_at` timestamp not null default current_timestamp on update current_timestamp,
+  id bigint(11) not null auto_increment,
+  title varchar(191) not null,
+  description text,
+  type varchar(191),
+  place varchar(191),
+  url varchar(191),
+  all_participants_responded boolean not null,
+  is_confirmed boolean not null,
+  start_time timestamp null default null,
+  end_time timestamp null default null,
+  hour decimal not null,
+  created_at timestamp not null default current_timestamp,
+  updated_at timestamp not null default current_timestamp on update current_timestamp,
   primary key(id)
 );
 
@@ -39,13 +39,13 @@ insert into meetings values (5, "第5回ミーティング", "実装", "ハイ�
 insert into meetings values (6, "第6回ミーティング", "デプロイ", "ハイブリッド開催", "会議室", "http://meeting6-zoom.com", 0, 0, null, null, 1, current_timestamp, current_timestamp);
 
 create table if not exists participants (
-  `id` bigint(11) not null auto_increment,
-  `user_id` bigint(11) not null,
-  `meeting_id` bigint(11) not null,
-  `is_host` boolean not null,
-  `has_responded` boolean not null,
-  `created_at` timestamp not null default current_timestamp,
-  `updated_at` timestamp not null default current_timestamp on update current_timestamp,
+  id bigint(11) not null auto_increment,
+  user_id bigint(11) not null,
+  meeting_id bigint(11) not null,
+  is_host boolean not null,
+  has_responded boolean not null,
+  created_at timestamp not null default current_timestamp,
+  updated_at timestamp not null default current_timestamp on update current_timestamp,
   primary key(id)
 );
 
@@ -65,13 +65,13 @@ insert into participants values (13, 2, 6, 1, 1, current_timestamp, current_time
 
 
 create table if not exists candidate_times (
-  `id` bigint(11) not null auto_increment,
-  `user_id` bigint(11) not null,
-  `meeting_id` bigint(11) not null,
-  `start_time` timestamp not null,
-  `end_time` timestamp not null,
-  `created_at` timestamp not null default current_timestamp,
-  `updated_at` timestamp not null default current_timestamp on update current_timestamp,
+  id bigint(11) not null auto_increment,
+  user_id bigint(11) not null,
+  meeting_id bigint(11) not null,
+  start_time timestamp not null,
+  end_time timestamp not null,
+  created_at timestamp not null default current_timestamp,
+  updated_at timestamp not null default current_timestamp on update current_timestamp,
   primary key(id)
 );
 
@@ -89,11 +89,11 @@ insert into candidate_times values (11, 2, 5, current_timestamp, current_timesta
 insert into candidate_times values (12, 1, 2, "2022-09-19 21:00:00", "2022-09-19 23:00:00", current_timestamp, current_timestamp);
 
 create table if not exists friends (
-  `id` bigint(11) not null auto_increment,
-  `user_id` bigint(11) not null,
-  `friend_user_id` bigint(11) not null,
-  `created_at` timestamp not null default current_timestamp,
-  `updated_at` timestamp not null default current_timestamp on update current_timestamp,
+  id bigint(11) not null auto_increment,
+  user_id bigint(11) not null,
+  friend_user_id bigint(11) not null,
+  created_at timestamp not null default current_timestamp,
+  updated_at timestamp not null default current_timestamp on update current_timestamp,
   primary key(id)
 );
 
