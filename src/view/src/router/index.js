@@ -14,7 +14,6 @@ import GuestConfirmedDashBoard from '../views/guest/GuestConfirmedDashBoard.vue'
 import GuestNotConfirmedDashBoard from '../views/guest/GuestNotConfirmedDashBoard.vue'
 import GuestNotRespondedDashBoard from '../views/guest/GuestNotRespondedDashBoard.vue'
 import SetDateTime from '../views/SetDateTime.vue'
-import Friend from '../views/Friend.vue'
 import NewCandidateTime from '../views/NewCandidateTime.vue'
 import EditMeeting from '../views/EditMeeting.vue'
 import EditCandidateTime from '../views/EditCandidateTime.vue'
@@ -149,14 +148,6 @@ const router = createRouter({
       name: 'edit-candidate-time',
       component: EditCandidateTime,
       props: true,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/friend',
-      name: 'friend',
-      component: Friend,
       meta: {
         requiresAuth: true
       }
