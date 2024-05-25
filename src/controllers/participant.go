@@ -16,40 +16,48 @@ import (
 //----------
 
 func CreateParticipant(c echo.Context) error {
-	
-	newParticipantWithUserNameList := []models.ParticipantWithUserName{}
-	err := c.Bind(&newParticipantWithUserNameList)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
+  newParticipantWithUserNameList := []models.ParticipantWithUserName{}
+  err := c.Bind(&newParticipantWithUserNameList)
+  if err != nil {
+    log.Printf("Bind Error: %v", err) // Log the bind error
+    return c.JSON(http.StatusBadRequest, err.Error())
+  }
 
-	newParticipantList := []models.Participant{}
+  newParticipantList := []models.Participant{}
 
-	for _, ParticipantWithUserName := range newParticipantWithUserNameList {
+  for _, ParticipantWithUserName := range newParticipantWithUserNameList {
+    Participant := models.Participant{}
+    UserName := ParticipantWithUserName.UserName
+    Participant.UserId, err = models.GetUserIdFromUserName(db, UserName)
+    if err != nil {
+      log.Printf("GetUserIdFromUserName Error: %v", err)
+      return c.JSON(http.StatusBadRequest, err.Error())
+    }
 
-		Participant := models.Participant{}
-		UserName := ParticipantWithUserName.UserName
-		Participant.UserId = models.GetUserIdFromUserName(db, UserName)
+    Participant.MeetingId = ParticipantWithUserName.MeetingId
+    Participant.IsHost = ParticipantWithUserName.IsHost
+    Participant.HasResponded = ParticipantWithUserName.HasResponded
 
-		Participant.MeetingId = ParticipantWithUserName.MeetingId
-		Participant.IsHost = ParticipantWithUserName.IsHost
-		Participant.HasResponded = ParticipantWithUserName.HasResponded
+    Participant.CreatedAt = time.Now()
+    Participant.UpdatedAt = time.Now()
 
-		Participant.CreatedAt = time.Now()
-		Participant.UpdatedAt = time.Now()
+    newParticipantList = append(newParticipantList, Participant)
+  }
 
-		newParticipantList = append(newParticipantList, Participant)
+  if models.HostIsInParticipant(newParticipantList) {
+    return c.JSON(http.StatusBadRequest, "Host is already a participant")
+  }
 
-	}
+  result := db.Create(&newParticipantList)
+  if result.Error != nil {
+    log.Printf("DB Create Error: %v", result.Error)
+    return c.JSON(http.StatusInternalServerError, result.Error.Error())
+  }
 
-	if models.HostIsInParticipant(newParticipantList) == true {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-
-	db.Create(&newParticipantList)
-	return c.JSON(http.StatusCreated, newParticipantList)
-
+  return c.JSON(http.StatusCreated, newParticipantList)
 }
+
+
 
 func GetAllParticipant(c echo.Context) error {
 
