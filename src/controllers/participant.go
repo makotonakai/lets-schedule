@@ -1,7 +1,7 @@
 package controllers
 
 import (
-
+	"log"
 	"time"
 	"strconv"
 	"net/http"
