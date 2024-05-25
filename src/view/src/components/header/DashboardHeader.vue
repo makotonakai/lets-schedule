@@ -51,7 +51,6 @@
               <a class="navbar-item" href="/meeting/guest/not-responded/dashboard"> 候補日時 未返信 </a>
             </div>
           </div>
-          <a class="navbar-item" href="/friend"> 友達追加 </a>
         </div>
       </div>
 
