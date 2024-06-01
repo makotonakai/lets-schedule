@@ -29,22 +29,25 @@
 
 サービス内での日程調整の流れは以下の通りである。
 
-- 主催者日時入力
+### 主催者日時入力
+
 主催者がミーティングの詳細(概要・候補日時等)を設定する
 
+### 参加者通知
 
-- 参加者通知
 作成したミーティングを参加者に通知する
 
-- 参加者日時入力
+### 参加者日時入力
+
 参加者が参加できる時間の範囲を入力する
  
-- 時間決定
+### 時間決定
+
 主催者が最終的な開催日時を決定する
  
-- カレンダーへの登録
-決まった予定をユーザーのカレンダーに登録する 
+### カレンダーへの登録
 
+決まった予定をユーザーのカレンダーに登録する 
 
 これらの点について以下の既存サービスと比較することで、本アプリの優位性を明確にする。
 
@@ -71,41 +74,43 @@ Calendarに登録 | Outlook Emailユーザーのみ |
  これらの欠点を克服する手段として、参加者へのミーティングの通知をサービス内で完結させるという仕組みが考えられる。
 
 
-
-
-参加者時間入力
+### 参加者時間入力
 
  ミーティング参加者が日時を入力する際に主催者に決められた日時1つずつに対してO/X/△のリアクションをするよりも、参加者自身が都合の良い日時の範囲を入力した方が参加者にとって直感的な操作が実現できる。
 
-日時決定
+### 日時決定
 
 他のサービス同様候補日時の中から主催者が決定する
 
 
-カレンダーへの登録
+### カレンダーへの登録
 
  Googleサービスなどの特定のプラットフォーム内で完結するものではなく、icsファイル、Googleカレンダーのリンク、Outlookカレンダーのリンクなど様々な形で予定を登録できるようにする
 
-サービスの使用条件
+### サービスの使用条件
 
  メールアドレスさえあれば利用できるようにすることで、GmailやOutlookユーザー以外も利用できるようにする
 
 
 
-技術要件
+## 技術要件
 
 本webアプリに導入する技術は以下の通りである。
 
-前提条件 
+### 前提条件 
+
 webブラウザからアクセスできる
 Htmlファイルが使えるブラウザを使用する
 端末のディスプレイに応じた画面サイズに応じた表示をする
-制約条件 
+
+### 制約条件 
+
 webアプリの管理者は開発者(中井)のみ
 稼働率は99.5%である (24時間365日の稼働時間は保証しない)
-同時接続数は51,300である
+同時接続数は1100である
 
-アプリケーションのアーキテクチャ
+### アプリケーションのアーキテクチャ
+
 選定技術: SPA (single page architecture)
 選定理由: 
 必要最低限のデータを読み込むのでページの遷移が高速になる
@@ -117,21 +122,13 @@ Model (DBとの通信やデータの制約の定義)
 View(ページを表示するUI)
 Controller (REST APIのエンドポイントでの処理)の実装が分離できる
 
-
-インフラのアーキテクチャ 
-選定技術: 3層アーキテクチャ
-選定理由: 
-MVCアーキテクチャを物理的に反映できる
-
-Webサーバー: Viewをデプロイサーバー
-APサーバー:  Model・Controllerを提供するサーバー
-DBサーバー: Modelで定義されたデータを保存するサーバー
 フロントエンド 
 選定技術: Vue.js
 選定理由: 
 HTMLとJavaScript部分を分離できるので可読性が高い 
  (参考) ReactのJSXはJavaScriptの中にhtmlを書くので読みづらくなる恐れがある
     Component-basedな実装方法の新規学習コストが高い
+
 バックエンド
 選定技術: Golang (Echo)
 Golangの選定理由:
@@ -140,214 +137,158 @@ Golangの選定理由:
 処理が早い 
 Echoの選定理由: 
 小規模フレームワーク
+
+
+### インフラのアーキテクチャ
+
+選定技術: 3層アーキテクチャ
+選定理由: 
+MVCアーキテクチャを物理的に反映できる
+
+Webサーバー: Viewをデプロイサーバー
+APサーバー:  Model・Controllerを提供するサーバー
+DBサーバー: Modelで定義されたデータを保存するサーバー
+
 インフラ
 選定技術: AWS (EC2)
 選定理由: 
 業務で使用経験があるので馴染みがある
+
 DB 
 選定技術: MySQL
 選定理由: 
 PostgreSQLが得意な複雑なクエリの実装・大規模データ処理が必要ない
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-機能要件
+## 機能要件
 
 サービスに要求される機能
 
-セキュリティ
+### セキュリティ
 
-セッション保持
-Cookie保存は情報漏洩のリスクあり
-Cookieデータで詐称もできる
 ユーザーは前提としてステータスなし
-→ だからCookieを置いてステータスにする
 練習としてCookie実装 
-(仕事ではレンダリング時にコントローラーを追加)
-共有メモリ使う前に、本来は先にメモリを割り当てるべき
 
-認証
-Basic認証 → JWT
-OAuth OpenID
+認証にはJWTを使用する
 
 
-証明書
-AWS Certificate Manager
-https://aws.amazon.com/certificate-manager/
+### 証明書
+
+Webサーバーの証明書はLet's Encryptで取得した証明書を、APIサーバーには自己署名した証明書を使用する。
 
 
+### ユーザー共通
 
+- ユーザー新規作成
+- ログイン
+- ログアウト
+- ミーティング情報の取得・外部登録 (ics, Google Calendar, Outlook Calendar)
 
-
-システム管理者
-
-ユーザー情報表示
-ユーザー無効化 (主催者権限譲渡 → ログイン権限剥奪)
-ミーティング情報表示
-ミーティング無効化 (参加者全員のユーザー名無効化)
-ミーティング参加者表示
-ミーティング候補日時表示
-
-
-
-ユーザー共通
-
-
-ユーザー新規作成
-ユーザー設定変更 (ユーザーネーム・メールアドレス・パスワード)
-ユーザー削除 (ユーザー自身)
-ログイン
-ログアウト
-予定日時ダウンロード (ics, Google Calendar, Outlook Calendar)
-
-ミーティング主催者
+### ミーティング主催者
 
 ミーティング新規作成
 ミーティング情報編集
-ミーティング削除
 参加できる時間を入力
 参加できる時間を送信
 最終的な日時を選択
 選択した日時を参加者に通知
-回答状況を表示
-管理者権限の譲渡
 
-ミーティング参加者  (主催者以外)
+### ミーティング参加者  (主催者以外)
 
 参加できる時間を入力
 参加できる時間を送信
 
 
+## DB設計
 
-
-
-
-
-
-
-
-
-
-
-DB設計
-
-ユーザーテーブル (usersテーブル)
+### ユーザーテーブル (usersテーブル)
 
 | 項目名 (日本語) | 項目名 (変数) | 型 | 備考 | 
 | ---- | ---- | ---- | ---- |
-| ユーザー名 | username | string | NOT NULL |
-| メールアドレス | emailAddress | string | NOT NULL |
-| パスワード | password | base64 | NOT NULL |
-| 管理者かどうか | isAdmin | bool | NOT NULL |
-| ログイン可能か | canLogin | bool | NOT NULL |
+| ID | id | int | NOT NULL AUTO INCREMENT |
+| ユーザー名 | user_name | string | NOT NULL |
+| メールアドレス | email_address | string | NOT NULL |
+| パスワード | password | string | NOT NULL |
+| 管理者かどうか | is_admin | bool | NOT NULL |
+| ログイン可能か | can_login | bool | NOT NULL |
+| 登録日時 | created_at | datetime | NOT NULL DEFAULT CURRENT_DATETIME |
+| 更新日時 | updated_at | datetime | NOT NULL DEFAULT CURRENT_DATETIME ON UPDATE CURRENT_DATETIME |
 
 
-ミーティングテーブル (meetingsテーブル)
+### ミーティングテーブル (meetingsテーブル)
 
 | 項目名 (日本語) | 項目名 (変数) | 型 | 備考 | 
 | ---- | ---- | ---- | ---- |
-| ミーティングID | meetingId | int | NOT NULL |
-| ミーティング名 | meetingTitle | string | NOT NULL |
+| ID | id | int | NOT NULL  AUTO INCREMENT |
+| ミーティング名 | title | string | NOT NULL |
 | 概要 | description | text | NOT NULL |
-| 管理者かどうか | isAdmin | bool | NOT NULL |
-| ログイン可能か | canLogin | bool | NOT NULL |
-| 開始日時 | startTime | datetime | 最終的な開始日時 |
-| 終了日時 | endTime | datetime | 最終的な終了日時 |
 | 形式 | type | string | 現地 or オンライン |
-| 集合場所 | meetingPlace | string | |
-| ミーティングURL | meetingUrl | string | |
+| 集合場所 | place | string | |
+| ミーティングURL | url | string | |
+| 全員が回答したか | all_participants_responded | bool | NOT NULL |
+| 確定したか | is_confirmed | bool | NOT NULL |
+| 開始日時 | start_time | datetime | NOT NULL |
+| 終了日時 | end_time | datetime | NOT NULL |
+| 登録日時 | created_at | datetime | NOT NULL DEFAULT CURRENT_DATETIME |
+| 更新日時 | updated_at | datetime | NOT NULL DEFAULT CURRENT_DATETIME ON UPDATE CURRENT_DATETIME |
 
 
-参加者テーブル (participantsテーブル)
-
-| 項目名 (日本語) | 項目名 (変数) | 型 | 備考 | 
-| ---- | ---- | ---- | ---- |
-| ミーティングID | meetingId | int | NOT NULL |
-| ユーザーネーム | username | string |  |
-| 主催者かどうか | isHost | bool |  |
-| 回答の有無 | hasResponded | bool |  |
-
-
-候補日時テーブル (candidate_timeテーブル)
+### 参加者テーブル (participantsテーブル)
 
 | 項目名 (日本語) | 項目名 (変数) | 型 | 備考 | 
 | ---- | ---- | ---- | ---- |
-| ミーティングID | meetingId | int | NOT NULL |
-| ユーザーネーム | username | string | NOT NULL |
-| 開始時間 | startTime | datetime | NOT NULL |
-| 終了時間 | endTime | datetime | NOT NULL |
+| ID | id  | int | NOT NULL  AUTO INCREMENT |
+| ユーザーID | user_id | int | NOT NULL |
+| ミーティングID | meeting_id | int | NOT NULL |
+| 主催者かどうか | is_host | bool | NOT NULL |
+| 回答の有無 | has_responded | bool | NOT NULL |
+| 登録日時 | created_at | datetime | NOT NULL DEFAULT CURRENT_DATETIME |
+| 更新日時 | updated_at | datetime | NOT NULL DEFAULT CURRENT_DATETIME ON UPDATE CURRENT_DATETIME |
 
 
-API仕様
 
-共通事項
+### 候補日時テーブル (candidate_timeテーブル)
+
+| 項目名 (日本語) | 項目名 (変数) | 型 | 備考 | 
+| ---- | ---- | ---- | ---- |
+| ID | id  | int | NOT NULL  AUTO INCREMENT |
+| ユーザーID | user_id | int | NOT NULL |
+| ミーティングID | meeting_id | int | NOT NULL |
+| 開始時間 | start_time | datetime | NOT NULL |
+| 終了時間 | end_time | datetime | NOT NULL |
+| 登録日時 | created_at | datetime | NOT NULL DEFAULT CURRENT_DATETIME |
+| 更新日時 | updated_at | datetime | NOT NULL DEFAULT CURRENT_DATETIME ON UPDATE CURRENT_DATETIME |
+
+
+## API仕様
+
+### 共通事項
 
 各APIは次のフォーマットのURLとする
 
-https://letsschedule.com/<エンドポイントのパス>
-
-バージョン: APIのバージョン 例: v1
-パス: 各APIのURLパス
+https://lets-schedule.net/<エンドポイントのパス>
 
 通信プロトコル: HTTPS
 APIの種類: REST API
 インターフェース: JSON
 文字コード: UTF-8
 
-ユーザーAPI エンドポイント [api/v1/users]
-
-Header
-
-Basic認証 → JWT → CSRF
+ユーザー関連API 
 
 
+#### 新規ユーザー作成
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-POST api/v1/users/create
+エンドポイント POST /YXBpL3NpZ251cA==
 
 リクエストパラメータ
 
-| キー名 | 型 (変数) | 概要 | 
-| -- | -- | -- | 
-| username | string | ユーザー名 | 
-| email_address | string | メールアドレス | 
-| password | string | パスワード | 
+| キー名 | 型 (変数) | 概要 | 備考 |
+| -- | -- | -- | -- | 
+| id | int | ユーザーID | -- | 
+| username | string | ユーザー名 | |
+| email_address | string | メールアドレス | |
+| password | string | パスワード | |
+| is_admin | bool | 管理者かどうか | デフォルトはfalse |
+| can_login | bool | ログイン可能かどうか | デフォルトはtrue |
 
 
 ステータスコード
@@ -359,158 +300,34 @@ POST api/v1/users/create
 
 レスポンスパラメータ
 
-| キー名 | 型 | 概要 |
-| -- | -- | -- | 
-| result | bool | ユーザー登録成功/失敗 | 
+| シチュエーション | キー名 | 型 | 概要 |
+| -- | -- | -- | -- | 
+| 成功時 | id | int | ユーザーID |
+| | username | string | ユーザー名 |
+| | email_address | string | メールアドレス |
+| | password | string | パスワード |
+| | is_admin | bool | 管理者かどうか |
+| | can_login | bool | ログイン可能かどうか | 
+| 失敗時 | errorMessageList | array\[string\] | エラーメッセージの配列 |
 
 
-成功時レスポンス
-```
-{
-  “result”: true,
-  “status”: 200
-}
-```
 
-失敗時レスポンス
-```
-{
-  “result”: false,
-  “status”: 400,
-  “Message”: [エラーメッセージ]
-}
-```
+### ミーティング関連API エンドポイント 
 
+#### ミーティング新規作成
 
-GET api/v1/users/:userId/edit
+エンドポイント POST /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvbmV3
 
 パラメータ
 
 | キー名 | 型 (変数) | 概要 | 
 | -- | -- | -- |
-| username | string | ユーザー名 |
-
-
-ステータスコード
-
-| コード | 意味 |
-| -- | -- | 
-| 200 | 成功 | 
-| 400 | ユーザー情報取得失敗 | 
-
-
-
-レスポンスパラメータ
-
-| キー名 | 型 (変数) | 概要 | 
-| -- | -- | -- |
-| username | string | ユーザー名 |
-| email_address | string | メールアドレス |
-| password | string | パスワード |
-
-
-成功時レスポンス
-
-```
-{
-  “status”: 200,
-  “username”: [ユーザー名],
-  “email”: [メールアドレス],
-  “password”: [パスワード]
-}
-```
-
-失敗時レスポンス
-```
-{
-  “Status”: 400,
-  “Message”: [エラーメッセージ]
-}
-```
-
-
-PUT api/v1/users/:username/edit
-
-パラメータ
-
-| キー名 | 型 (変数) | 概要 | 
-| -- | -- | -- |
-| username | string | ユーザー名 |
-| email_address | string | メールアドレス |
-| password | string | パスワード |
-
-
-ステータスコード
-
-| コード | 意味 |
-| -- | -- | 
-| 200 | 成功 | 
-| 400 | ユーザー情報編集失敗 | 
-
-成功時レスポンス
-```
-{
-  “status”: 200
-}
-```
-
-失敗時レスポンス
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-
-DELETE api/v1/users/:username/delete
-
-パラメータ
-
-| キー名 | 型 (変数) | 概要 | 
-| -- | -- | -- |
-| userId | int | ユーザーID |
-
-
-ステータスコード
-
-| コード | 意味 |
-| -- | -- |
-| 200 | 成功 |
-| 400 | アカウント削除失敗 |
-
-
-成功時レスポンス
-```
-{
-  “status”: 200,
-}
-```
-
-失敗時レスポンス
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-
-ミーティングAPI エンドポイント [api/v1/meetings]
-
-POST api/v1/meetings/create
-
-パラメータ
-
-| キー名 | 型 (変数) | 概要 | 
-| -- | -- | -- |
-| meetingTitle | string | ミーティング名 |
+| title | string | ミーティング名 |
 | description | text | 概要 |
-| start_datetime | datetime | 開始日時 |
-| end_datetime | datetime | 終了日時 |
 | type | string | 形式 |
-| meeting_place | string | 集合場所 |
-| meeting_url | string | ミーティングURL |
+| place | string | 集合場所 |
+| url | string | ミーティングURL |
+| is_confirmed | bool | 日時が決定したかどうか |
 
 
 ステータスコード
@@ -523,36 +340,27 @@ POST api/v1/meetings/create
 
 レスポンスパラメータ
 
-| キー名 | 型 (変数) | 概要 | 
-| -- | -- | -- |
-| meetingId | string | ミーティングID |
+| シチュエーション | キー名 | 型 | 概要 |
+| -- | -- | -- | -- | 
+| 成功時 | id | int | ユーザーID |
+| | title | string | ミーティング名 |
+| |  description | text | 概要 |
+| |  type | string | 形式 |
+| |  place | string | 集合場所 |
+| |  url | string | ミーティングURL |
+| |  is_confirmed | bool | 日時が決定したかどうか |
+| 失敗時 | errorMessageList | array\[string\] | エラーメッセージの配列 |
 
 
+#### ミーティング情報取得
 
-
-成功時レスポンス
-```
-{
-  “status”: 200,
-}
-```
-
-失敗時レスポンス
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-
-GET api/v1/meetings/:meetingId
+エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvdXNlcg==/:user_id
 
 パラメータ
 
 | キー名 | 型 (変数) | 概要 | 
 | -- | -- | -- |
-| meetingId | string | ミーティングID |
+| user_id | string | ユーザーID |
 
 
 ステータスコード
@@ -565,515 +373,375 @@ GET api/v1/meetings/:meetingId
 
 レスポンスパラメータ
 
-| キー名 | 型 (変数) | 概要 | 
-| meetingTitle | string | ミーティング名 |
-| -- | -- | -- |
-| description | text | 概要 |
-| start_datetime | datetime | 開始日時 |
-| end_datetime | datetime | 終了日時 |
-| type | string | 形式 |
-| meeting_place | string | 集合場所 |
-| meeting_url | string | ミーティングURL |
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | id| string | ミーティングID |
+| | title | string | ミーティング名 |
+| | description | text | 概要 |
+| | type | string | 形式 |
+| | meeting_place | string | 集合場所 |
+| | meeting_url | string | ミーティングURL |
+| | all_participants_responded | bool | 全員から返信があったか |
+| | is_confirmed | bool | 日時が決まったか |
+| | start_time | datetime | ミーティングの開始日時 |
+| | end_time | datetime | ミーティングの終了日時 |
+| | hour | float | ミーティングの時間 (h) |
+| 失敗時 | error | string | エラー文 |
 
+#### 日時が決定した主催ミーティング情報取得
 
-
-成功時レスポンス
-
-```
-{
-  “status”: 200,
-  “meetingTitle”: [ミーティングタイトル],
-  “description”: [ミーティングの概要],
-  “start_datetime”: [ミーティングの開始時間],
-  “end_datetime”: [ミーティングの終了時間],
-  “type”: [ミーティングの形式],
-  “meeting_place”: [ミーティングの集合場所],
-  “meeting_url”: [ミーティングのURL]
-}
-```
-
-失敗時レスポンス
-
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-
-PUT api/v1/meetings/:meetingId/update
+エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvaG9zdC9jb25maXJtZWQ=/:user_id
 
 パラメータ
 
-| キー名 | 型 (変数) | 概要 |
+| キー名 | 型 (変数) | 概要 | 
 | -- | -- | -- |
-| meetingId | string | ミーティング名 |
+| user_id | string | ユーザーID |
 
 
 ステータスコード
 
 | コード | 意味 |
 | -- | -- |
-| 200 | ミーティング情報編集成功 |
-| 400 | ミーティング情報編集失敗 |
-
-
-成功時レスポンス
-
-```
-{
-  “status”: 200
-}
-```
-
-失敗時レスポンス
-
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-
-DELETE api/v1/meetings/:meetingId/delete
-
-リクエストパラメータ
-
-| キー名 | 型 (変数) | 概要 |
-| -- | -- | -- |
-| meetingId | string | ミーティング名 |
-
-
-ステータスコード
-
-| コード | 意味 |
-| -- | -- |
-| 200 | ミーティング削除成功 |
-| 400 | ミーティング削除失敗 |
-
-
-成功時レスポンス
-
-```
-{
-  “status”: 200
-}
-```
-
-失敗時レスポンス
-
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-
-メンバーAPI
-
-エンドポイント [api/v1/members]
-
-POST api/v1/members/create
-
-
-リクエストパラメータ
-
-| キー名 | 型 (変数) | 概要 |
-| -- | -- | -- |
-| meetingTitle | string | ミーティング名 |
-| username | string | ユーザーネーム |
-| isHost | bool | 主催者かどうか |
-| hasResponded | bool | 回答の有無 |
-
-
-ステータスコード
-
-| コード | 意味 |
-| -- | -- |
-| 200 | ミーティング参加者登録成功 |
-| 400 | ミーティング参加者登録失敗 |
-
-
-成功時レスポンス
-
-```
-{
-  “status”: 200
-}
-```
-
-失敗時レスポンス
-
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-GET api/v1/members/:meetingId
-
-リクエストパラメータ
-
-| キー名 | 型 (変数) | 概要 |
-| -- | -- | -- |
-| meetingId | string | ミーティング名 |
-
-
-ステータスコード
-
-| コード | 意味 |
-| -- | -- |
-| 200 | ミーティング参加者取得成功 |
-| 400 | ミーティング参加者取得失敗 |
-
-
-成功時レスポンス
-
-```
-{
-  “status”: 200,
-  “meetingTitle”: [ミーティングのタイトル],
-  “usernames”: [
- 	{
-  “username”: [参加者のユーザー名],
-  “isHost”: [参加者が主催者かどうか],
-   “hasResponded”: [参加者が参加時間を回答したか]
- }
-]
-}
-```
-
-失敗時レスポンス
-
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-
-PUT api/v1/members/:id/update
-
-リクエストパラメータ
-
-
-| キー名 | 型 (変数) | 概要 |
-| -- | -- | -- |
-| meetingTitle | string | ミーティング名 |
-| username | string | ユーザーネーム |
-| isHost | bool | 主催者かどうか |
-| hasResponded | bool | 回答の有無 |
-
-
-ステータスコード
-
-| コード | 意味 |
-| -- | -- |
-| 200 | ミーティング参加者編集成功 |
-| 400 | ミーティング参加者編集失敗 |
-
-
-成功時レスポンス
-
-```
-{
-  “status”: 200
-}
-```
-
-失敗時レスポンス
-
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-
-DELETE api/v1/members/:id/delete
-
-リクエストパラメータ
-
-| キー名 | 型 (変数) | 概要 |
-| -- | -- | -- |
-| meetingId | string | ミーティング名 |
-
-
-ステータスコード
-
-| コード | 意味 |
-| -- | -- |
-| 200 | ミーティング参加者削除成功 |
-| 400 | ミーティング参加者削除失敗 |
-
-
-成功時レスポンス
-
-```
-{
-  “status”: 200
-}
-```
-
-失敗時レスポンス
-
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-候補日時API エンドポイント [api/v1/candidate-times]
-
-POST api/v1/candidate-times/create
-
-リクエストパラメータ
-
-
-| キー名 | 型 (変数) | 概要 |
-| -- | -- | -- |
-| meetingId | string | ミーティング名 |
-| username | username | ユーザーネーム |
-| startTime | datetime | 開始時間 |
-| endTime | datetime | 終了時間 |
-
-
-ステータスコード
-
-| コード | 意味 |
-| -- | -- |
-| 200 | ミーティング候補日時登録成功 |
-| 400 | ミーティング候補日時登録失敗 |
-
-
-成功時レスポンス
-
-```
-{
-  “status”: 200
-}
-```
-
-
-
-失敗時レスポンス
-
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-
-GET api/v1/candidate-times/:meetingId
-
-リクエストパラメータ
-
-| キー名 | 型 (変数) | 概要 |
-| -- | -- | -- |
-| meetingId | string | ミーティングID |
-
-
-
-ステータスコード
-
-| コード | 意味 |
-| -- | -- |
-| 200 | ミーティング候補日時取得成功 |
-| 400 | ミーティング候補日時取得失敗 |
+| 200 | ミーティング情報取得成功 |
+| 400 | ミーティング情報取得失敗 |
 
 
 レスポンスパラメータ
 
-| キー名 | 型 (変数) | 概要 |
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | meetings | Meeting[] | ミーティング情報の配列 |
+| 失敗時 | error | string | エラー文 |
+
+
+#### 日時が決定していない主催ミーティング情報取得
+
+エンドポイント GET /aYXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvaG9zdC9ub3QtY29uZmlybWVk/:user_id
+
+パラメータ
+
+| キー名 | 型 (変数) | 概要 | 
 | -- | -- | -- |
-| username | string | ユーザーネーム |
-| startTime | datetime | 開始時間 |
-| endTime | datetime | 終了時間 |
-
-
-成功時レスポンス
-
-```
-{
-  “status”: 200
-  “
-}
-```
-
-失敗時レスポンス
-
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
-
-
-PUT api/v1/candidate-times/:meetingId/update
-
-リクエストパラメータ
-
-
-| キー名 | 型 (変数) | 概要 |
-| -- | -- | -- |
-| meetingId | string | ミーティング名 |
-| username | string | ユーザーネーム |
-| startTime | datetime | 開始時間 |
-| endTime | datetime | 終了時間 |
+| user_id | string | ユーザーID |
 
 
 ステータスコード
 
 | コード | 意味 |
 | -- | -- |
-| 200 | ミーティング候補日時編集成功 |
-| 400 | ミーティング候補日時編集失敗 |
+| 200 | ミーティング情報取得成功 |
+| 400 | ミーティング情報取得失敗 |
 
 
-成功時レスポンス
+レスポンスパラメータ
 
-```
-{
-  “status”: 200
-  “
-}
-```
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | meetings | Meeting[] | ミーティング情報の配列 |
+| 失敗時 | error | string | エラー文 |
 
 
-失敗時レスポンス
+#### 返信していない主催ミーティング情報取得
 
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
+エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvaG9zdC9ub3QtcmVzcG9uZGVk/:user_id
 
+パラメータ
 
-DELETE api/v1/candidate-times/:meetingId/delete
-
-リクエストパラメータ
-
-| キー名 | 型 (変数) | 概要 |
+| キー名 | 型 (変数) | 概要 | 
 | -- | -- | -- |
-| meetingId | string | ミーティングID |
+| user_id | string | ユーザーID |
 
 
 ステータスコード
 
 | コード | 意味 |
 | -- | -- |
-| 200 | ミーティング候補日時削除成功 |
-| 400 | ミーティング候補日時削除失敗 |
+| 200 | ミーティング情報取得成功 |
+| 400 | ミーティング情報取得失敗 |
 
 
-成功時レスポンス
+レスポンスパラメータ
 
-```
-{
-  “status”: 200
-  “
-}
-```
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | meetings | Meeting[] | ミーティング情報の配列 |
+| 失敗時 | error | string | エラー文 |
 
 
+#### 日時が決定している参加ミーティング情報取得
 
-失敗時レスポンス
+エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvZ3Vlc3QvY29uZmlybWVk/:user_id
 
-```
-{
-  “status”: 400,
-  “message”: [エラーメッセージ]
-}
-```
+パラメータ
 
-
-
-画面
-
-フロントページ
-
-ログイン画面
-ユーザー名
-パスワード
-パスワードを忘れた場合
-
-ユーザー登録画面
-メアド
-ユーザー名
-パスワード
-
-パスワード再設定画面
-メアド
-パスワード
-パスワード (確認用)
-
-ダッシュボード
-主催ミーティング一覧
-参加ミーティング一覧
-ミーティング作成ボタン
-
-ミーティング新規作成画面
-ミーティング名
-概要
-予定日時
-形式
-参加者
-作成ボタン
-止めるボタン
+| キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- |
+| user_id | string | ユーザーID |
 
 
-主催しているミーティング詳細画面
-ミーティング名
-概要
-予定日時
-形式
-参加者
-誰が回答してるか / してないか
-最適な時間帯
-最終決定ボタン
-編集ボタン
-削除ボタン
+ステータスコード
+
+| コード | 意味 |
+| -- | -- |
+| 200 | ミーティング情報取得成功 |
+| 400 | ミーティング情報取得失敗 |
 
 
-参加しているミーティング詳細画面
-ミーティング名
-概要
-予定日時
-形式
-参加者
-回答欄
-編集ボタン
-削除ボタン
+レスポンスパラメータ
 
-設定画面
-メアド変更
-ユーザー名変更
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | meetings | Meeting[] | ミーティング情報の配列 |
+| 失敗時 | error | string | エラー文 |
 
 
+#### 日時が決定していない参加ミーティング情報取得
+
+エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvZ3Vlc3Qvbm90LWNvbmZpcm1lZA==/:user_id
+
+パラメータ
+
+| キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- |
+| user_id | string | ユーザーID |
 
 
+ステータスコード
+
+| コード | 意味 |
+| -- | -- |
+| 200 | ミーティング情報取得成功 |
+| 400 | ミーティング情報取得失敗 |
 
 
+レスポンスパラメータ
+
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | meetings | Meeting[] | ミーティング情報の配列 |
+| 失敗時 | error | string | エラー文 |
 
 
+#### 返信していない参加ミーティング情報取得
+
+エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvZ3Vlc3Qvbm90LXJlc3BvbmRlZA===/:user_id
+
+パラメータ
+
+| キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- |
+| user_id | string | ユーザーID |
+
+
+ステータスコード
+
+| コード | 意味 |
+| -- | -- |
+| 200 | ミーティング情報取得成功 |
+| 400 | ミーティング情報取得失敗 |
+
+
+レスポンスパラメータ
+
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | meetings | Meeting[] | ミーティング情報の配列 |
+| 失敗時 | error | string | エラー文 |
 
 
 
+### 候補日時関連API 
 
-非機能要件
+#### 候補日時の新規登録
 
-同時接続数
+エンドポイントPOST /YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL25ldw==
+
+リクエストパラメータ
+
+| キー名 | 型 (変数) | 概要 |
+| -- | -- | -- |
+| candidate_time_list | CandidateTime[] | 候補日時の配列 |
+
+
+レスポンスパラメータ
+
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | candidate_time | CandidateTime[] | 候補日時の配列 |
+| 失敗時 | error | string | エラー文 |
+
+
+#### 候補日時の取得
+
+エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL3VzZXI=/:user_id/bWVldGluZw==/:meeting_id
+
+リクエストパラメータ
+
+| キー名 | 型 (変数) | 概要 |
+| -- | -- | -- |
+| user_id | int | ユーザーID |
+| meeting_id | int | ミーティングID |
+
+
+レスポンスパラメータ
+
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | candidate_time | CandidateTime | 候補日時の配列 |
+| 失敗時 | error | string | エラー文 |
+
+
+
+
+#### 候補日時の編集
+
+エンドポイント PUT /YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL3VzZXI=/:user_id/bWVldGluZw==/:meeting_id
+
+リクエストパラメータ
+
+| キー名 | 型 (変数) | 概要 |
+| -- | -- | -- |
+| user_id | int | ユーザーID |
+| meeting_id | int | ミーティングID |
+
+
+レスポンスパラメータ
+
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | candidate_time | CandidateTime[] | 候補日時の配列 |
+| 失敗時 | error | string | エラー文 |
+
+
+
+### 参加者関連API 
+
+#### 参加者の新規登録
+
+エンドポイントPOST /YXBpL3Jlc3RyaWN0ZWQvcGFydGljaXBhbnRzL25ldw==
+
+リクエストパラメータ
+
+| キー名 | 型 (変数) | 概要 |
+| -- | -- | -- |
+| participants | Participant[] | 候補日時の配列 |
+
+
+レスポンスパラメータ
+
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | participants | Participant[] | 候補日時の配列 |
+| 失敗時 | error | string | エラー文 |
+
+
+#### 参加者の取得
+
+エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvcGFydGljaXBhbnRz/:meeting_id
+
+リクエストパラメータ
+
+| キー名 | 型 (変数) | 概要 |
+| -- | -- | -- |
+| meeting_id | int | ミーティングID |
+
+
+レスポンスパラメータ
+
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | participants | Participant[] | 候補日時の配列 |
+| 失敗時 | error | string | エラー文 |
+
+
+
+
+#### 参加者の編集
+
+エンドポイント PUT /YXBpL3Jlc3RyaWN0ZWQvcGFydGljaXBhbnRzL21lZXRpbmc=/:meeting_id
+
+リクエストパラメータ
+
+| キー名 | 型 (変数) | 概要 |
+| -- | -- | -- |
+| meeting_id | int | ミーティングID |
+
+
+レスポンスパラメータ
+
+| シチュエーション | キー名 | 型 (変数) | 概要 | 
+| -- | -- | -- | -- |
+| 成功時 | participants | Participant[] | 参加者の配列 |
+| 失敗時 | error | string | エラー文 |
+
+
+
+
+## 画面
+
+### フロントページ
+
+#### ログイン画面
+- ユーザー名
+- パスワード
+- パスワードを忘れた場合
+
+#### ユーザー登録画面
+- メアド
+- ユーザー名
+- パスワード
+
+#### パスワード再設定画面
+- メアド
+- パスワード
+- パスワード (確認用)
+
+#### ダッシュボード
+- 主催ミーティング一覧
+- 参加ミーティング一覧
+- ミーティング作成ボタン
+
+#### ミーティング新規作成画面
+- ミーティング名
+- 概要
+- 予定日時
+- 形式
+- 参加者
+- 作成ボタン
+- 止めるボタン
+
+
+#### 主催しているミーティング詳細画面
+- ミーティング名
+- 概要
+- 予定日時
+- 形式
+- 参加者
+- 誰が回答してるか / してないか
+- 最適な時間帯
+- 最終決定ボタン
+- 編集ボタン
+- 削除ボタン
+
+
+#### 参加しているミーティング詳細画面
+- ミーティング名
+- 概要
+- 予定日時
+- 形式
+- 参加者
+- 回答欄
+- 編集ボタン
+- 削除ボタン
+- 設定画面
+- メアド変更
+- ユーザー名変更
+
+
+## 非機能要件
+
+### 同時接続数
 
 研究室のメンバー (教員・学生含め) 110人 
 合唱団のメンバー 38人
@@ -1086,13 +754,9 @@ DELETE api/v1/candidate-times/:meetingId/delete
 100ms
 
 
-インフラ構成
+### インフラ構成
 
-記事 (https://qiita.com/toast-uz/items/9a5c14b8e2b4736e6616)によるとAWS EC2 t2タイプの同時接続数は51,300なので、EC2インスタンスはt2-micro
-
-
-LB間の名前解決の切り替えが必要
-MySQLの分散DB化
+<img width="670" alt="Screenshot 2024-06-01 at 21 51 32" src="https://github.com/makotonakai/lets-schedule/assets/45162150/26310471-c6a6-4663-820f-77c3e2ca5e50">
 
 
 可用性 
