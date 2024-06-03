@@ -39,7 +39,7 @@ export default {
 
   methods: {
     async Loadinfo() {
-      await axios.get(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/bWVldGluZ3M=/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3M=/${this.MeetingId}`, {
           headers: {
             Authorization: `Bearer ${this.Token}`,
           },
@@ -61,7 +61,7 @@ export default {
       });
     },
     async LoadCandidateTime() {
-      await axios.get(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/Y2FuZGlkYXRlX3RpbWVz/dXNlcg==/${this.UserId}/bWVldGluZw==/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL3VzZXI=/${this.UserId}/bWVldGluZw==/${this.MeetingId}`, {
           headers: { 
             Authorization: `Bearer ${this.Token}`
           }
@@ -75,7 +75,7 @@ export default {
         });
     },
     async LoadParticipant() {
-      await axios.get(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/cGFydGljaXBhbnRz/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvcGFydGljaXBhbnRz/${this.MeetingId}`, {
           headers: { 
             Authorization: `Bearer ${this.Token}`
           }
@@ -121,7 +121,7 @@ export default {
 
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
 
-      await axios.put(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/Y2FuZGlkYXRlX3RpbWVz/dXNlcg==/${this.UserId}/bWVldGluZw==/${this.MeetingId}`, this.DateTimeJSONList,{
+      await axios.put(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL3VzZXI=/${this.UserId}/bWVldGluZw==/${this.MeetingId}`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -138,7 +138,7 @@ export default {
 
       this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
 
-      await axios.put(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/cGFydGljaXBhbnRz/bWVldGluZw==/${this.MeetingId}`, this.ParticipantJSONList,{
+      await axios.put(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvcGFydGljaXBhbnRzL21lZXRpbmc=/${this.MeetingId}`, this.ParticipantJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
