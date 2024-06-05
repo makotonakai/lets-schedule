@@ -1,4 +1,4 @@
-# ミーティング日時調整webサービスケーション Let’s Schedule 要件定義書
+# ミーティング日時調整webサービス Let’s Schedule 要件定義書
 
 
 # アジェンダ
