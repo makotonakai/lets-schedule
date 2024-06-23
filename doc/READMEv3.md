@@ -663,26 +663,26 @@ APIの種類: REST API
 
 | 種類 | キー名 | 備考 |
 | ---- | ---- | ---- |
-| id | プライマリーキー | |
+| プライマリーキー | id | |
 
 ##### Meetingsテーブル
 
 | 種類 | キー名 | 備考 |
 | ---- | ---- | ---- |
-| id | プライマリーキー | |
+| プライマリーキー | id | |
 
 ##### Participantテーブル
 
 | 種類 | キー名 | 備考 |
 | ---- | ---- | ---- |
-| id | プライマリーキー | |
+| プライマリーキー | id | |
 | 外部キー | meeting_id | REFERENCES meeting(meeting_id) |
 
 ##### CandidateTimeテーブル
 
 | 種類 | キー名 | 備考 |
 | ---- | ---- | ---- |
-| id | プライマリーキー | |
+| プライマリーキー | id | |
 | 外部キー | user_id | REFERENCES user(user_id) |
 | | meeting_id | REFERENCES meeting(meeting_id) |
 
