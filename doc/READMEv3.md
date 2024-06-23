@@ -14,27 +14,7 @@
    3. [バックエンド](#バックエンド)
       1. [オブジェクト定義](#オブジェクト定義)
       2. [API定義](#api定義)
-      3. [共通設定](#共通設定)
-   4. [ユーザー関連API](#ユーザー関連api)
-      1. [新規ユーザー作成](#新規ユーザー作成)
-   5. [ミーティング関連API](#ミーティング関連api)
-      1. [ミーティング新規作成](#ミーティング新規作成)
-      2. [ミーティング情報取得](#ミーティング情報取得)
-      3. [日時が決定した主催ミーティング情報取得](#日時が決定した主催ミーティング情報取得)
-      4. [日時が決定していない主催ミーティング情報取得](#日時が決定していない主催ミーティング情報取得)
-      5. [返信していない主催ミーティング情報取得](#返信していない主催ミーティング情報取得)
-      6. [日時が決定している参加ミーティング情報取得](#日時が決定している参加ミーティング情報取得)
-      7. [日時が決定していない参加ミーティング情報取得](#日時が決定していない参加ミーティング情報取得)
-      8. [返信していない参加ミーティング情報取得](#返信していない参加ミーティング情報取得)
-   6. [候補日時関連API](#候補日時関連api)
-      1. [候補日時の新規登録](#候補日時の新規登録)
-      2. [候補日時の取得](#候補日時の取得)
-      3. [候補日時の編集](#候補日時の編集)
-   7. [参加者関連API](#参加者関連api)
-      1. [参加者の新規登録](#参加者の新規登録)
-      2. [参加者の取得](#参加者の取得)
-      3. [参加者の編集](#参加者の編集)
-   8. [DB](#db)
+   4. [DB](#db)
       1. [前提](#前提)
       2. [Usersテーブル](#usersテーブル)
       3. [Meetingsテーブル](#meetingsテーブル)
@@ -206,7 +186,7 @@
 
 #### API定義
 
-#### 共通設定
+##### 共通設定
 
 各APIは次のフォーマットのURLとする
 
@@ -219,9 +199,9 @@ APIの種類: REST API
 インターフェース: JSON
 文字コード: UTF-8
 
-### ユーザー関連API
+##### ユーザー関連API
 
-#### 新規ユーザー作成
+###### 新規ユーザー作成
 
 エンドポイント POST /YXBpL3NpZ251cA==
 
@@ -256,9 +236,9 @@ APIの種類: REST API
 | | can_login | bool | ログイン可能かどうか | 
 | 失敗時 | errorMessageList | array\[string\] | エラーメッセージの配列 |
 
-### ミーティング関連API
+##### ミーティング関連API
 
-#### ミーティング新規作成
+###### ミーティング新規作成
 
 エンドポイント POST /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvbmV3
 
@@ -296,7 +276,7 @@ APIの種類: REST API
 | 失敗時 | errorMessageList | array\[string\] | エラーメッセージの配列 |
 
 
-#### ミーティング情報取得
+###### ミーティング情報取得
 
 エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvdXNlcg==/:user_id
 
@@ -332,7 +312,7 @@ APIの種類: REST API
 | | hour | float | ミーティングの時間 (h) |
 | 失敗時 | error | string | デフォルトは「エラーが発生しました」 |
 
-#### 日時が決定した主催ミーティング情報取得
+###### 日時が決定した主催ミーティング情報取得
 
 エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvaG9zdC9jb25maXJtZWQ=/:user_id
 
@@ -359,7 +339,7 @@ APIの種類: REST API
 | 失敗時 | error | string | デフォルトは「エラーが発生しました」 |
 
 
-#### 日時が決定していない主催ミーティング情報取得
+###### 日時が決定していない主催ミーティング情報取得
 
 エンドポイント GET /aYXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvaG9zdC9ub3QtY29uZmlybWVk/:user_id
 
@@ -386,7 +366,7 @@ APIの種類: REST API
 | 失敗時 | error | string | デフォルトは"エラーが発生しました |
 
 
-#### 返信していない主催ミーティング情報取得
+###### 返信していない主催ミーティング情報取得
 
 エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvaG9zdC9ub3QtcmVzcG9uZGVk/:user_id
 
@@ -413,7 +393,7 @@ APIの種類: REST API
 | 失敗時 | error | string | デフォルトは「エラーが発生しました」 |
 
 
-#### 日時が決定している参加ミーティング情報取得
+###### 日時が決定している参加ミーティング情報取得
 
 エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvZ3Vlc3QvY29uZmlybWVk/:user_id
 
@@ -440,7 +420,7 @@ APIの種類: REST API
 | 失敗時 | error | string | デフォルトは「エラーが発生しました」 |
 
 
-#### 日時が決定していない参加ミーティング情報取得
+###### 日時が決定していない参加ミーティング情報取得
 
 エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvZ3Vlc3Qvbm90LWNvbmZpcm1lZA==/:user_id
 
@@ -467,7 +447,7 @@ APIの種類: REST API
 | 失敗時 | error | string | デフォルトは |
 
 
-#### 返信していない参加ミーティング情報取得
+###### 返信していない参加ミーティング情報取得
 
 エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvZ3Vlc3Qvbm90LXJlc3BvbmRlZA===/:user_id
 
@@ -493,9 +473,9 @@ APIの種類: REST API
 | 成功時 | meetings | Meeting[] | ミーティング情報の配列 |
 | 失敗時 | error | string | デフォルトは「エラーが発生しました」 |
 
-### 候補日時関連API
+##### 候補日時関連API
 
-#### 候補日時の新規登録
+###### 候補日時の新規登録
 
 エンドポイントPOST /YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL25ldw==
 
@@ -514,7 +494,7 @@ APIの種類: REST API
 | 失敗時 | error | string | デフォルトは「エラーが発生しました」 |
 
 
-#### 候補日時の取得
+###### 候補日時の取得
 
 エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL3VzZXI=/:user_id/bWVldGluZw==/:meeting_id
 
@@ -536,7 +516,7 @@ APIの種類: REST API
 
 
 
-#### 候補日時の編集
+###### 候補日時の編集
 
 エンドポイント PUT /YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL3VzZXI=/:user_id/bWVldGluZw==/:meeting_id
 
@@ -556,9 +536,9 @@ APIの種類: REST API
 | 失敗時 | error | string | デフォルトは「エラーが発生しました」 |
 
 
-### 参加者関連API 
+##### 参加者関連API 
 
-#### 参加者の新規登録
+###### 参加者の新規登録
 
 エンドポイントPOST /YXBpL3Jlc3RyaWN0ZWQvcGFydGljaXBhbnRzL25ldw==
 
@@ -577,7 +557,7 @@ APIの種類: REST API
 | 失敗時 | error | string | デフォルトは「エラーが発生しました」 |
 
 
-#### 参加者の取得
+###### 参加者の取得
 
 エンドポイント GET /YXBpL3Jlc3RyaWN0ZWQvcGFydGljaXBhbnRz/:meeting_id
 
@@ -595,7 +575,7 @@ APIの種類: REST API
 | 成功時 | participants | Participant[] | 候補日時の配列 |
 | 失敗時 | error | string | デフォルトは「エラーが発生しました」 |
 
-#### 参加者の編集
+###### 参加者の編集
 
 エンドポイント PUT /YXBpL3Jlc3RyaWN0ZWQvcGFydGljaXBhbnRzL21lZXRpbmc=/:meeting_id
 
