@@ -148,7 +148,7 @@
 | ---- | ---- | ---- |
 | id | int | ミーティングID | 
 | title | string | ミーティング名 | 
-| description | text | 概要 | 
+| description | string | 概要 | 
 | type | string | 形式 | 
 | place | string | 集合場所 | 
 | url | string | ミーティングURL | 
@@ -245,7 +245,7 @@ APIの種類: REST API
 | キー名 | 型 (変数) | 概要 | 
 | -- | -- | -- |
 | title | string | ミーティング名 |
-| description | text | 概要 |
+| description | string | 概要 |
 | type | string | 形式 |
 | place | string | 集合場所 |
 | url | string | ミーティングURL |
@@ -266,7 +266,7 @@ APIの種類: REST API
 | -- | -- | -- | -- | 
 | 成功時 | id | int | ユーザーID |
 | | title | string | ミーティング名 |
-| |  description | text | 概要 |
+| |  description | string | 概要 |
 | |  type | string | 形式 |
 | |  place | string | 集合場所 |
 | |  url | string | ミーティングURL |
@@ -299,7 +299,7 @@ APIの種類: REST API
 | -- | -- | -- | -- |
 | 成功時 | id| string | ミーティングID |
 | | title | string | ミーティング名 |
-| | description | text | 概要 |
+| | description | string | 概要 |
 | | type | string | 形式 |
 | | meeting_place | string | 集合場所 |
 | | meeting_url | string | ミーティングURL |
@@ -623,7 +623,7 @@ APIの種類: REST API
 | ---- | ---- | ---- | ---- |
 | ID | id | bigint(11) | not null auto increment |
 | ミーティング名 | title | varchar(191) | not null |
-| 概要 | description | text | not null |
+| 概要 | description | varchar(191) | not null |
 | 形式 | type | varchar(191) | 現地 or オンライン |
 | 集合場所 | place | varchar(191) | |
 | ミーティングURL | url | varchar(191) | |
