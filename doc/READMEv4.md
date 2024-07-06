@@ -85,6 +85,8 @@
 
 ##### Userオブジェクト
 
+###### プロパティ
+
 | 変数名 | 型 | 説明 | 
 | ---- | ---- | ---- |
 | id | int | ユーザーID |
@@ -96,7 +98,21 @@
 | created_at | datetime | 登録日時 | 
 | updated_at | datetime | 更新日時 | 
 
+###### メソッド
+
+| メソッド名 | 説明 | 
+| ---- | ---- | 
+| IsEmailAddressValid | |
+| IsEmailAddressEmptyOrNull | |
+| IsUserNameEmptyOrNull | |
+| IsPasswordEmptyOrNull | |
+| ErrorsExist | |
+| AlreadyExists | |
+
+
 ##### Meetingオブジェクト
+
+###### プロパティ
 
 | 変数名 | 型 | 説明 | 
 | ---- | ---- | ---- |
@@ -113,7 +129,26 @@
 | created_at | datetime | 登録日時 | 
 | updated_at | datetime | 更新日時 | 
 
+###### メソッド
+
+| メソッド名 | 説明 | 
+| ---- | ---- | 
+| IsTitleEmpty | |
+| IsOnsiteButNoPlaceSpecified | |
+| IsOnlineButNoURLSpecified | |
+| IsHybridButNeitherPlaceOrURLSpecified | |
+| GetMeetingById | |
+| GetMeetingsByUserId | |
+| GetConfirmedMeetingsForHostByUserId | |
+| GetNotConfirmedMeetingsForHostByUserId | |
+| GetNotRespondedMeetingsForHostByUserId | |
+| GetConfirmedMeetingsForGuestByUserId | |
+| GetNotConfirmedMeetingsForGuestByUserId | |
+| GetNotRespondedMeetingsForGuestByUserId | |
+
 ##### CandidateTimeオブジェクト
+
+###### プロパティ
 
 | 変数名 | 型 | 説明 | 
 | ---- | ---- | ---- |
@@ -125,7 +160,25 @@
 | created_at | datetime | 登録日時 | 
 | updated_at | datetime | 更新日時 | 
 
+###### メソッド
+
+| メソッド名 | 説明 | 
+| ---- | ---- | 
+| GetCandidateTimeByMeetingId | |
+| GetCandidateTimeByMeetingIdAndUserId | |
+| GetAvailableTimeByMeetingId | |
+| Include | |
+| GetLatestStartTime | |
+| GetEarliestEndTime | |
+| CreateUserIdList | |
+| IsSameSlice | |
+| SortByStartTime | |
+| AvailableTimeIsNotFound | |
+
+
 ##### Participantオブジェクト
+
+###### プロパティ
 
 | 変数名 | 型 | 説明 | 
 | ---- | ---- | ---- |
@@ -136,6 +189,19 @@
 | has_responded | bool | 回答の有無 | 
 | created_at | datetime | 登録日時 | 
 | updated_at | datetime | 更新日時 | 
+
+###### メソッド
+
+| メソッド名 | 説明 | 
+| ---- | ---- | 
+| GetParticipantListByMeetingId | |
+| GetParticipantByUserIdAndMeetingId | |
+| ConvertToParticipant | |
+| ConvertToParticipantWithUserName | |
+| ConvertToParticipantWithUserNameList | |
+| ConvertToParticipantList | |
+| Min | |
+| HostIsInParticipant | |
 
 
 ### フロントエンド
