@@ -28,7 +28,7 @@ export default {
   methods: {
       async getMeetings() {
         // api/restricted/meetings/user
-        await axios.get(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvdXNlcg==/${this.UserId}`, {
+        await axios.get(`${process.env.HOST}:${process.env.PORT}/api/restricted/meetings/user/${this.UserId}`, {
           headers: {
             Authorization: `Bearer ${this.Token}`,
           },
@@ -61,7 +61,8 @@ export default {
                   <DefaultMeeting
                     :title="meeting.title"
                     :description="meeting.description"
-                    :type="meeting.type"
+                    :isOnsite="meeting.is_onsite"
+                    :isOnline="meeting.is_online"
                     :place="meeting.place"
                     :url="meeting.url"
                   ></DefaultMeeting>
