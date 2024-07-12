@@ -26,7 +26,7 @@ export default {
       // エラーのロギング
       // URLを共通の公開鍵 (ホスト鍵の公開鍵?) で暗号化
       // APIサーバーはHTTPS化
-      await axios.post(`${process.env.HOST}/YXBpL2xvZ2lu`, {
+      await axios.post(`${process.env.HOST}:${process.env.PORT}/api/login`, {
         user_name: this.UserName,
         password: this.Password,
       })

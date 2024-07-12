@@ -41,7 +41,7 @@ export default {
 
     async RegisterBasicInfo(){
 
-      await axios.post(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvbmV3`, {  
+      await axios.post(`${process.env.HOST}:${process.env.PORT}/YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvbmV3`, {  
         title: this.Title,
         description: this.Description,
         type: this.Type,
@@ -66,7 +66,7 @@ export default {
 
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId),
       // api/restricted/candidate_times/new
-      await axios.post(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL25ldw==`, this.DateTimeJSONList,{
+      await axios.post(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/new`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -82,7 +82,7 @@ export default {
 
       this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
 
-      await axios.post(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvcGFydGljaXBhbnRzL25ldw==`, this.ParticipantJSONList,{
+      await axios.post(`${process.env.HOST}:${process.env.PORT}/api/restricted/participants/new`, this.ParticipantJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }

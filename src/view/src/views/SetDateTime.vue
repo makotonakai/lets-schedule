@@ -36,7 +36,7 @@ export default {
     async getMeetings() {
       // api/restricted/candidate_times/meeting
         await axios
-      .get(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL21lZXRpbmc=/${this.MeetingId}`, {
+      .get(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/meeting/${this.MeetingId}`, {
         headers: {
           Authorization: `Bearer ${this.Token}`,
         },
@@ -50,7 +50,7 @@ export default {
     },
     async getAvailableTime() {
         await axios
-      .get(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/Y2FuZGlkYXRlX3RpbWVz/YXZhaWxhYmxlLXRpbWU=/${this.MeetingId}`, {
+      .get(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/available-time/${this.MeetingId}`, {
         headers: {
           Authorization: `Bearer ${this.Token}`,
         },

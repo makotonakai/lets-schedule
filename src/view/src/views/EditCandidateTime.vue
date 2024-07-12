@@ -27,7 +27,7 @@ export default {
   methods: {
 
     async LoadInfo() {
-      await axios.get(`${process.env.HOST}/YXBpL3Jlc3RyaWN0ZWQvY2FuZGlkYXRlX3RpbWVzL3VzZXI=/${this.UserId}/bWVldGluZw==/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
@@ -52,7 +52,7 @@ export default {
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
       console.log(this.DateTimeJSONList)
 
-      await axios.put(`${process.env.HOST}/YXBp/cmVzdHJpY3RlZA==/Y2FuZGlkYXRlX3RpbWVz/dXNlcg==/${this.UserId}/bWVldGluZw==/${this.MeetingId}`, this.DateTimeJSONList,{
+      await axios.put(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
