@@ -29,7 +29,7 @@ export default {
       async getMeetings() {
         // api/restricted/meetings/host/not-confirmed
         await axios
-      .get(`${process.env.HOST}/aYXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3MvaG9zdC9ub3QtY29uZmlybWVk/${this.UserId}`, {
+      .get(`${process.env.HOST}:${process.env.PORT}/api/restricted/meetings/host/not-confirmed/${this.UserId}`, {
         headers: {
           Authorization: `Bearer ${this.Token}`,
         },
@@ -62,7 +62,8 @@ export default {
                     :id="meeting.id"
                     :title="meeting.title"
                     :description="meeting.description"
-                    :type="meeting.type"
+                    :isOnsite="meeting.is_onsite"
+                    :isOnline="meeting.is_online"
                     :place="meeting.place"
                     :url="meeting.url"
                   ></HostNotConfirmedMeeting>
