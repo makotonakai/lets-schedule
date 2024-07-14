@@ -61,7 +61,7 @@ export default {
       });
     },
     async LoadCandidateTime() {
-      await axios.get(`${process.env.HOST}:${process.env.PORT}/api/restricted/user/${this.UserId}/meeting/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, {
           headers: { 
             Authorization: `Bearer ${this.Token}`
           }
