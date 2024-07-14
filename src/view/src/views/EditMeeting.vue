@@ -75,13 +75,14 @@ export default {
         });
     },
     async LoadParticipant() {
-      await axios.get(`${process.env.HOST}:${process.env.PORT}/api/restricted/meetings/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}:${process.env.PORT}/api/restricted/participants/${this.MeetingId}`, {
           headers: { 
             Authorization: `Bearer ${this.Token}`
           }
         })
         .then((response) => {
-          let allParticipantList = response.data
+          console.log(response.data);
+          let allParticipantList = response.data;
           this.Host = GetHost(allParticipantList);
           this.ParticipantList = GetParticipantList(allParticipantList);
         })
