@@ -49,7 +49,7 @@ export default {
           let data = response.data;
           this.Title = data["title"];
           this.Description = data["description"];
-          this.Type = data["type"];
+          this.Type = this.ChooseType(data["is_onsite"], data["is_online"]);
           this.Place = data["place"];
           this.Url = data["url"];
           this.Host = data["host"];
@@ -166,6 +166,18 @@ export default {
     DeleteParticipant(){
       DeleteLastElement(this.ParticipantList);
     },
+
+    ChooseType(isOnsite, isOnline) {
+      if (isOnsite && isOnline) {
+        return "ハイブリッド開催";
+      } else if (isOnsite) {
+        return "現地開催"
+      } else if (isOnline) {
+        return "オンライン開催"
+      } else {
+        return "形式不明"
+      }
+    }
 
   }
 }
