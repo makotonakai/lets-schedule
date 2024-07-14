@@ -39,7 +39,7 @@ export default {
 
   methods: {
     async Loadinfo() {
-      await axios.get(`${process.env.HOST}:${process.env.PORT}/YXBpL3Jlc3RyaWN0ZWQvbWVldGluZ3M=/${this.MeetingId}`, {
+      await axios.get(`${process.env.HOST}:${process.env.PORT}/api/restricted/meetings/${this.MeetingId}`, {
           headers: {
             Authorization: `Bearer ${this.Token}`,
           },
