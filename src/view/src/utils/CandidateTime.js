@@ -27,8 +27,12 @@ export function ConvertDateTimeListToISO(DateTimeList) {
   }
 
   for(let i = 0; i < DateTimeList.length; i++){
-    DateTimeList[i][0] = ConvertDateTimeToISO(DateTimeList[i][0]);
-    DateTimeList[i][1] = ConvertDateTimeToISO(DateTimeList[i][1]);
+    if (DateTimeList[i] == "") {
+      DateTimeList[i] = ["", ""];
+    } else {
+      DateTimeList[i][0] = ConvertDateTimeToISO(DateTimeList[i][0]);
+      DateTimeList[i][1] = ConvertDateTimeToISO(DateTimeList[i][1]);
+    }
   }
   return DateTimeList
 }
