@@ -11,4 +11,6 @@ var (
 	PlaceIsNotSpecified = "Place is not specified"
 	URLIsNotSpecified = "URL is not specified"
 	NeitherPlaceOrURLIsSpecified = "Neither place or url is specified"
+	CandidateTimeIsEmpty = "There is an empty candidate time"
+	CandidateTimeIsPast = "There is a candidate time in the past"
 )
