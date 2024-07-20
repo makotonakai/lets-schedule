@@ -28,7 +28,7 @@ export function ConvertDateTimeListToISO(DateTimeList) {
 
   for(let i = 0; i < DateTimeList.length; i++){
     if (DateTimeList[i] == "") {
-      DateTimeList[i] = ["", ""];
+      DateTimeList[i] = ["0001-01-01 00:00:00 +0000 UTC", "0001-01-01 00:00:00 +0000 UTC"];
     } else {
       DateTimeList[i][0] = ConvertDateTimeToISO(DateTimeList[i][0]);
       DateTimeList[i][1] = ConvertDateTimeToISO(DateTimeList[i][1]);
