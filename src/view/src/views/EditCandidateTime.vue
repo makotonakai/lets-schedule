@@ -3,6 +3,7 @@ import VueCookies from "vue-cookies";
 import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
 import {AddNewElement, DeleteLastElement, CreateCandidateTimeList, CreateDateTimeJSONList} from "../utils/CandidateTime"
+import { BadRequestStatus } from "../utils/StatusCode.js";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import axios from "axios";
@@ -19,6 +20,7 @@ export default {
       MeetingId: parseInt(this.$route.params['id']),
       DatetimeList:[""],
       DateTimeJSONList:[],
+      ErrorMessageList: [],
     }
   },
   mounted() {
@@ -60,8 +62,11 @@ export default {
       .then((response) => {
         console.log(response.data)
         })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
+         if (error.response && error.response.status === BadRequestStatus) {
+          this.ErrorMessageList = error.response.data.map((message) => message);
+        }
       });
     },
 
@@ -88,6 +93,14 @@ export default {
 
             <div class="field">
               <label class="label">日時</label>
+              <p class="help is-danger">
+                <li
+                  v-for="(ErrorMessage, index) in ErrorMessageList"
+                  :key="index"
+                >
+                  {{ ErrorMessage }}
+                </li>
+              </p>
               <div v-for="(value, key) in DatetimeList" :key="key">
                 <Datepicker
                   v-model="DatetimeList[key]"
@@ -112,13 +125,9 @@ export default {
 
             <div class="field is-grouped">
               <p class="control">
-                <router-link
-                  to="/meeting/dashboard"
-                  class="button is-light"
-                  @click="Register"
-                >
+                <button type="button" @click="RegisterCandidateTime" class="button is-success">
                   編集
-                </router-link>
+                </button>
               </p>
               <p class="control">
                 <router-link to="/meeting/dashboard" class="button is-light">
