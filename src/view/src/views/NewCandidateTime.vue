@@ -43,7 +43,6 @@ export default {
             }
           }
         );
-        console.log(response.data);
         this.goToDashboard();
       } catch (error) {
         console.log(error);
