@@ -2,7 +2,8 @@
 import VueCookies from "vue-cookies";
 import VueTagsInput from "@johmun/vue-tags-input";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
-import {AddNewElement, DeleteLastElement, CreateDateTimeJSONList} from "../utils/CandidateTime"
+import { AddNewElement, DeleteLastElement, CreateDateTimeJSONList } from "../utils/CandidateTime";
+import { BadRequestStatus } from "../utils/StatusCode.js";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import axios from "axios";
@@ -14,50 +15,56 @@ export default {
   },
   data() {
     return {
-      Token: $cookies.get("token"),
-      UserId: parseInt($cookies.get("user_id")),
-      MeetingId: parseInt(this.$route.params['id']),
-      DatetimeList:[""],
-      DateTimeJSONList:[],
-    }
+      Token: VueCookies.get("token"),
+      UserId: parseInt(VueCookies.get("user_id")),
+      MeetingId: parseInt(this.$route.params.id),
+      DatetimeList: [""],
+      DateTimeJSONList: [],
+      ErrorMessageList: []
+    };
   },
-
   methods: {
-
     async Register() {
       await this.RegisterCandidateTime();
     },
+    async RegisterCandidateTime() {
+      this.ErrorMessageList = []; // エラーメッセージリストを初期化
 
-    async RegisterCandidateTime(){
+      this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId);
+      console.log(this.DateTimeJSONList);
 
-      this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId),
-      // api/restricted/candidate_times/new
-      await axios.post(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/new`, this.DateTimeJSONList,{
-        headers: { 
-          Authorization: `Bearer ${this.Token}`
+      try {
+        const response = await axios.post(
+          `${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/new`,
+          this.DateTimeJSONList,
+          {
+            headers: {
+              Authorization: `Bearer ${this.Token}`
+            }
+          }
+        );
+        console.log(response.data);
+        this.goToDashboard();
+      } catch (error) {
+        console.log(error);
+        if (error.response && error.response.status === BadRequestStatus) {
+          this.ErrorMessageList = error.response.data.map((message) => message);
         }
-      })
-      .then((response) => {
-        console.log(response.data)
-        })
-      .catch((err) => {
-        console.log(err);
-      });
+      }
     },
-
-    AddDateTime(){
+    goToDashboard() {
+      this.$router.push("/meeting/dashboard");
+    },
+    AddDateTime() {
       AddNewElement(this.DatetimeList);
     },
-
-    DeleteDateTime(){
+    DeleteDateTime() {
       DeleteLastElement(this.DatetimeList);
-    },
-
+    }
   }
-}
-
-
+};
 </script>
+
 <template>
   <div>
     <header>
@@ -67,15 +74,18 @@ export default {
       <div class="hero-body">
         <div class="container">
           <div class="column is-6 is-size-1 has-text-left">
-
             <div class="field">
               <label class="label">日時</label>
+              <p class="help is-danger">
+                <li
+                  v-for="(ErrorMessage, index) in ErrorMessageList"
+                  :key="index"
+                >
+                  {{ ErrorMessage }}
+                </li>
+              </p>
               <div v-for="(value, key) in DatetimeList" :key="key">
-                <Datepicker
-                  v-model="DatetimeList[key]"
-                  range
-                  multiCalendars
-                />
+                <Datepicker v-model="DatetimeList[key]" range multiCalendars />
               </div>
             </div>
 
@@ -94,13 +104,9 @@ export default {
 
             <div class="field is-grouped">
               <p class="control">
-                <router-link
-                  to="/meeting/dashboard"
-                  class="button is-light"
-                  @click="Register"
-                >
+                <button type="button" @click="RegisterCandidateTime" class="button is-success">
                   新規作成
-                </router-link>
+                </button>
               </p>
               <p class="control">
                 <router-link to="/meeting/dashboard" class="button is-light">
