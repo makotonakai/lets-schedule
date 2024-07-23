@@ -79,6 +79,7 @@ func Initialize() *echo.Echo {
 	r.POST("/candidate_times/new", controllers.CreateCandidateTime)
 	r.PUT("/candidate_times/user/:user_id/meeting/:meeting_id", controllers.UpdateCandidateTimeByUserIdAndMeetingId)
 	r.GET("/candidate_times/available-time/:meeting_id", controllers.GetAvailableTimeByMeetingId)
+	r.PUT("/candidate_times/available-time/:meeting_id", controllers.UpdateAvailableTimeByMeetingId)
 
 	r.POST("/participants/new", controllers.CreateParticipant)
 	r.GET("/participants/:meeting_id", controllers.GetParticipantByMeetingId)

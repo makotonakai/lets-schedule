@@ -9,16 +9,24 @@ type Meeting struct {
 	Id int `gorm:"primaryKey:not null:autoIncrement" json:"id"`
 	Title string `json:"title"`
 	Description string `json:"description"`
-	Type string `json:"type"`
+	IsOnsite bool `json:"is_onsite"`
+	IsOnline bool `json:"is_online"`
 	Place string `json:"place"`
 	Url string `json:"url"`
 	AllParticipantsResponded bool `json:"all_participants_responded"`
 	IsConfirmed bool `json:"is_confirmed"`
 	StartTime time.Time `json:"start_time"`
 	EndTime time.Time `json:"end_time"`
+	ActualStartTime time.Time `json:"actual_start_time"`
+	ActualEndTime time.Time `json:"actual_end_time"`
 	Hour int `json:"hour"`
 	CreatedAt time.Time `gorm:"autoCreateTime:int" json:"created_at"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`
+}
+
+type AvailableTime struct {
+	ActualStartTime time.Time `json:"actual_start_time"`
+	ActualEndTime   time.Time `json:"actual_end_time"`
 }
 
 func IsTitleEmpty(m Meeting) bool {
@@ -26,15 +34,15 @@ func IsTitleEmpty(m Meeting) bool {
 }
 
 func IsOnsiteButNoPlaceSpecified(m Meeting) bool {
-	return m.Type == "物理開催" && m.Place == "なし"
+	return m.IsOnsite == true && m.Place == "なし"
 }
 
 func IsOnlineButNoURLSpecified(m Meeting) bool {
-	return m.Type == "オンライン開催" && m.Url == "なし"
+	return m.IsOnline == true && m.Url == "なし"
 }
 
 func IsHybridButNeitherPlaceOrURLSpecified(m Meeting) bool {
-	return m.Type == "ハイブリッド開催" && m.Place == "なし" && m.Url == "なし"
+	return m.IsOnsite == true && m.IsOnline == true && m.Place == "なし" && m.Url == "なし"
 }
 
 func GetMeetingById(db *gorm.DB, Id int) Meeting {
