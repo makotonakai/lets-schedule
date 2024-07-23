@@ -4,6 +4,7 @@ import axios from "axios";
 import DashboardHeader from "../components/header/DashboardHeader.vue";
 import CandidateTime from "../components/CandidateTime.vue";
 import AvailableTime from "../components/AvailableTime.vue";
+import Datepicker from "@vuepic/vue-datepicker";
 import { CreateCandidateTimeDict, CreateAvailableTimeList} from "../utils/CandidateTime"
 import { BadRequestStatus } from "../utils/StatusCode.js";
 
@@ -13,7 +14,8 @@ export default {
   components: {
     DashboardHeader,
     CandidateTime,
-    AvailableTime
+    AvailableTime,
+    Datepicker
   },
   mounted() {
     this.MeetingId = this.$route.params['id'];
@@ -29,6 +31,7 @@ export default {
       MeetingId: "",
       CandidateTimeDict: {},
       AvailableTimeList: [],
+      FinalAvailableTimeList: [""],
       ErrorMessage: ""
     }
   },
@@ -65,7 +68,46 @@ export default {
         };
         console.log(err);
       });
-    }
+    },
+    async RegisterAvailableTime() {
+      const ActualStartTime = FinalAvailableTimeList[0][0];
+      const ActualEndTime = FinalAvailableTimeList[0][1];
+      const FormattedActualStartTime = convertDate(ActualStartTime);
+      const FormattedActualEndTime = convertDate(ActualEndTime);
+        await axios
+      .put(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/available-time/${this.MeetingId}`, {
+        "actual_start_time": FormattedActualStartTime,
+        "actual_end_time": FormattedActualEndTime
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.Token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((err) => {
+        if (err.response.status == BadRequestStatus) {
+          this.ErrorMessage = err.response.data;
+        };
+        console.log(err);
+      });
+    },
+    convertDate(dateStr) {
+      // Parse the date string to a Date object
+      const parsedDate = new Date(dateStr);
+
+      // Format the date to "YYYY-MM-DD HH:MM:SS"
+      const year = parsedDate.getFullYear();
+      const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(parsedDate.getDate()).padStart(2, '0');
+      const hours = String(parsedDate.getHours()).padStart(2, '0');
+      const minutes = String(parsedDate.getMinutes()).padStart(2, '0');
+      const seconds = String(parsedDate.getSeconds()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }   
   }
 }
 </script>
@@ -102,287 +144,31 @@ export default {
                     <br>
                     <b>ミーティング時間</b>
                     <br>
-                    <select id="start-time-month">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                    </select>
-                    /
-                    <select id="start-time-day">
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20">20</option>
-                      <option value="21">21</option>
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                      <option value="23">24</option>
-                      <option value="23">25</option>
-                      <option value="23">26</option>
-                      <option value="23">27</option>
-                      <option value="23">28</option>
-                      <option value="23">29</option>
-                      <option value="23">30</option>
-                      <option value="23">31</option>
-                    </select>
-                    &nbsp
-                    <select id="start-time-hour">
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20">20</option>
-                      <option value="21">21</option>
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                    </select>
-                    :
-                    <select id="start-time-minute">
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20">20</option>
-                      <option value="21">21</option>
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                      <option value="23">24</option>
-                      <option value="23">25</option>
-                      <option value="23">26</option>
-                      <option value="23">27</option>
-                      <option value="23">28</option>
-                      <option value="23">29</option>
-                      <option value="23">30</option>
-                      <option value="23">31</option>
-                      <option value="23">32</option>
-                      <option value="23">33</option>
-                      <option value="23">34</option>
-                      <option value="23">35</option>
-                      <option value="23">36</option>
-                      <option value="23">37</option>
-                      <option value="23">38</option>
-                      <option value="23">39</option>
-                      <option value="23">40</option>
-                      <option value="23">41</option>
-                      <option value="23">42</option>
-                      <option value="23">43</option>
-                      <option value="23">44</option>
-                      <option value="23">45</option>
-                      <option value="23">46</option>
-                      <option value="23">47</option>
-                      <option value="23">48</option>
-                      <option value="23">49</option>
-                      <option value="23">50</option>
-                      <option value="23">51</option>
-                      <option value="23">52</option>
-                      <option value="23">53</option>
-                      <option value="23">54</option>
-                      <option value="23">55</option>
-                      <option value="23">56</option>
-                      <option value="23">57</option>
-                      <option value="23">58</option>
-                      <option value="23">59</option>
-                    </select>
-                    ~
-                    <select id="end-time-month">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                    </select>
-                    /
-                    <select id="end-time-day">
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20">20</option>
-                      <option value="21">21</option>
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                      <option value="23">24</option>
-                      <option value="23">25</option>
-                      <option value="23">26</option>
-                      <option value="23">27</option>
-                      <option value="23">28</option>
-                      <option value="23">29</option>
-                      <option value="23">30</option>
-                      <option value="23">31</option>
-                    </select>
-                    &nbsp
-                    <select id="end-time-hour">
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20">20</option>
-                      <option value="21">21</option>
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                    </select>
-                    :
-                    <select id="end-time-minute">
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20">20</option>
-                      <option value="21">21</option>
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                      <option value="23">24</option>
-                      <option value="23">25</option>
-                      <option value="23">26</option>
-                      <option value="23">27</option>
-                      <option value="23">28</option>
-                      <option value="23">29</option>
-                      <option value="23">30</option>
-                      <option value="23">31</option>
-                      <option value="23">32</option>
-                      <option value="23">33</option>
-                      <option value="23">34</option>
-                      <option value="23">35</option>
-                      <option value="23">36</option>
-                      <option value="23">37</option>
-                      <option value="23">38</option>
-                      <option value="23">39</option>
-                      <option value="23">40</option>
-                      <option value="23">41</option>
-                      <option value="23">42</option>
-                      <option value="23">43</option>
-                      <option value="23">44</option>
-                      <option value="23">45</option>
-                      <option value="23">46</option>
-                      <option value="23">47</option>
-                      <option value="23">48</option>
-                      <option value="23">49</option>
-                      <option value="23">50</option>
-                      <option value="23">51</option>
-                      <option value="23">52</option>
-                      <option value="23">53</option>
-                      <option value="23">54</option>
-                      <option value="23">55</option>
-                      <option value="23">56</option>
-                      <option value="23">57</option>
-                      <option value="23">58</option>
-                      <option value="23">59</option>
-                    </select>
-                    &nbsp
-                    <button is-light>時間決定</button>
+
+                     <!-- <Datepicker
+                        v-model="AvailableTime"
+                        range
+                        multiCalendars
+                      /> -->
+                      <div v-for="(value, key) in FinalAvailableTimeList" :key="key">
+                        <Datepicker
+                          v-model="FinalAvailableTimeList[key]"
+                          range
+                          multiCalendars
+                        />
+                      </div>
+                      <div class="field is-grouped">
+                        <p class="control">
+                          <button type="button" @click="RegisterAvailableTime" class="button is-success">
+                            編集
+                          </button>
+                        </p>
+                        <p class="control">
+                          <router-link to="/meeting/dashboard" class="button is-light">
+                            戻る
+                          </router-link>
+                        </p>
+                    </div>
                   </div>
                 </div>
               </div>
