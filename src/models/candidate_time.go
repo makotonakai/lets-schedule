@@ -17,6 +17,30 @@ type CandidateTime struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+func IsCandidateTimeEmpty(ctlist []CandidateTime) bool {
+	return len(ctlist) == 0
+}
+
+func EmptyCandidateTimeExists(ctlist []CandidateTime) bool {
+	t := time.Time{}
+	for _, ct := range ctlist {
+		if ct.StartTime.Equal(t) || ct.EndTime.Equal(t) {
+			return true
+		}
+	}
+	return false
+}
+
+func PastCandidateTimeExists(ctlist []CandidateTime) bool {
+	now := time.Now()
+	for _, ct := range ctlist {
+		if ct.StartTime.Before(now) || ct.EndTime.Before(now) {
+			return true
+		}
+	}
+	return false
+}
+
 
 func GetCandidateTimeByMeetingId(db *gorm.DB, MeetingId int) []CandidateTime {
 
@@ -40,6 +64,8 @@ func GetCandidateTimeByMeetingIdAndUserId(db *gorm.DB, MeetingId int, UserId int
 	return CandidateTimeList
 
 }
+
+// func RegisterAvailableTime(db *gorm.DB, )
 
 func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) []CandidateTime {
 
