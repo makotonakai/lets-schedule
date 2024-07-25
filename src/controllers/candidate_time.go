@@ -21,6 +21,24 @@ func CreateCandidateTime(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
+	errorMessageListAboutCandidateTime := []string{}
+
+	if models.IsCandidateTimeEmpty(newCandidateTime) == true {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty)
+	}
+
+	if models.EmptyCandidateTimeExists(newCandidateTime) == true {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty)
+	}
+
+	if models.PastCandidateTimeExists(newCandidateTime) == true {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsPast)
+	}
+
+	if models.ErrorsExist(errorMessageListAboutCandidateTime) {
+		return c.JSON(http.StatusBadRequest, errorMessageListAboutCandidateTime)
+	}
+
 	db.Create(&newCandidateTime)
 	return c.JSON(http.StatusCreated, newCandidateTime)
 	
@@ -100,11 +118,29 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 	newCTList := []models.CandidateTime{}
 	err = c.Bind(&newCTList)
 
-	ctList := []models.CandidateTime{}
-
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
+
+	errorMessageListAboutCandidateTime := []string{}
+
+	if models.IsCandidateTimeEmpty(newCTList) == true {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty)
+	}
+
+	if models.EmptyCandidateTimeExists(newCTList) == true {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty)
+	}
+
+	if models.PastCandidateTimeExists(newCTList) == true {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsPast)
+	}
+
+	if models.ErrorsExist(errorMessageListAboutCandidateTime) {
+		return c.JSON(http.StatusBadRequest, errorMessageListAboutCandidateTime)
+	}
+
+	ctList := []models.CandidateTime{}
 
 	db.Clauses(
 		clause.Locking{Strength: "UPDATE"},
@@ -166,5 +202,31 @@ func GetAvailableTimeByMeetingId(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, config.AvailableTimeNotFound)
 	}
 	return c.JSON(http.StatusOK, availableTimeList)
+}
+
+func UpdateAvailableTimeByMeetingId(c echo.Context) error {
+	paramId := c.Param("meeting_id")
+	id, err := strconv.Atoi(paramId)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	oldMeeting := models.Meeting{}
+	if err := db.First(&oldMeeting, id).Error; err != nil {
+		return c.JSON(http.StatusNotFound, "Meeting not found")
+	}
+
+	availableTime := models.AvailableTime{}
+	if err := c.Bind(&availableTime); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	// Updating only the ActualStartTime and ActualEndTime fields
+	db.Model(&oldMeeting).Updates(models.AvailableTime{
+		ActualStartTime: availableTime.ActualStartTime,
+		ActualEndTime:   availableTime.ActualEndTime,
+	})
+
+	return c.JSON(http.StatusOK, oldMeeting)
 }
 
