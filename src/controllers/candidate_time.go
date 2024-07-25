@@ -211,9 +211,23 @@ func UpdateAvailableTimeByMeetingId(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
+	errorMessageListAboutCandidateTime := []string{}
+
+	if models.IsCandidateTimeEmpty(newCandidateTime) == true {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty)
+	}
+
+	if models.PastCandidateTimeExists(newCandidateTime) == true {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsPast)
+	}
+
+	if models.ErrorsExist(errorMessageListAboutCandidateTime) {
+		return c.JSON(http.StatusBadRequest, errorMessageListAboutCandidateTime)
+	}
+
 	oldMeeting := models.Meeting{}
 	if err := db.First(&oldMeeting, id).Error; err != nil {
-		return c.JSON(http.StatusNotFound, "Meeting not found")
+		return c.JSON(http.StatusNotFound, config.MeetingNotFound)
 	}
 
 	availableTime := models.AvailableTime{}

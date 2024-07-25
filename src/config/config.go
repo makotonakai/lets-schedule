@@ -8,6 +8,7 @@ var (
 	LoginFailed = "Login failed"
 	AvailableTimeNotFound = "Available time is not found"
 	TitleIsEmpty = "Meeting title is empty"
+	MeetingNotFound = "Meeting not found"
 	PlaceIsNotSpecified = "Place is not specified"
 	URLIsNotSpecified = "URL is not specified"
 	NeitherPlaceOrURLIsSpecified = "Neither place or url is specified"
