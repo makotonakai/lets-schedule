@@ -32,7 +32,8 @@ export default {
       CandidateTimeDict: {},
       AvailableTimeList: [],
       FinalAvailableTimeList: [""],
-      ErrorMessage: ""
+      // ErrorMessage: "",
+      ErrorMessageList: [],
     }
   },
   methods: {
@@ -70,10 +71,26 @@ export default {
       });
     },
     async RegisterAvailableTime() {
-      const ActualStartTime = FinalAvailableTimeList[0][0];
-      const ActualEndTime = FinalAvailableTimeList[0][1];
-      const FormattedActualStartTime = convertDate(ActualStartTime);
-      const FormattedActualEndTime = convertDate(ActualEndTime);
+      console.log(this.FinalAvailableTimeList);
+
+      let FormattedActualStartTime = "0001-01-01T00:00:00Z";
+      let FormattedActualEndTime = "0001-01-01T00:00:00Z";
+
+      if(Array.isArray(this.FinalAvailableTimeList[0]) && this.FinalAvailableTimeList[0].length == 2) {
+        if (this.FinalAvailableTimeList[0][0] != null) {
+          const ActualStartTime = this.FinalAvailableTimeList[0][0];
+          FormattedActualStartTime = this.convertDate(ActualStartTime);
+        }
+        
+        if (this.FinalAvailableTimeList[0][1] != null) {
+          const ActualEndTime = this.FinalAvailableTimeList[0][1];
+          FormattedActualEndTime = this.convertDate(ActualEndTime);
+        }
+      }
+
+      console.log(FormattedActualStartTime);
+      console.log(FormattedActualEndTime);
+      
         await axios
       .put(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/available-time/${this.MeetingId}`, {
         "actual_start_time": FormattedActualStartTime,
@@ -87,27 +104,36 @@ export default {
       .then((response) => {
         console.log(response.data)
       })
-      .catch((err) => {
-        if (err.response.status == BadRequestStatus) {
-          this.ErrorMessage = err.response.data;
-        };
-        console.log(err);
+      .catch((error) => {
+        this.ErrorMessageList.push(error.response.data);
+        // for(let x = 0; x < error.response.data.length; x++){
+        //     let errorMessage = error.response.data;
+        //     this.ErrorMessageList.push(errorMessage);
+        // };
+        console.log(error);
       });
     },
     convertDate(dateStr) {
-      // Parse the date string to a Date object
-      const parsedDate = new Date(dateStr);
+    // Parse the date string to a Date object
+    const parsedDate = new Date(dateStr);
 
-      // Format the date to "YYYY-MM-DD HH:MM:SS"
-      const year = parsedDate.getFullYear();
-      const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
-      const day = String(parsedDate.getDate()).padStart(2, '0');
-      const hours = String(parsedDate.getHours()).padStart(2, '0');
-      const minutes = String(parsedDate.getMinutes()).padStart(2, '0');
-      const seconds = String(parsedDate.getSeconds()).padStart(2, '0');
+    // Format the date to "YYYY-MM-DDTHH:MM:SSZ"
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    const hours = String(parsedDate.getHours()).padStart(2, '0');
+    const minutes = String(parsedDate.getMinutes()).padStart(2, '0');
+    const seconds = String(parsedDate.getSeconds()).padStart(2, '0');
 
-      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    }   
+    // Get the timezone offset in hours and minutes
+    const timezoneOffset = -parsedDate.getTimezoneOffset();
+    const offsetHours = String(Math.floor(Math.abs(timezoneOffset) / 60)).padStart(2, '0');
+    const offsetMinutes = String(Math.abs(timezoneOffset) % 60).padStart(2, '0');
+    const offsetSign = timezoneOffset >= 0 ? '+' : '-';
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${offsetSign}${offsetHours}:${offsetMinutes}`;
+}
+
   }
 }
 </script>
@@ -135,9 +161,6 @@ export default {
                     </li>
                     <br>
                     <b>ミーティング可能時間</b>
-                      <p class="help is-danger">
-                        {{ ErrorMessage }}
-                      </p>
                     <AvailableTime
                       :available_time_list="AvailableTimeList"
                     ></AvailableTime>
@@ -145,11 +168,14 @@ export default {
                     <b>ミーティング時間</b>
                     <br>
 
-                     <!-- <Datepicker
-                        v-model="AvailableTime"
-                        range
-                        multiCalendars
-                      /> -->
+                     <p class="help is-danger">
+                      <li
+                        v-for="(ErrorMessage, index) in ErrorMessageList"
+                        :key="index"
+                      > 
+                        {{ ErrorMessage }}
+                      </li>
+                    </p>
                       <div v-for="(value, key) in FinalAvailableTimeList" :key="key">
                         <Datepicker
                           v-model="FinalAvailableTimeList[key]"
