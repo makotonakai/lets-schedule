@@ -227,6 +227,11 @@ func UpdateAvailableTimeByMeetingId(c echo.Context) error {
 		errorMessageListAboutAvailableTime = append(errorMessageListAboutAvailableTime, config.AvailableTimeNotFound)
 	}
 
+
+	if IsAvailableTimeMoreThanExpected(availableTime, id) {
+		errorMessageListAboutAvailableTime = append(errorMessageListAboutAvailableTime, config.AvailableTimeTooLong)
+	}
+
 	if models.ErrorsExist(errorMessageListAboutAvailableTime) {
 		return c.JSON(http.StatusBadRequest, errorMessageListAboutAvailableTime)
 	}
@@ -239,4 +244,20 @@ func UpdateAvailableTimeByMeetingId(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, oldMeeting)
 }
+
+func IsAvailableTimeMoreThanExpected (availableTime models.AvailableTime, id int) bool {
+
+	meeting := models.Meeting{}
+	db.First(&meeting, id)
+
+	startTime := availableTime.ActualStartTime
+	endTime := availableTime.ActualEndTime
+
+	duration := endTime.Sub(startTime)
+	hours := duration.Hours()
+
+	return hours > float64(meeting.Hour)
+
+}
+
 
