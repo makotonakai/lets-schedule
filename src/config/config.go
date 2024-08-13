@@ -7,6 +7,8 @@ var (
 	UserAlreadyExists = "The given user already exists"
 	LoginFailed = "Login failed"
 	AvailableTimeNotFound = "Available time is not found"
+	AvailableTimeTooLong = "Available time you suggested is too long"
+	AvailableTimeOutOfLimit = "Available time you suggested does not fit the appropriate range"
 	TitleIsEmpty = "Meeting title is empty"
 	MeetingNotFound = "Meeting not found"
 	PlaceIsNotSpecified = "Place is not specified"
