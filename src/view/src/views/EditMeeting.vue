@@ -7,6 +7,7 @@ import {CreateParticipantJSONList, GetHost, GetParticipantList} from "../utils/P
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import axios from "axios";
+import { BadRequestStatus } from "../utils/StatusCode.js";
 
 export default {
   components: {
@@ -28,7 +29,8 @@ export default {
       Host:"",
       ParticipantList:[""],
       ParticipantJSONList:[],
-      MeetingId: parseInt(this.$route.params['id'])
+      MeetingId: parseInt(this.$route.params['id']),
+      ErrorMessageList: [],
     }
   },
   mounted() {
@@ -45,7 +47,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data);
           let data = response.data;
           this.Title = data["title"];
           this.Description = data["description"];
@@ -67,7 +68,6 @@ export default {
           }
         })
         .then((response) => {
-          console.log(response.data)
           this.DatetimeList = CreateCandidateTimeList(response.data);
         })
         .catch((err) => {
@@ -81,7 +81,6 @@ export default {
           }
         })
         .then((response) => {
-          console.log(response.data);
           let allParticipantList = response.data;
           this.Host = GetHost(allParticipantList);
           this.ParticipantList = GetParticipantList(allParticipantList);
@@ -111,24 +110,27 @@ export default {
         }
       })
       .then((response) => {
-        // this.MeetingId = response.data["id"];
-        console.log(response.data)
-        })
+        console.log(response.data);
+      })
       .catch((err) => {
         console.log(err);
+        if (err.response.status == BadRequestStatus) {
+          this.ErrorMessageList = [...err.response.data];
+        };
       });
     },
     async EditCandidateTime(){
 
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
+      console.log(this.DateTimeJSONList);
 
-      await axios.put(`${process.env.HOST}:${process.env.PORT}/api/restricted/participants/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
+      await axios.put(`${process.env.HOST}:${process.env.PORT}/api/restricted/candidate_times/user/${this.UserId}/meeting/${this.MeetingId}`, this.DateTimeJSONList,{
         headers: { 
           Authorization: `Bearer ${this.Token}`
         }
       })
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         })
       .catch((err) => {
         console.log(err);
@@ -145,7 +147,7 @@ export default {
         }
       })
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         })
       .catch((err) => {
         console.log(err);
@@ -194,6 +196,14 @@ export default {
       <div class="hero-body">
         <div class="container">
           <div class="column is-6 is-size-1 has-text-left">
+            <p class="help is-danger">
+              <li
+                v-for="(ErrorMessage, index) in ErrorMessageList"
+                :key="index"
+              > 
+                {{ ErrorMessage }}
+              </li>
+            </p>
             <div class="field">
               <label class="label">タイトル</label>
               <div class="control">
@@ -331,13 +341,9 @@ export default {
 
             <div class="field is-grouped">
               <p class="control">
-                <router-link
-                  to="/meeting/dashboard"
-                  class="button is-light"
-                  @click="Edit"
-                >
+                <button type="button" @click="Edit" class="button is-success">
                   編集
-                </router-link>
+                </button>
               </p>
               <p class="control">
                 <router-link to="/meeting/dashboard" class="button is-light">
