@@ -33,6 +33,10 @@ func IsTitleEmpty(m Meeting) bool {
 	return m.Title == ""
 }
 
+func IsHourEmpty(m Meeting) bool {
+	return m.Hour == 0
+}
+
 func IsOnsiteButNoPlaceSpecified(m Meeting) bool {
 	return m.IsOnsite == true && m.Place == "なし"
 }
