@@ -21,6 +21,11 @@ func IsCandidateTimeEmpty(ctlist []CandidateTime) bool {
 	return len(ctlist) == 0
 }
 
+func IsAvailableTimeEmpty(at AvailableTime) bool {
+	// fmt.Println("Zero time:", time.Time{})
+	return at.ActualStartTime == time.Time{} && at.ActualEndTime == time.Time{}
+}
+
 func EmptyCandidateTimeExists(ctlist []CandidateTime) bool {
 	t := time.Time{}
 	for _, ct := range ctlist {
