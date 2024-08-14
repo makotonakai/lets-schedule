@@ -32,7 +32,6 @@ export default {
       CandidateTimeDict: {},
       AvailableTimeList: [],
       FinalAvailableTimeList: [""],
-      // ErrorMessage: "",
       ErrorMessageList: [],
     }
   },
@@ -65,7 +64,10 @@ export default {
       })
       .catch((err) => {
         if (err.response.status == BadRequestStatus) {
-          this.ErrorMessage = err.response.data;
+          for(let x = 0; x < error.response.data.length; x++){
+              let errorMessage = error.response.data[x];
+              this.ErrorMessageList.push(errorMessage);
+            };
         };
         console.log(err);
       });
@@ -105,11 +107,10 @@ export default {
         console.log(response.data)
       })
       .catch((error) => {
-        this.ErrorMessageList.push(error.response.data);
-        // for(let x = 0; x < error.response.data.length; x++){
-        //     let errorMessage = error.response.data;
-        //     this.ErrorMessageList.push(errorMessage);
-        // };
+        for(let x = 0; x < error.response.data.length; x++){
+            let errorMessage = error.response.data;
+            this.ErrorMessageList.push(errorMessage);
+        };
         console.log(error);
       });
     },
