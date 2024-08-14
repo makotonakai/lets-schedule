@@ -23,25 +23,27 @@ func CreateMeeting(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
+	errorMessageListAboutMeeting := []string{}
+
 	if models.IsTitleEmpty(newMeeting) {
-		errorMessageList = append(errorMessageList, config.TitleIsEmpty)
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.TitleIsEmpty)
 	}
 
 	if models.IsOnsiteButNoPlaceSpecified(newMeeting) {
-		errorMessageList = append(errorMessageList, config.PlaceIsNotSpecified)
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.PlaceIsNotSpecified)
 	}
 
 	if models.IsOnlineButNoURLSpecified(newMeeting) {
-		errorMessageList = append(errorMessageList, config.URLIsNotSpecified)
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.URLIsNotSpecified)
 		return c.JSON(http.StatusBadRequest, config.URLIsNotSpecified)
 	}
 
 	if models.IsHybridButNeitherPlaceOrURLSpecified(newMeeting) {
-		errorMessageList = append(errorMessageList, config.NeitherPlaceOrURLIsSpecified)
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.NeitherPlaceOrURLIsSpecified)
 	}
 
-	if models.ErrorsExist(errorMessageList) {
-		return c.JSON(http.StatusBadRequest, errorMessageList)
+	if models.ErrorsExist(errorMessageListAboutMeeting) {
+		return c.JSON(http.StatusBadRequest, errorMessageListAboutMeeting)
 	}
 
 	db.Create(&newMeeting)
@@ -209,6 +211,29 @@ func UpdateMeetingById(c echo.Context) error {
 
 	newMeeting := models.Meeting{}
 	err = c.Bind(&newMeeting)
+
+	errorMessageListAboutMeeting := []string{}
+
+	if models.IsTitleEmpty(newMeeting) {
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.TitleIsEmpty)
+	}
+
+	if models.IsOnsiteButNoPlaceSpecified(newMeeting) {
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.PlaceIsNotSpecified)
+	}
+
+	if models.IsOnlineButNoURLSpecified(newMeeting) {
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.URLIsNotSpecified)
+		return c.JSON(http.StatusBadRequest, config.URLIsNotSpecified)
+	}
+
+	if models.IsHybridButNeitherPlaceOrURLSpecified(newMeeting) {
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.NeitherPlaceOrURLIsSpecified)
+	}
+
+	if models.ErrorsExist(errorMessageListAboutMeeting) {
+		return c.JSON(http.StatusBadRequest, errorMessageListAboutMeeting)
+	}
 	
 	db.Model(&oldMeeting).Updates(newMeeting)
 	return c.JSON(http.StatusOK, oldMeeting)
