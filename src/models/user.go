@@ -35,7 +35,7 @@ func IsEmailAddressValid(e string) bool {
 func IsEmailAddressEmptyOrNull(u User) bool {
 	if govalidator.IsNull(u.EmailAddress) {
 		return true
-	}else {
+	} else {
 		u.EmailAddress = strings.ReplaceAll(u.EmailAddress, " ", "")
 		return u.EmailAddress == ""
 	}
@@ -44,7 +44,7 @@ func IsEmailAddressEmptyOrNull(u User) bool {
 func IsUserNameEmptyOrNull(u User) bool {
 	if govalidator.IsNull(u.UserName) {
 		return true
-	}else {
+	} else {
 		u.EmailAddress = strings.ReplaceAll(u.UserName, " ", "")
 		return u.UserName == ""
 	}
@@ -53,7 +53,7 @@ func IsUserNameEmptyOrNull(u User) bool {
 func IsPasswordEmptyOrNull(u User) bool {
 	if govalidator.IsNull(u.Password) {
 		return true
-	}else {
+	} else {
 		u.EmailAddress = strings.ReplaceAll(u.Password, " ", "")
 		return u.Password == ""
 	}
@@ -85,9 +85,9 @@ func GetUserIdFromUserName(db *gorm.DB, UserName string) (int, error) {
 		Select("users.id").
 		Where("users.user_name = ?", UserName).
 		Find(&user)
-	result.Error != nil {
-			return nil, result.Error
-		}
+	if result.Error != nil {
+			return -1, result.Error
+	}
 	return user.Id, nil
 }
 
