@@ -35,13 +35,17 @@ func GetParticipantByUserIdAndMeetingId(db *gorm.DB, userId int, meetingId int) 
 
 }
 
-func ConvertToParticipant(db *gorm.DB, pw ParticipantWithUserName) Participant {
-	p := Participant{}
-	p.UserId = GetUserIdFromUserName(db, pw.UserName)
+func ConvertToParticipant(db *gorm.DB, pw ParticipantWithUserName) (*Participant, error) {
+	p := &Participant{}
+	userId, err := GetUserIdFromUserName(db, pw.UserName) 
+	if err != nil {
+		return nil, err
+	}
+	p.UserId = userId
 	p.MeetingId = pw.MeetingId
 	p.IsHost = pw.IsHost
 	p.HasResponded = pw.HasResponded
-	return p
+	return p, nil
 }
 
 func ConvertToParticipantWithUserName(db *gorm.DB, p Participant) ParticipantWithUserName {
@@ -62,13 +66,16 @@ func ConvertToParticipantWithUserNameList(db *gorm.DB, plist []Participant) []Pa
 	return pwl
 }
 
-func ConvertToParticipantList(db *gorm.DB, pwl []ParticipantWithUserName) []Participant {
-	pl := []Participant{}
+func ConvertToParticipantList(db *gorm.DB, pwl []ParticipantWithUserName) (*[]Participant, error) {
+	pl := &[]Participant{}
 	for _, pw := range pwl {
-		p := ConvertToParticipant(db, pw)
-		pl = append(pl, p)
+		p, err := ConvertToParticipant(db, pw)
+		if err != nil {
+			return nil, err
+		}
+		*pl = append(*pl, *p)
 	}
-	return pl
+	return pl, nil
 }
 
 func Min(a, b int) int {
