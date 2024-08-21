@@ -31,6 +31,8 @@ export default {
       ParticipantJSONList:[],
       MeetingId: parseInt(this.$route.params['id']),
       ErrorMessageList: [],
+      IsOnsite: false,
+      IsOnline: false,
     }
   },
   mounted() {
@@ -50,7 +52,9 @@ export default {
           let data = response.data;
           this.Title = data["title"];
           this.Description = data["description"];
-          this.Type = this.ChooseType(data["is_onsite"], data["is_online"]);
+          this.IsOnsite = data["is_onsite"];
+          this.IsOnline = data["is_online"];
+          this.Type = this.ChooseType(this.IsOnsite, this.IsOnline);
           this.Place = data["place"];
           this.Url = data["url"];
           this.Host = data["host"];
@@ -95,10 +99,12 @@ export default {
       await this.EditParticipants();
     },
     async EditBasicInfo(){
+      this.UpdateType(this.Type);
       await axios.put(`${process.env.HOST}:${process.env.PORT}/api/restricted/meetings/${this.MeetingId}`, {  
         title: this.Title,
         description: this.Description,
-        type: this.Type,
+        is_onsite: this.IsOnsite,
+        is_online: this.IsOnline,
         place: this.Place,
         url: this.Url,
         is_confirmed: false,
@@ -120,7 +126,7 @@ export default {
       });
     },
     async EditCandidateTime(){
-
+      console.log(this.DatetimeList);
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
       console.log(this.DateTimeJSONList);
 
@@ -134,6 +140,9 @@ export default {
         })
       .catch((err) => {
         console.log(err);
+        if (err.response.status == BadRequestStatus) {
+          this.ErrorMessageList = [...err.response.data];
+        };
       });
     },
 
@@ -151,6 +160,9 @@ export default {
         })
       .catch((err) => {
         console.log(err);
+        if (err.response.status == BadRequestStatus) {
+          this.ErrorMessageList.push(err.response.data);
+        };
       });
     },
 
@@ -179,6 +191,22 @@ export default {
         return "オンライン開催"
       } else {
         return "形式不明"
+      }
+    },
+
+    UpdateType(type) {
+      if (type == "ハイブリッド開催") {
+        this.IsOnsite = true;
+        this.IsOnline = true;
+      } else if (type == "現地開催") {
+        this.IsOnsite = true;
+        this.IsOnline = false;
+      } else if (type == "オンライン開催") {
+        this.IsOnsite = false;
+        this.IsOnline = true;
+      } else {
+        this.IsOnsite = false;
+        this.IsOnline = false;
       }
     }
 
