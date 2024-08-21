@@ -22,19 +22,22 @@ export function ConvertDateTimeToISO(time){
 
 export function ConvertDateTimeListToISO(DateTimeList) {
 
+  let DateTimeListToISO = []
+
   if (IsDateTimeListNotDefined(DateTimeList)) {
     return []
   }
 
   for(let i = 0; i < DateTimeList.length; i++){
     if (DateTimeList[i] == "") {
-      DateTimeList[i] = ["0001-01-01 00:00:00 +0000 UTC", "0001-01-01 00:00:00 +0000 UTC"];
+      DateTimeListToISO.push(["0001-01-01 00:00:00 +0000 UTC", "0001-01-01 00:00:00 +0000 UTC"]);
     } else {
-      DateTimeList[i][0] = ConvertDateTimeToISO(DateTimeList[i][0]);
-      DateTimeList[i][1] = ConvertDateTimeToISO(DateTimeList[i][1]);
+      let startTime = ConvertDateTimeToISO(DateTimeList[i][0]);
+      let endTime = ConvertDateTimeToISO(DateTimeList[i][1]);
+      DateTimeListToISO.push([startTime, endTime]);
     }
   }
-  return DateTimeList
+  return DateTimeListToISO
 }
 
 export function CreateDateTimeJSONList(DateTimeList, UserId, MeetingId){
