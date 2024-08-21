@@ -48,7 +48,7 @@ func IsOnlineButNoURLSpecified(m Meeting) bool {
 }
 
 func IsHybridButNeitherPlaceOrURLSpecified(m Meeting) bool {
-	return m.IsOnsite == true && m.IsOnline == true && m.Place == "なし" && m.Url == "なし"
+	return m.IsOnsite == true && m.IsOnline == true && m.Place == "" && m.Url == ""
 }
 
 func GetMeetingById(db *gorm.DB, Id int) Meeting {
