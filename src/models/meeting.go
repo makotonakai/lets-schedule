@@ -37,12 +37,14 @@ func IsHourEmpty(m Meeting) bool {
 	return m.Hour == 0
 }
 
+// func Is
+
 func IsOnsiteButNoPlaceSpecified(m Meeting) bool {
-	return m.IsOnsite == true && m.Place == "なし"
+	return m.IsOnsite == true && m.Place == ""
 }
 
 func IsOnlineButNoURLSpecified(m Meeting) bool {
-	return m.IsOnline == true && m.Url == "なし"
+	return m.IsOnline == true && m.Url == ""
 }
 
 func IsHybridButNeitherPlaceOrURLSpecified(m Meeting) bool {
