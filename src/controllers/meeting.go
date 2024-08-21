@@ -218,13 +218,16 @@ func UpdateMeetingById(c echo.Context) error {
 		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.TitleIsEmpty)
 	}
 
+	if models.IsHourEmpty(newMeeting) {
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.HourIsEmpty)
+	}
+
 	if models.IsOnsiteButNoPlaceSpecified(newMeeting) {
 		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.PlaceIsNotSpecified)
 	}
 
 	if models.IsOnlineButNoURLSpecified(newMeeting) {
 		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.URLIsNotSpecified)
-		return c.JSON(http.StatusBadRequest, config.URLIsNotSpecified)
 	}
 
 	if models.IsHybridButNeitherPlaceOrURLSpecified(newMeeting) {
@@ -236,7 +239,7 @@ func UpdateMeetingById(c echo.Context) error {
 	}
 	
 	db.Model(&oldMeeting).Updates(newMeeting)
-	return c.JSON(http.StatusOK, oldMeeting)
+	return c.JSON(http.StatusOK, newMeeting)
 
 }
 
