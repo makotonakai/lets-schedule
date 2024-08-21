@@ -5,7 +5,6 @@ import (
 	"time"
 	"strconv"
 	"net/http"
-	"gorm.io/gorm/clause"
 	"github.com/labstack/echo/v4"
 
 	"github.com/MakotoNakai/lets-schedule/models"
@@ -51,7 +50,7 @@ func CreateParticipant(c echo.Context) error {
   result := db.Create(&newParticipantList)
   if result.Error != nil {
     log.Printf("DB Create Error: %v", result.Error)
-    return c.JSON(http.StatusInternalServerError, result.Error.Error())
+    return c.JSON(http.StatusBadRequest, result.Error.Error())
   }
 
   return c.JSON(http.StatusCreated, newParticipantList)
@@ -84,59 +83,81 @@ func GetParticipantByMeetingId(c echo.Context) error {
 }
 
 func UpdateParticipantByUserIdAndMeetingId(c echo.Context) error {
-
 	pmi := c.Param("meeting_id")
 	mi, err := strconv.Atoi(pmi)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+			return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	participantWithUserNameList := []models.ParticipantWithUserName{}
 	err = c.Bind(&participantWithUserNameList)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+			return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	oldParticipantList := models.GetParticipantListByMeetingId(db, mi)
 	newParticipantList := []models.Participant{}
 
-	db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&models.Participant{})
-
+	// Start transaction
 	tx := db.Begin()
 
 	shorterLength := models.Min(len(oldParticipantList), len(participantWithUserNameList))
 
-	// レコードをUpdateする
+	// Process update operations
 	for i := 0; i < shorterLength; i++ {
-		oldp := oldParticipantList[i]
-		pw := participantWithUserNameList[i]
-		newp := models.ConvertToParticipant(db, pw)
-		tx.Model(&oldp).Updates(newp)
-		newParticipantList = append(newParticipantList, oldp)
+			oldp := oldParticipantList[i]
+			pw := participantWithUserNameList[i]
+			newp, err := models.ConvertToParticipant(tx, pw) // Use tx in ConvertToParticipant
+			if err != nil {
+					// If an error occurs, roll back the transaction
+					tx.Rollback()
+					return c.JSON(http.StatusBadRequest, err.Error())
+			}
+			// Update participant
+			tx.Model(&oldp).Updates(newp)
+			newParticipantList = append(newParticipantList, oldp)
 	}
 
-	// 編集前のレコード数が多い場合は、余分なレコードを削除する
+	// Delete excess participants if old list is longer
 	if len(oldParticipantList) > len(participantWithUserNameList) {
-		for i := len(participantWithUserNameList); i < len(oldParticipantList); i++ {
-			oldp := oldParticipantList[i]
-			tx.Delete(&oldp)
-		}
+			for i := len(participantWithUserNameList); i < len(oldParticipantList); i++ {
+					oldp := oldParticipantList[i]
+					if err := tx.Delete(&oldp).Error; err != nil {
+							// Rollback and return error
+							tx.Rollback()
+							return c.JSON(http.StatusBadRequest, err.Error())
+					}
+			}
 	}
-	
-	// 編集後のレコード数が多い場合は、余ったレコードを新規作成する
+
+	// Create new participants if new list is longer
 	if len(oldParticipantList) < len(participantWithUserNameList) {
-		for i := len(oldParticipantList); i < len(participantWithUserNameList); i++ {
-			pw := participantWithUserNameList[i]
-			newp := models.ConvertToParticipant(db, pw)
-			tx.Create(&newp)
-			newParticipantList = append(newParticipantList, newp)
-		}
+			for i := len(oldParticipantList); i < len(participantWithUserNameList); i++ {
+					pw := participantWithUserNameList[i]
+					newp, err := models.ConvertToParticipant(tx, pw) // Use tx in ConvertToParticipant
+					if err != nil {
+							// Rollback and return error
+							tx.Rollback()
+							return c.JSON(http.StatusBadRequest, err.Error())
+					}
+					// Create new participant
+					if err := tx.Create(&newp).Error; err != nil {
+							// Rollback and return error
+							tx.Rollback()
+							return c.JSON(http.StatusBadRequest, err.Error())
+					}
+					newParticipantList = append(newParticipantList, *newp)
+			}
 	}
-	
-	tx.Commit()
+
+	// Commit the transaction if all operations were successful
+	if err := tx.Commit().Error; err != nil {
+			return c.JSON(http.StatusBadRequest, "Failed to commit transaction")
+	}
 
 	return c.JSON(http.StatusOK, newParticipantList)
 }
+
 
 func DeleteParticipant(c echo.Context) error {
 
