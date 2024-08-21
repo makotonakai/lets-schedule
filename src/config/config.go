@@ -10,6 +10,7 @@ var (
 	AvailableTimeTooLong = "Available time you suggested is too long"
 	AvailableTimeOutOfLimit = "Available time you suggested does not fit the appropriate range"
 	TitleIsEmpty = "Meeting title is empty"
+	HourIsEmpty = "Hour is empty"
 	MeetingNotFound = "Meeting not found"
 	PlaceIsNotSpecified = "Place is not specified"
 	URLIsNotSpecified = "URL is not specified"
