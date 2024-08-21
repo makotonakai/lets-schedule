@@ -1,7 +1,9 @@
 package models
 
 import (
+	"fmt"
 	"time"
+	"errors"
 	"regexp"
 	"strings"
 	"github.com/asaskevich/govalidator"
@@ -82,12 +84,19 @@ func AlreadyExists(db *gorm.DB, u User) bool {
 func GetUserIdFromUserName(db *gorm.DB, UserName string) (int, error) {
 	user := User{}
 	result := db.Table("users").
-		Select("users.id").
-		Where("users.user_name = ?", UserName).
-		Find(&user)
+			Select("users.id").
+			Where("users.user_name = ?", UserName).
+			Find(&user)
+
+	// Check if user was found
+	if result.RowsAffected == 0 {
+			return -1, errors.New(fmt.Sprintf("user with username '%s' not found", UserName))
+	}
+
 	if result.Error != nil {
 			return -1, result.Error
 	}
+
 	return user.Id, nil
 }
 
