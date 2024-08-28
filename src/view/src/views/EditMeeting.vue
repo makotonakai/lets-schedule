@@ -99,6 +99,7 @@ export default {
       await this.EditParticipants();
     },
     async EditBasicInfo(){
+      this.ErrorMessageList = [];
       this.UpdateType(this.Type);
       await axios.put(`${process.env.HOST}:${process.env.PORT}/api/restricted/meetings/${this.MeetingId}`, {  
         title: this.Title,
@@ -126,7 +127,6 @@ export default {
       });
     },
     async EditCandidateTime(){
-      console.log(this.DatetimeList);
       this.DateTimeJSONList = CreateDateTimeJSONList(this.DatetimeList, this.UserId, this.MeetingId)
       console.log(this.DateTimeJSONList);
 
@@ -147,7 +147,6 @@ export default {
     },
 
     async EditParticipants() {
-
       this.ParticipantJSONList = CreateParticipantJSONList(this.Host, this.ParticipantList, this.MeetingId)
 
       await axios.put(`${process.env.HOST}:${process.env.PORT}/api/restricted/participants/meeting/${this.MeetingId}`, this.ParticipantJSONList,{
@@ -224,14 +223,6 @@ export default {
       <div class="hero-body">
         <div class="container">
           <div class="column is-6 is-size-1 has-text-left">
-            <p class="help is-danger">
-              <li
-                v-for="(ErrorMessage, index) in ErrorMessageList"
-                :key="index"
-              > 
-                {{ ErrorMessage }}
-              </li>
-            </p>
             <div class="field">
               <label class="label">タイトル</label>
               <div class="control">
@@ -367,6 +358,14 @@ export default {
               </div>
             </div>
 
+            <div class="message is-danger">
+              <div v-for="(ErrorMessage, index) in ErrorMessageList"
+              :key="index"
+              > 
+                {{ ErrorMessage }}
+              </div>
+            </div>
+            
             <div class="field is-grouped">
               <p class="control">
                 <button type="button" @click="Edit" class="button is-success">
@@ -385,3 +384,15 @@ export default {
     </section>
   </div>
 </template>
+
+<style scoped>
+.message.is-danger {
+  background-color: transparent;
+}
+
+.message.is-danger div {
+  font-weight: bold;
+  font-size: 16px;
+  color: white;
+}
+</style>

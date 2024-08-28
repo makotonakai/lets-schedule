@@ -169,14 +169,6 @@ export default {
                     <b>ミーティング時間</b>
                     <br>
 
-                     <p class="help is-danger">
-                      <li
-                        v-for="(ErrorMessage, index) in ErrorMessageList"
-                        :key="index"
-                      > 
-                        {{ ErrorMessage }}
-                      </li>
-                    </p>
                       <div v-for="(value, key) in FinalAvailableTimeList" :key="key">
                         <Datepicker
                           v-model="FinalAvailableTimeList[key]"
@@ -184,6 +176,15 @@ export default {
                           multiCalendars
                         />
                       </div>
+
+                       <div class="message is-danger">
+                        <div v-for="(ErrorMessage, index) in ErrorMessageList"
+                        :key="index"
+                        > 
+                          {{ ErrorMessage }}
+                        </div>
+                      </div>
+
                       <div class="field is-grouped">
                         <p class="control">
                           <button type="button" @click="RegisterAvailableTime" class="button is-success">

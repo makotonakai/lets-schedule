@@ -93,14 +93,7 @@ export default {
 
             <div class="field">
               <label class="label">日時</label>
-              <p class="help is-danger">
-                <li
-                  v-for="(ErrorMessage, index) in ErrorMessageList"
-                  :key="index"
-                >
-                  {{ ErrorMessage }}
-                </li>
-              </p>
+              
               <div v-for="(value, key) in DatetimeList" :key="key">
                 <Datepicker
                   v-model="DatetimeList[key]"
@@ -121,6 +114,14 @@ export default {
                   戻る
                 </button>
               </p>
+            </div>
+
+             <div class="message is-danger">
+              <div v-for="(ErrorMessage, index) in ErrorMessageList"
+              :key="index"
+              > 
+                {{ ErrorMessage }}
+              </div>
             </div>
 
             <div class="field is-grouped">

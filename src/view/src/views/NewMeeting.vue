@@ -259,6 +259,14 @@ export default {
               </div>
             </div>
 
+            <div class="message is-danger">
+              <div v-for="(ErrorMessage, index) in ErrorMessageList"
+              :key="index"
+              > 
+                {{ ErrorMessage }}
+              </div>
+            </div>
+
             <div class="field is-grouped">
               <p class="control">
                 <router-link

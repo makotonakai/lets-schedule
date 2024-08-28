@@ -111,14 +111,16 @@ export default {
                       <i class="fa fa-lock"></i>
                     </span>
                   </div>
-                  <p class="help is-danger">
-                    <li
-                  v-for="ErrorMessage in ErrorMessageList"
-                  :key="ErrorMessage.id">
-                    {{ ErrorMessage }}
-                    </li>
-                  </p>
                 </div>
+
+                 <div class="message is-danger">
+                  <div v-for="(ErrorMessage, index) in ErrorMessageList"
+                  :key="index"
+                  > 
+                    {{ ErrorMessage }}
+                  </div>
+                </div>
+
                 <div class="field">
                   <button type="button" @click="SignUp()" class="button is-success">Sign up</button>
                 </div>
