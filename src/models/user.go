@@ -75,7 +75,7 @@ func AlreadyExists(db *gorm.DB, u User) bool {
 	db.Table("users").Select("*").Where("users.user_name = ?", u.UserName).Find(&sameUserName)
 
 	// If the user with either the given email addresss or the given username exists, returns true
-	if sameEmailAddress.Id == 0 || sameUserName.Id == 0 {
+	if sameEmailAddress.Id == 0 && sameUserName.Id == 0 {
 		return false
 	}
 	return true
