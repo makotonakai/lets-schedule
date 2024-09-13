@@ -47,7 +47,7 @@ func IsUserNameEmptyOrNull(u User) bool {
 	if govalidator.IsNull(u.UserName) {
 		return true
 	} else {
-		u.EmailAddress = strings.ReplaceAll(u.UserName, " ", "")
+		u.UserName = strings.ReplaceAll(u.UserName, " ", "")
 		return u.UserName == ""
 	}
 }
@@ -56,7 +56,7 @@ func IsPasswordEmptyOrNull(u User) bool {
 	if govalidator.IsNull(u.Password) {
 		return true
 	} else {
-		u.EmailAddress = strings.ReplaceAll(u.Password, " ", "")
+		u.Password = strings.ReplaceAll(u.Password, " ", "")
 		return u.Password == ""
 	}
 }
@@ -75,7 +75,7 @@ func AlreadyExists(db *gorm.DB, u User) bool {
 	db.Table("users").Select("*").Where("users.user_name = ?", u.UserName).Find(&sameUserName)
 
 	// If the user with either the given email addresss or the given username exists, returns true
-	if sameEmailAddress.Id == 0 && sameUserName.Id == 0 {
+	if sameEmailAddress.Id == 0 || sameUserName.Id == 0 {
 		return false
 	}
 	return true
