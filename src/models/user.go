@@ -66,19 +66,23 @@ func ErrorsExist(errorMessageList []string) bool {
 }
 
 
-func AlreadyExists(db *gorm.DB, u User) bool {
+func AlreadyExists(db *gorm.DB, u User) (bool, error, error) {
 
 	var sameEmailAddress User
 	var sameUserName User
 
-	db.Table("users").Select("*").Where("users.email_address = ?", u.EmailAddress).Find(&sameEmailAddress)
-	db.Table("users").Select("*").Where("users.user_name = ?", u.UserName).Find(&sameUserName)
+	emailAddressErr := db.Table("users").Select("*").Where("users.email_address = ?", u.EmailAddress).Find(&sameEmailAddress).Error
+	userNameErr := db.Table("users").Select("*").Where("users.user_name = ?", u.UserName).Find(&sameUserName).Error
 
-	// If the user with either the given email addresss or the given username exists, returns true
-	if sameEmailAddress.Id == 0 && sameUserName.Id == 0 {
-		return false
+	if emailAddressErr != nil && userNameErr != nil {
+		return false, errors.New("Email address not found"), errors.New("Username not found")
+	} else if emailAddressErr != nil {
+		return true, errors.New("Email address not found"),  nil
+	} else if userNameErr != nil {
+		return true, nil, errors.New("Username not found")
+	} else {
+		return true, nil, nil
 	}
-	return true
 }
 
 func GetUserIdFromUserName(db *gorm.DB, UserName string) (int, error) {
