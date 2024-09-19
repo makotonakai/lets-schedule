@@ -87,18 +87,14 @@ func AlreadyExists(db *gorm.DB, u User) (bool, error, error) {
 
 func GetUserIdFromUserName(db *gorm.DB, UserName string) (int, error) {
 	user := User{}
-	result := db.Table("users").
+	err := db.Table("users").
 			Select("users.id").
 			Where("users.user_name = ?", UserName).
-			Find(&user)
+			Find(&user).Error
 
 	// Check if user was found
-	if result.RowsAffected == 0 {
+	if err != nil {
 			return -1, errors.New(fmt.Sprintf("user with username '%s' not found", UserName))
-	}
-
-	if result.Error != nil {
-			return -1, result.Error
 	}
 
 	return user.Id, nil
