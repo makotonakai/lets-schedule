@@ -100,13 +100,16 @@ func GetUserIdFromUserName(db *gorm.DB, UserName string) (int, error) {
 	return user.Id, nil
 }
 
-func GetUserNameFromUserId(db *gorm.DB, UserId int) string {
+func GetUserNameFromUserId(db *gorm.DB, UserId int) (string, error) {
 	user := User{}
-	db.Table("users").
+	err := db.Table("users").
 		Select("users.user_name").
 		Where("users.id = ?", UserId).
-		Find(&user)
-	return user.UserName
+		Find(&user).Error
+	if err != nil {
+		return "", errors.New(fmt.Sprintf("user with id '%d' not found", UserId))
+	}
+	return user.UserName, nil
 }
 
 func GetUserIdFromEmailAddress(db *gorm.DB, EmailAddress string) int {
