@@ -200,7 +200,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| db | *gorm.DB |
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
 | u | User |
 
 返り値
