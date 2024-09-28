@@ -115,6 +115,24 @@
 
 ##### IsEmailAddressValidメソッド
 
+与えられたメールアドレスが有効か判定する関数
+
+メールアドレスの正規表現は[\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b](https://www.regular-expressions.info/index.html)を採用した。
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| e | string |
+
+返り値
+
+| 値 | 型 | 
+| ---- | ---- | 
+| true | bool |
+| false | bool |
+
+
 ##### IsEmailAddressEmptyOrNullメソッド
 
 ##### IsUserNameEmptyOrNullメソッド
