@@ -3,29 +3,29 @@
 1. [概要](#概要)
    1. [前提条件](#前提条件)
    2. [制約条件](#制約条件)
-2. [機能要件](#機能要件)
-   1. [基本機能](#基本機能)
+   3. [機能要件](#機能要件)
+   4. [基本機能](#基本機能)
       1. [ユーザー管理](#ユーザー管理)
       2. [日程調整](#日程調整)
       3. [カレンダー連携](#カレンダー連携)
-   2. [オブジェクト定義](#オブジェクト定義)
+   5. [オブジェクト定義](#オブジェクト定義)
       1. [Userオブジェクト](#userオブジェクト)
       2. [Meetingオブジェクト](#meetingオブジェクト)
       3. [CandidateTimeオブジェクト](#candidatetimeオブジェクト)
       4. [Participantオブジェクト](#participantオブジェクト)
-   3. [フロントエンド](#フロントエンド)
+   6. [フロントエンド](#フロントエンド)
       1. [UI](#ui)
       2. [ページ遷移図](#ページ遷移図)
-   4. [バックエンド](#バックエンド)
+   7. [バックエンド](#バックエンド)
       1. [API定義](#api定義)
-   5. [DB](#db)
+   8. [DB](#db)
       1. [前提](#前提)
       2. [Usersテーブル](#usersテーブル)
       3. [Meetingsテーブル](#meetingsテーブル)
       4. [Participantテーブル](#participantテーブル)
       5. [CandidateTimeテーブル](#candidatetimeテーブル)
       6. [キー一覧](#キー一覧)
-3. [非機能要件](#非機能要件)
+2. [非機能要件](#非機能要件)
    1. [可用性](#可用性)
       1. [SLA](#sla)
    2. [パフォーマンス](#パフォーマンス)
@@ -42,12 +42,12 @@
       1. [インフラ構成図](#インフラ構成図)
       2. [ネットワーク構成](#ネットワーク構成)
       3. [セキュリティグループ](#セキュリティグループ)
-4. [使用技術](#使用技術)
+3. [使用技術](#使用技術)
    1. [フロントエンド](#フロントエンド-1)
    2. [バックエンド](#バックエンド-1)
    3. [DB](#db-1)
    4. [インフラ](#インフラ)
-5. [参考文献](#参考文献)
+4. [参考文献](#参考文献)
 
 
 ## 概要
@@ -65,7 +65,7 @@
 - プライバシー保護のため、データは暗号化して保存する
 - サービスの稼働率は99.9%以上を目指す
 
-## 機能要件
+### 機能要件
 
 ### 基本機能
 
@@ -245,6 +245,7 @@
 | メソッド名 | 説明 | 
 | ---- | ---- | 
 | IsTitleEmpty | ミーティングのタイトルが空白かどうか判断する関数 |
+| IsHourEmpty | ミーティングの時間が空白かどうか判断する関数 |
 | IsOnsiteButNoPlaceSpecified | 物理開催のミーティングで開催場所が指定されているか判定する関数 |
 | IsOnlineButNoURLSpecified | オンライン開催のミーティングで開催URLが指定されているか判定する関数 |
 | IsHybridButNeitherPlaceOrURLSpecified | ハイブリッド開催のミーティングで開催場所と開催URLが両方指定されているか判定する関数 |
@@ -259,27 +260,222 @@
 
 ##### IsTitleEmptyメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| m | Meeting |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | true | bool |
+| 失敗時 | false | bool |
+
+##### IsHourEmptyメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| m | Meeting |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | true | bool |
+| 失敗時 | false | bool |
+
 ##### IsOnsiteButNoPlaceSpecifiedメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| m | Meeting |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | true | bool |
+| 失敗時 | false | bool |
 
 ##### IsOnlineButNoURLSpecifiedメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| m | Meeting |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | true | bool |
+| 失敗時 | false | bool |
+
 ##### IsHybridButNeitherPlaceOrURLSpecifiedメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| m | Meeting |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | true | bool |
+| 失敗時 | false | bool |
 
 ##### GetMeetingByIdメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| Id | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | meeting | Meeting |
+|  | nil | error |
+| 失敗時 | meeting | Meeting |
+|  | false | bool |
+
 ##### GetMeetingsByUserIdメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | meetings | []Meeting |
+|  | nil | error |
+| 失敗時 | meetings | []Meeting |
+|  | err | error |
 
 ##### GetConfirmedMeetingsForHostByUserIdメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | meetings | []Meeting |
+|  | nil | error |
+| 失敗時 | meetings | []Meeting |
+|  | err | error |
+
 ##### GetNotConfirmedMeetingsForHostByUserIdメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | meetings | []Meeting |
+|  | nil | error |
+| 失敗時 | meetings | []Meeting |
+|  | err | error |
 
 ##### GetNotRespondedMeetingsForHostByUserIdメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | meetings | []Meeting |
+|  | nil | error |
+| 失敗時 | meetings | []Meeting |
+|  | err | error |
+
 ##### GetConfirmedMeetingsForGuestByUserIdメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | meetings | []Meeting |
+|  | nil | error |
+| 失敗時 | meetings | []Meeting |
+|  | err | error |
 
 ##### GetNotConfirmedMeetingsForGuestByUserIdメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | meetings | []Meeting |
+|  | nil | error |
+| 失敗時 | meetings | []Meeting |
+|  | err | error |
+
 ##### GetNotRespondedMeetingsForGuestByUserIdメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | meetings | []Meeting |
+|  | nil | error |
+| 失敗時 | meetings | []Meeting |
+|  | err | error |
 
 #### CandidateTimeオブジェクト
 
@@ -312,24 +508,146 @@
 
 ##### GetCandidateTimeByMeetingIdメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | meetings | []Meeting |
+|  | nil | error |
+| 失敗時 | meetings | []Meeting |
+|  | err | error |
+
 ##### GetCandidateTimeByMeetingIdAndUserIdメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| MeetingId | int |
+| UserId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | CandidateTimeList | []CandidateTime |
+|  | nil | error |
+| 失敗時 | CandidateTimeList |[]CandidateTime |
+|  | err | error |
+
 
 ##### GetAvailableTimeByMeetingIdメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| MeetingId | int |
+| UserId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | CandidateTimeList | []CandidateTime |
+|  | nil | error |
+| 失敗時 | CandidateTimeList |[]CandidateTime |
+|  | err | error |
+
 ##### Includeメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| numList | []int |
+| num | int |
+
+返り値
+
+| 型 | bool | 
 
 ##### GetLatestStartTimeメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| candidateTimeList | []CandidateTime |
+
+返り値
+
+| 型 | time.Time | 
+
 ##### GetEarliestEndTimeメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| candidateTimeList | []CandidateTime |
+
+返り値
+
+| 型 | time.Time | 
 
 ##### CreateUserIdListメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| candidateTimeList | []CandidateTime |
+
+返り値
+
+| 型 | []int | 
+
 ##### IsSameSliceメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| slice1 | []int |
+| slice2 | []int |
+
+返り値
+
+| 型 | []int | 
 
 ##### SortByStartTimeメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| candidateTimeList | []CandidateTime |
+
+返り値
+
+| 型 | []CandidateTime | 
+
 ##### AvailableTimeIsNotFoundメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| candidateTimeList | []CandidateTime |
+
+返り値
+
+| 型 | bool | 
 
 #### Participantオブジェクト
 
@@ -360,19 +678,124 @@
 
 ##### GetParticipantListByMeetingIdメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| Id | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | participantList | []Participant |
+|  | nil | error |
+| 失敗時 | participantList | []Participant |
+|  | err | error |
+
 ##### GetParticipantByUserIdAndMeetingIdメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | int |
+| MeetingId | int |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | p | Participant |
+|  | nil | error |
+| 失敗時 | p | Participant |
+|  | err | error |
 
 ##### ConvertToParticipantメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| pw | ParticipantWithUserName |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | p | *Participant |
+|  | nil | error |
+| 失敗時 | nil | *Participant  |
+|  | err | error |
+
 ##### ConvertToParticipantWithUserNameメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| p | Participant |
+
+
+返り値
+
+| 型 | ParticipantWithUserName |
 
 ##### ConvertToParticipantWithUserNameListメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| plist | []Participant |
+
+
+返り値
+
+| 型 | []ParticipantWithUserName |
+
 ##### ConvertToParticipantListメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| pwlist | []ParticipantWithUserName |
+
+返り値
+
+| 型 | []Participant |
 
 ##### Minメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| a | int |
+| b | int |
+
+返り値
+
+| 型 | int |
+
 ##### HostIsInParticipantメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| plist | []Participant |
+
+返り値
+
+| 型 | bool |
 
 
 ### フロントエンド
