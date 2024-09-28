@@ -127,21 +127,98 @@
 
 返り値
 
-| 値 | 型 | 
-| ---- | ---- | 
-| true | bool |
-| false | bool |
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | true | bool |
+| 失敗時 | false | bool |
 
 
 ##### IsEmailAddressEmptyOrNullメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| u | User |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | true | bool |
+| 失敗時 | false | bool |
+
+
 ##### IsUserNameEmptyOrNullメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| u | User |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | true | bool |
+| 失敗時 | false | bool |
 
 ##### IsPasswordEmptyOrNullメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| u | User |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | true | bool |
+| 失敗時 | false | bool |
+
 ##### ErrorsExistメソッド
 
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| errorMessageList | []string |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| 成功時 | true | bool |
+| 失敗時 | false | bool |
+
 ##### AlreadyExistsメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| db | *gorm.DB |
+| u | User |
+
+返り値
+
+| | 値 | 型 | 
+| ---- | ---- | ---- | 
+| ユーザー名とメールアドレスが存在する時 | true | bool |
+|  | nil | error |
+|  | nil | error |
+| メールアドレスが見つからない時 | true | bool |
+|  | errors.New("Email address not found") | error |
+|  | nil | error |
+| ユーザー名が見つからない時 | true | bool |
+|  | nil | error |
+|  | errors.New("Username not found") | error |
+| ユーザー名もメールアドレスが見つからない時 | false | bool |
+|  | errors.New("Email address not found") | error |
+|  | errors.New("Username not found") | error |
 
 
 #### Meetingオブジェクト
