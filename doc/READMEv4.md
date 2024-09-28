@@ -106,12 +106,24 @@
 
 | メソッド名 | 説明 | 
 | ---- | ---- | 
-| IsEmailAddressValid | |
-| IsEmailAddressEmptyOrNull | |
-| IsUserNameEmptyOrNull | |
-| IsPasswordEmptyOrNull | |
-| ErrorsExist | |
-| AlreadyExists | |
+| IsEmailAddressValid | メールアドレスが有効か判定する関数 |
+| IsEmailAddressEmptyOrNull | メールアドレスが空白か判定する関数 |
+| IsUserNameEmptyOrNull | ユーザー名が空白か判定する関数 |
+| IsPasswordEmptyOrNull | パスワードが空白か判定する関数 |
+| ErrorsExist | エラーが存在するか判定する関数 |
+| AlreadyExists | ユーザーが既に登録されているか登録する関数 |
+
+##### IsEmailAddressValidメソッド
+
+##### IsEmailAddressEmptyOrNullメソッド
+
+##### IsUserNameEmptyOrNullメソッド
+
+##### IsPasswordEmptyOrNullメソッド
+
+##### ErrorsExistメソッド
+
+##### AlreadyExistsメソッド
 
 
 #### Meetingオブジェクト
@@ -137,18 +149,42 @@
 
 | メソッド名 | 説明 | 
 | ---- | ---- | 
-| IsTitleEmpty | |
-| IsOnsiteButNoPlaceSpecified | |
-| IsOnlineButNoURLSpecified | |
-| IsHybridButNeitherPlaceOrURLSpecified | |
-| GetMeetingById | |
-| GetMeetingsByUserId | |
-| GetConfirmedMeetingsForHostByUserId | |
-| GetNotConfirmedMeetingsForHostByUserId | |
-| GetNotRespondedMeetingsForHostByUserId | |
-| GetConfirmedMeetingsForGuestByUserId | |
-| GetNotConfirmedMeetingsForGuestByUserId | |
-| GetNotRespondedMeetingsForGuestByUserId | |
+| IsTitleEmpty | ミーティングのタイトルが空白かどうか判断する関数 |
+| IsOnsiteButNoPlaceSpecified | 物理開催のミーティングで開催場所が指定されているか判定する関数 |
+| IsOnlineButNoURLSpecified | オンライン開催のミーティングで開催URLが指定されているか判定する関数 |
+| IsHybridButNeitherPlaceOrURLSpecified | ハイブリッド開催のミーティングで開催場所と開催URLが両方指定されているか判定する関数 |
+| GetMeetingById | ミーティングIDからミーティング情報を取得する関数 |
+| GetMeetingsByUserId | ユーザーIDから参加するミーティング情報を取得する関数 |
+| GetConfirmedMeetingsForHostByUserId | ユーザーIDからホスト側の確定済みミーティング情報を取得する関数 |
+| GetNotConfirmedMeetingsForHostByUserId | ユーザーIDからホスト側の未確定のミーティング情報を取得する関数 |
+| GetNotRespondedMeetingsForHostByUserId | ユーザーIDからホスト側の未返信のミーティング情報を取得する関数 |
+| GetConfirmedMeetingsForGuestByUserId | ユーザーIDからゲスト側の確定済みミーティング情報を取得する関数 |
+| GetNotConfirmedMeetingsForGuestByUserId | ユーザーIDからゲスト側の未確定のミーティング情報を取得する関数 |
+| GetNotRespondedMeetingsForGuestByUserId | ユーザーIDからゲスト側の未返信のミーティング情報を取得する関数 |
+
+##### IsTitleEmptyメソッド
+
+##### IsOnsiteButNoPlaceSpecifiedメソッド
+
+##### IsOnlineButNoURLSpecifiedメソッド
+
+##### IsHybridButNeitherPlaceOrURLSpecifiedメソッド
+
+##### GetMeetingByIdメソッド
+
+##### GetMeetingsByUserIdメソッド
+
+##### GetConfirmedMeetingsForHostByUserIdメソッド
+
+##### GetNotConfirmedMeetingsForHostByUserIdメソッド
+
+##### GetNotRespondedMeetingsForHostByUserIdメソッド
+
+##### GetConfirmedMeetingsForGuestByUserIdメソッド
+
+##### GetNotConfirmedMeetingsForGuestByUserIdメソッド
+
+##### GetNotRespondedMeetingsForGuestByUserIdメソッド
 
 #### CandidateTimeオブジェクト
 
@@ -168,16 +204,36 @@
 
 | メソッド名 | 説明 | 
 | ---- | ---- | 
-| GetCandidateTimeByMeetingId | |
-| GetCandidateTimeByMeetingIdAndUserId | |
-| GetAvailableTimeByMeetingId | |
-| Include | |
-| GetLatestStartTime | |
-| GetEarliestEndTime | |
-| CreateUserIdList | |
-| IsSameSlice | |
-| SortByStartTime | |
-| AvailableTimeIsNotFound | |
+| GetCandidateTimeByMeetingId | ミーティングIDからミーティング候補時間を取得する関数 |
+| GetCandidateTimeByMeetingIdAndUserId | ミーティングIDとユーザーIDからミーティング候補時間を取得する関数 |
+| GetAvailableTimeByMeetingId | ミーティングIDからミーティング候補時間を取得する関数 |
+| Include | ある数が数の配列の一部か判定する関数 |
+| GetLatestStartTime | 1番遅いミーティング候補時間を取得する関数 |
+| GetEarliestEndTime | 1番早いミーティング候補時間を取得する関数 |
+| CreateUserIdList | ユーザIDリストを作成する関数 |
+| IsSameSlice | 2つの配列が一致しているか判定する関数 |
+| SortByStartTime | ミーティング候補時間の配列を開始時間で並べ替える関数 |
+| AvailableTimeIsNotFound | ミーティング可能時間が存在しないか判定する関数 |
+
+##### GetCandidateTimeByMeetingIdメソッド
+
+##### GetCandidateTimeByMeetingIdAndUserIdメソッド
+
+##### GetAvailableTimeByMeetingIdメソッド
+
+##### Includeメソッド
+
+##### GetLatestStartTimeメソッド
+
+##### GetEarliestEndTimeメソッド
+
+##### CreateUserIdListメソッド
+
+##### IsSameSliceメソッド
+
+##### SortByStartTimeメソッド
+
+##### AvailableTimeIsNotFoundメソッド
 
 
 #### Participantオブジェクト
@@ -198,14 +254,30 @@
 
 | メソッド名 | 説明 | 
 | ---- | ---- | 
-| GetParticipantListByMeetingId | |
-| GetParticipantByUserIdAndMeetingId | |
-| ConvertToParticipant | |
-| ConvertToParticipantWithUserName | |
-| ConvertToParticipantWithUserNameList | |
-| ConvertToParticipantList | |
-| Min | |
-| HostIsInParticipant | |
+| GetParticipantListByMeetingId | ミーティングIDから参加者リストを取得する関数 |
+| GetParticipantByUserIdAndMeetingId | ミーティングIDとユーザーIDから参加者の情報を取得する関数 |
+| ConvertToParticipant | ParticipantWithUserNameオブジェクトをParticipantオブジェクトに変換する関数 |
+| ConvertToParticipantWithUserName | ParticipantWithUserNameオブジェクトをParticipantオブジェクトに変換する関数 |
+| ConvertToParticipantWithUserNameList | Participantオブジェクトの配列をParticipantWithUserNameオブジェクトの配列に変換する関数 |
+| ConvertToParticipantList | ParticipantWithUserNameオブジェクトの配列をParticipantオブジェクトの配列に変換する関数 |
+| Min | 2つの整数の小さい方を取得する関数 |
+| HostIsInParticipant | Participantオブジェクトの配列の中にHostが含まれているか判断する関数 |
+
+##### GetParticipantListByMeetingIdメソッド
+
+##### GetParticipantByUserIdAndMeetingIdメソッド
+
+##### ConvertToParticipantメソッド
+
+##### ConvertToParticipantWithUserNameメソッド
+
+##### ConvertToParticipantWithUserNameListメソッド
+
+##### ConvertToParticipantListメソッド
+
+##### Minメソッド
+
+##### HostIsInParticipantメソッド
 
 
 ### フロントエンド
