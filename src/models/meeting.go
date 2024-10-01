@@ -29,118 +29,169 @@ type AvailableTime struct {
 	ActualEndTime   time.Time `json:"actual_end_time"`
 }
 
-func IsTitleEmpty(m Meeting) bool {
-	return m.Title == ""
+func IsTitleEmpty(m Meeting) (bool, error) {
+	if *m == nil {
+		return false, errors.New("The given Meeting object is nil")
+	}
+	return m.Title == "", nil
 }
 
-func IsHourEmpty(m Meeting) bool {
-	return m.Hour == 0
+func IsHourEmpty(m Meeting) (bool, error) {
+	if *m == nil {
+		return false, errors.New("The given Meeting object is nil")
+	}
+	return m.Hour == 0, nil
 }
 
-// func Is
-
-func IsOnsiteButNoPlaceSpecified(m Meeting) bool {
-	return m.IsOnsite == true && m.Place == ""
+func IsOnsiteButNoPlaceSpecified(m Meeting) (bool, error) {
+	if *m == nil {
+		return false, errors.New("The given Meeting object is nil")
+	}
+	return m.IsOnsite == true && m.IsOnline == false && m.Place == "", nil
 }
 
-func IsOnlineButNoURLSpecified(m Meeting) bool {
-	return m.IsOnline == true && m.Url == ""
+func IsOnlineButNoURLSpecified(m Meeting) (bool, error) {
+	if *m == nil {
+		return false, errors.New("The given Meeting object is nil")
+	}
+	return m.IsOnsite == false && m.IsOnline == true && m.Url == "", nil
 }
 
-func IsHybridButNeitherPlaceOrURLSpecified(m Meeting) bool {
-	return m.IsOnsite == true && m.IsOnline == true && m.Place == "" && m.Url == ""
+func IsHybridButNeitherPlaceOrURLSpecified(m Meeting) (bool, error) {
+	if *m == nil {
+		return false, errors.New("The given Meeting object is nil")
+	}
+	return m.IsOnsite == true && m.IsOnline == true && m.Place == "" && m.Url == "", nil
 }
 
-func GetMeetingById(db *gorm.DB, Id int) Meeting {
+func IsHybridButNoPlaceSpecified(m Meeting) (bool, error) {
+	if *m == nil {
+		return false, errors.New("The given Meeting object is nil")
+	}
+	return m.IsOnsite == true && m.IsOnline == true && m.Place == "", nil
+}
+
+func IsHybridButNoURLSpecified(m Meeting) (bool, error) {
+	if *m == nil {
+		return false, errors.New("The given Meeting object is nil")
+	}
+	return m.IsOnsite == true && m.IsOnline == true && m.Url == "", nil
+}
+
+func GetMeetingById(db *gorm.DB, Id int) (Meeting, error) {
 	meeting := Meeting{}
-	db.Table("meetings").
+	err := db.Table("meetings").
 		Select("meetings.*").
 		Where("meetings.id = ?", Id).
-		Find(&meeting)
-	return meeting
+		Find(&meeting).Error
+	if err != nil {
+		return meeting, err
+	}
+	return meeting, nil
 }
 
-func GetMeetingsByUserId(db *gorm.DB, UserId int) []Meeting {
+func GetMeetingsByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
-	db.Table("meetings").
+	err := db.Table("meetings").
 		Select("meetings.*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("users.id = ?", UserId).
-		Find(&meetings)
-	return meetings
+		Find(&meetings).Error
+	if err != nil {
+		return meetings, err
+	}
+	return meetings, nil
 }
 
-func GetConfirmedMeetingsForHostByUserId(db *gorm.DB, UserId int) []Meeting {
+func GetConfirmedMeetingsForHostByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
-	db.Table("meetings").
+	err := db.Table("meetings").
 		Select("meetings.*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 1).
 		Where("meetings.is_confirmed = ?", 1).
-		Find(&meetings)
-	return meetings
+		Find(&meetings).Error
+	if err != nil {
+		return meetings, err
+	}
+	return meetings, nil
 }
 
-func GetNotConfirmedMeetingsForHostByUserId(db *gorm.DB, UserId int) []Meeting {
+func GetNotConfirmedMeetingsForHostByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
-	db.Table("meetings").
+	err := db.Table("meetings").
 		Select("meetings.*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 1).
 		Where("meetings.is_confirmed = ? AND meetings.all_participants_responded = ?", 0, 1).
-		Find(&meetings)
-	return meetings
+		Find(&meetings).Error
+	if err != nil {
+		return meetings, err
+	}
+	return meetings, nil
 }
 
-func GetNotRespondedMeetingsForHostByUserId(db *gorm.DB, UserId int) []Meeting {
+func GetNotRespondedMeetingsForHostByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
-	db.Table("meetings").
+	err := db.Table("meetings").
 		Select("meetings.*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 1).
 		Where("meetings.is_confirmed = ? AND meetings.all_participants_responded = ?", 0, 0).
-		Find(&meetings)
-	return meetings
+		Find(&meetings).Error
+	if err != nil {
+		return meetings, err
+	}
+	return meetings, nil
 }
 
-func GetConfirmedMeetingsForGuestByUserId(db *gorm.DB, UserId int) []Meeting {
+func GetConfirmedMeetingsForGuestByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
-	db.Table("meetings").
+	err := db.Table("meetings").
 		Select("meetings.*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 0).
 		Where("meetings.is_confirmed = ?", 1).
-		Find(&meetings)
-	return meetings
+		Find(&meetings).Error
+	if err != nil {
+		return meetings, err
+	}
+	return meetings, nil
 }
 
-func GetNotConfirmedMeetingsForGuestByUserId(db *gorm.DB, UserId int) []Meeting {
+func GetNotConfirmedMeetingsForGuestByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
-	db.Table("meetings").
+	err := db.Table("meetings").
 		Select("meetings.*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ? AND participants.has_responded = ?", UserId, 0, 1).
 		Where("meetings.is_confirmed = ?", 0).
-		Find(&meetings)
-	return meetings
+		Find(&meetings).Error
+	if err != nil {
+		return meetings, err
+	}
+	return meetings, nil
 }
 
-func GetNotRespondedMeetingsForGuestByUserId(db *gorm.DB, UserId int) []Meeting {
+func GetNotRespondedMeetingsForGuestByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
-	db.Table("meetings").
+	err := db.Table("meetings").
 		Select("meetings.*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ? AND participants.has_responded = ?", UserId, 0, 0).
 		Where("meetings.is_confirmed = ?", 0).
-		Find(&meetings)
-	return meetings
+		Find(&meetings).Error
+	if err != nil {
+		return meetings, err
+	}
+	return meetings, nil
 }
 
 
