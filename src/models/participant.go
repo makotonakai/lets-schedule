@@ -15,23 +15,29 @@ type Participant struct {
 	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`	
 }
 
-func GetParticipantListByMeetingId(db *gorm.DB, Id int) []Participant {
+func GetParticipantListByMeetingId(db *gorm.DB, Id int) ([]Participant, error) {
 	participantList := []Participant{}
-	db.Table("participants").
+	err := db.Table("participants").
 		Select("participants.*").
 		Where("participants.meeting_id = ?", Id).
-		Find(&participantList)
-	return participantList
+		Find(&participantList).Error
+	if err != nil {
+		return participantList, err
+	}
+	return participantList, nil
 }
 
-func GetParticipantByUserIdAndMeetingId(db *gorm.DB, userId int, meetingId int) Participant {
+func GetParticipantByUserIdAndMeetingId(db *gorm.DB, userId int, meetingId int) (Participant, error) {
 	p := Participant{}
-	db.Table("participants").
+	err := db.Table("participants").
 		Select("participants.*").
 		Where("participants.user_id = ?", userId).
 		Where("participants.meeting_id = ?", meetingId).
-		Find(&p)
-	return p
+		Find(&p).Error
+	if err != nil {
+		return p, err
+	}
+	return p, nil
 
 }
 
@@ -48,22 +54,28 @@ func ConvertToParticipant(db *gorm.DB, pw ParticipantWithUserName) (*Participant
 	return p, nil
 }
 
-func ConvertToParticipantWithUserName(db *gorm.DB, p Participant) ParticipantWithUserName {
+func ConvertToParticipantWithUserName(db *gorm.DB, p Participant) (ParticipantWithUserName, error) {
+	if *p == nil {
+		return ParticipantWithUserName{}, errors.New("The given Participant object is nil")
+	}
 	pw := ParticipantWithUserName{}
-	pw.UserName = GetUserNameFromUserId(db, p.UserId)
+	pw.UserName, _ = GetUserNameFromUserId(db, p.UserId)
 	pw.MeetingId = p.MeetingId
 	pw.IsHost = p.IsHost
 	pw.HasResponded = p.HasResponded
-	return pw
+	return pw, nil
 }
 
-func ConvertToParticipantWithUserNameList(db *gorm.DB, plist []Participant) []ParticipantWithUserName {
+func ConvertToParticipantWithUserNameList(db *gorm.DB, plist []Participant) ([]ParticipantWithUserName, error) {
+	if len(plist) == 0 {
+		return []ParticipantWithUserName{}, errors.New("The given ParticipantWithUserName list is empty")
+	}
 	pwl := []ParticipantWithUserName{}
 	for _, p := range plist {
 		pw := ConvertToParticipantWithUserName(db, p)
 		pwl = append(pwl, pw)
 	}
-	return pwl
+	return pwl, nil
 }
 
 func ConvertToParticipantList(db *gorm.DB, pwl []ParticipantWithUserName) (*[]Participant, error) {
@@ -78,26 +90,31 @@ func ConvertToParticipantList(db *gorm.DB, pwl []ParticipantWithUserName) (*[]Pa
 	return pl, nil
 }
 
-func Min(a, b int) int {
+func Min(a, b int) (int, error) {
+	if *a == nil || *b == nil {
+		return -1, errors.New("The given integer is nil")
+	}
 	if a <= b {
 			return a
 	}
 	return b
 }
 
-func HostIsInParticipant(plist []Participant) bool {
-
+func HostIsInParticipant(plist []Participant) (bool, error) {
+	if len(plist) == 0 {
+		return false, errors.New("The given Participant list is empty")
+	}
 	host := Participant{}
 	for _, p := range plist {
 		if p.IsHost == true {
 			host = p
 		}
 		if host.Id == p.Id {
-			return true
+			return true, nil
 		}
 	}
 
-	return false
+	return false, nil
 
 }
 
