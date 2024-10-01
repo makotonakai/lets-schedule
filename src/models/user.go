@@ -70,7 +70,7 @@ func IsPasswordEmptyOrNull(u User) (bool, error) {
 func ErrorsExist(errorMessageList *[]string) (bool, error) {
 
 	if errorMessageList == nil {
-		return false, errors.New("The errorMessageList is nil")
+		return false, errors.New("The list of error messages doesn't exist")
 	}
 	return len((*errorMessageList)) != 0, nil
 }
