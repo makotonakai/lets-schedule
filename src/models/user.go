@@ -29,40 +29,50 @@ type NewPassword struct {
 	NewPassword string `json:"new_password"`
 }
 
-func IsEmailAddressValid(e string) bool {
-	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$`)
-	return emailRegex.MatchString(e)
-}
-
-func IsEmailAddressEmptyOrNull(u User) bool {
-	if govalidator.IsNull(u.EmailAddress) {
-		return true
-	} else {
-		u.EmailAddress = strings.ReplaceAll(u.EmailAddress, " ", "")
-		return u.EmailAddress == ""
+func IsEmailAddressValid(e string) (bool, error) {
+	if e == "" {
+		return false, errors.New("The given email address is empty")
 	}
+	emailRegex := regexp.MustCompile(`^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,}$`)
+	return emailRegex.MatchString(e), nil
 }
 
-func IsUserNameEmptyOrNull(u User) bool {
-	if govalidator.IsNull(u.UserName) {
-		return true
-	} else {
-		u.UserName = strings.ReplaceAll(u.UserName, " ", "")
-		return u.UserName == ""
+func IsEmailAddressEmptyOrNull(u User) (bool, error) {
+
+	if *u == nil {
+		return false, errors.New("The given User object is nil")
 	}
+
+	u.EmailAddress = strings.ReplaceAll(u.EmailAddress, " ", "")
+	return u.EmailAddress == "", nil
 }
 
-func IsPasswordEmptyOrNull(u User) bool {
-	if govalidator.IsNull(u.Password) {
-		return true
-	} else {
-		u.Password = strings.ReplaceAll(u.Password, " ", "")
-		return u.Password == ""
+func IsUserNameEmptyOrNull(u User) (bool, error) {
+
+	if *u == nil {
+		return false, errors.New("The given User object is nil")
 	}
+
+	u.UserName = strings.ReplaceAll(u.UserName, " ", "")
+	return u.UserName == "", nil
 }
 
-func ErrorsExist(errorMessageList []string) bool {
-	return len(errorMessageList) != 0
+func IsPasswordEmptyOrNull(u User) (bool, error) {
+
+	if *u == nil {
+		return false, errors.New("The given User object is nil")
+	}
+	
+	u.Password = strings.ReplaceAll(u.Password, " ", "")
+	return u.Password == "", nil
+}
+
+func ErrorsExist(errorMessageList *[]string) (bool, error) {
+
+	if errorMessageList == nil {
+		return false, errors.New("The errorMessageList is nil")
+	}
+	return len((*errorMessageList)) != 0, nil
 }
 
 
@@ -112,13 +122,18 @@ func GetUserNameFromUserId(db *gorm.DB, UserId int) (string, error) {
 	return user.UserName, nil
 }
 
-func GetUserIdFromEmailAddress(db *gorm.DB, EmailAddress string) int {
+func GetUserIdFromEmailAddress(db *gorm.DB, EmailAddress string) (int, error) {
 	User := User{}
-	db.Table("users").
+	err := db.Table("users").
 		Select("users.id").
 		Where("users.email_address = ?", EmailAddress).
-		Find(&User)
-	return User.Id
+		Find(&User).Error
+
+	if err != nil {
+		return -1, errors.New(fmt.Sprintf("user with email address '%s' not found", EmailAddress))
+	}
+
+	return User.Id, nil
 }
 
 func ResetPassword(db *gorm.DB, Id int, NewPassword string) error {
