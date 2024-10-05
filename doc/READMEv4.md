@@ -766,13 +766,13 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
+| bool | 与えられた2つの配列が一致しているか |
 | error | 発生したエラー |
 
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 正常レスポンス | []CandidateTime | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | err | 
+| 正常レスポンス | true/false | nil |
+| 異常レスポンス (slice1とslice2の少なくともいずれかが空だった時) | false | errors.New("The given int array is empty") | 
 
 ##### SortByStartTimeメソッド
 
