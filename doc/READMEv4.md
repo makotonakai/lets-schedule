@@ -102,16 +102,6 @@
 | created_at | datetime | 登録日時 | 
 | updated_at | datetime | 更新日時 | 
 
-##### メソッド
-
-| メソッド名 | 説明 | 
-| ---- | ---- | 
-| IsEmailAddressValid | メールアドレスが有効か判定する関数 |
-| IsEmailAddressEmptyOrNull | メールアドレスが空白か判定する関数 |
-| IsUserNameEmptyOrNull | ユーザー名が空白か判定する関数 |
-| IsPasswordEmptyOrNull | パスワードが空白か判定する関数 |
-| ErrorsExist | エラーが存在するか判定する関数 |
-| AlreadyExists | ユーザーが既に登録されているか登録する関数 |
 
 ##### IsEmailAddressValidメソッド
 
@@ -127,14 +117,21 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたメールアドレスが有効かどうか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | true | bool |
-| 失敗時 | false | bool |
+| 正常レスポンス | true / false  | nil |
+| 異常レスポンス (与えられたメールアドレスが空の場合) | false | errors.New("The given email address is empty") |
 
 
 ##### IsEmailAddressEmptyOrNullメソッド
 
+与えられたメールアドレスが空白か判定する関数 
+
 引数
 
 | 変数名 | 型 | 
@@ -143,43 +140,52 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたメールアドレスが有効かどうか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | true | bool |
-| 失敗時 | false | bool |
+| 正常レスポンス | true / false  | nil |
+| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The given User object is nil") |
 
 
 ##### IsUserNameEmptyOrNullメソッド
 
-引数
-
-| 変数名 | 型 | 
-| ---- | ---- | 
-| u | User |
+与えられたユーザー名が空白か判定する関数
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたメールアドレスが有効かどうか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | true | bool |
-| 失敗時 | false | bool |
+| 正常レスポンス | true / false  | nil |
+| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The given User object is nil") |
 
 ##### IsPasswordEmptyOrNullメソッド
 
-引数
-
-| 変数名 | 型 | 
-| ---- | ---- | 
-| u | User |
+与えられたパスワードが空白か判定する関数
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたメールアドレスが有効かどうか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | true | bool |
-| 失敗時 | false | bool |
+| 正常レスポンス | true / false  | nil |
+| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The given User object is nil") |
 
 ##### ErrorsExistメソッド
+
+与えられたエラーが存在するか判定する関数
 
 引数
 
@@ -189,12 +195,19 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたメールアドレスが有効かどうか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | true | bool |
-| 失敗時 | false | bool |
+| 正常レスポンス | true / false  | nil |
+| 異常レスポンス (errorMessageListのポイントがnilの場合) | false | errors.New("The list of error messages doesn't exist") |
 
 ##### AlreadyExistsメソッド
+
+与えられたユーザーが既に登録されているか登録する関数
 
 引数
 
@@ -204,6 +217,13 @@
 | u | User |
 
 返り値
+
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたメールアドレスが有効かどうか |
+| error | 発生したエラー |
+| error | 発生したエラー |
+
 
 | | 値 | 型 | 
 | ---- | ---- | ---- | 
@@ -219,6 +239,13 @@
 | ユーザー名もメールアドレスが見つからない時 | false | bool |
 |  | errors.New("Email address not found") | error |
 |  | errors.New("Username not found") | error |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| ユーザー名とメールアドレスが存在する時 | true | nil | nil |
+| メールアドレスが見つからない時 | true | errors.New("Email address not found") | nil |
+| ユーザー名が見つからない時 | nil | errors.New("Username not found") |
+| ユーザー名もメールアドレスが見つからない時 | false | errors.New("Email address not found") | errors.New("Username not found") |
 
 
 #### Meetingオブジェクト
@@ -244,22 +271,24 @@
 
 | メソッド名 | 説明 | 
 | ---- | ---- | 
-| IsTitleEmpty | ミーティングのタイトルが空白かどうか判断する関数 |
-| IsHourEmpty | ミーティングの時間が空白かどうか判断する関数 |
-| IsOnsiteButNoPlaceSpecified | 物理開催のミーティングで開催場所が指定されているか判定する関数 |
-| IsOnlineButNoURLSpecified | オンライン開催のミーティングで開催URLが指定されているか判定する関数 |
-| IsHybridButNeitherPlaceOrURLSpecified | ハイブリッド開催のミーティングで開催場所と開催URLが両方指定されているか判定する関数 |
-| GetMeetingById | ミーティングIDからミーティング情報を取得する関数 |
-| GetMeetingsByUserId | ユーザーIDから参加するミーティング情報を取得する関数 |
-| GetConfirmedMeetingsForHostByUserId | ユーザーIDからホスト側の確定済みミーティング情報を取得する関数 |
-| GetNotConfirmedMeetingsForHostByUserId | ユーザーIDからホスト側の未確定のミーティング情報を取得する関数 |
-| GetNotRespondedMeetingsForHostByUserId | ユーザーIDからホスト側の未返信のミーティング情報を取得する関数 |
-| GetConfirmedMeetingsForGuestByUserId | ユーザーIDからゲスト側の確定済みミーティング情報を取得する関数 |
-| GetNotConfirmedMeetingsForGuestByUserId | ユーザーIDからゲスト側の未確定のミーティング情報を取得する関数 |
-| GetNotRespondedMeetingsForGuestByUserId | ユーザーIDからゲスト側の未返信のミーティング情報を取得する関数 |
+| IsTitleEmpty | 与えられたミーティングのタイトルが空白かどうか判断する関数 |
+| IsHourEmpty | 与えられたミーティングの時間が空白かどうか判断する関数 |
+| IsOnsiteButNoPlaceSpecified | 与えられた物理開催のミーティングで開催場所が指定されているか判定する関数 |
+| IsOnlineButNoURLSpecified | 与えられたオンライン開催のミーティングで開催URLが指定されているか判定する関数 |
+| IsHybridButNeitherPlaceOrURLSpecified | 与えられたハイブリッド開催のミーティングで開催場所と開催URLが両方指定されているか判定する関数 |
+| GetMeetingById | 与えられたミーティングIDからミーティング情報を取得する関数 |
+| GetMeetingsByUserId | 与えられたユーザーIDから参加するミーティング情報を取得する関数 |
+| GetConfirmedMeetingsForHostByUserId | 与えられたユーザーIDからホスト側の確定済みミーティング情報を取得する関数 |
+| GetNotConfirmedMeetingsForHostByUserId | 与えられたユーザーIDからホスト側の未確定のミーティング情報を取得する関数 |
+| GetNotRespondedMeetingsForHostByUserId | 与えられたユーザーIDからホスト側の未返信のミーティング情報を取得する関数 |
+| GetConfirmedMeetingsForGuestByUserId | 与えられたユーザーIDからゲスト側の確定済みミーティング情報を取得する関数 |
+| GetNotConfirmedMeetingsForGuestByUserId | 与えられたユーザーIDからゲスト側の未確定のミーティング情報を取得する関数 |
+| GetNotRespondedMeetingsForGuestByUserId | 与えられたユーザーIDからゲスト側の未返信のミーティング情報を取得する関数 |
 
 ##### IsTitleEmptyメソッド
 
+与えられたミーティングのタイトルが空白かどうか判断する関数 
+
 引数
 
 | 変数名 | 型 | 
@@ -268,13 +297,20 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたミーティングのタイトルが空白かどうか |
+| error | 発生しうるエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | true | bool |
-| 失敗時 | false | bool |
+| 正常レスポンス | true / false  | nil |
+| 異常レスポンス (mのポインタがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
 ##### IsHourEmptyメソッド
 
+与えられたミーティングの時間が空白かどうか判断する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -283,13 +319,20 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたミーティングの時間が空白かどうか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | true | bool |
-| 失敗時 | false | bool |
+| 正常レスポンス | true / false  | nil |
+| 異常レスポンス (mのポインタがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
 ##### IsOnsiteButNoPlaceSpecifiedメソッド
 
+与えられた物理開催のミーティングで開催場所が指定されているか判定する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -298,13 +341,20 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられた物理開催のミーティングで開催場所が指定されているか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | true | bool |
-| 失敗時 | false | bool |
+| 正常レスポンス | true / false  | nil |
+| 異常レスポンス (mのポインタがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
 ##### IsOnlineButNoURLSpecifiedメソッド
 
+与えられたオンライン開催のミーティングで開催URLが指定されているか判定する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -313,13 +363,20 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられた物理開催のミーティングで開催場所が指定されているか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | true | bool |
-| 失敗時 | false | bool |
+| 正常レスポンス | true / false  | nil |
+| 異常レスポンス (mのポインタがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
 ##### IsHybridButNeitherPlaceOrURLSpecifiedメソッド
 
+与えられたハイブリッド開催のミーティングで開催場所と開催URLが両方指定されているか判定する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -328,12 +385,19 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたハイブリッド開催のミーティングで開催場所と開催URLが両方指定されているか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | true | bool |
-| 失敗時 | false | bool |
+| 正常レスポンス | true / false  | nil |
+| 異常レスポンス (mのポインタがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
 ##### GetMeetingByIdメソッド
+
+与えられたミーティングIDからミーティング情報を取得する関数
 
 引数
 
@@ -344,15 +408,20 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| Meeting | 与えられたIdを持つMeetingオブジェクト |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | meeting | Meeting |
-|  | nil | error |
-| 失敗時 | meeting | Meeting |
-|  | false | bool |
+| 正常レスポンス | Meeting{}  | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | Meeting{} | err |
 
 ##### GetMeetingsByUserIdメソッド
 
+与えられたユーザーIDから参加するミーティング情報を取得する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -362,15 +431,20 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | meetings | []Meeting |
-|  | nil | error |
-| 失敗時 | meetings | []Meeting |
-|  | err | error |
+| 正常レスポンス | []Meeting{} | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
 
 ##### GetConfirmedMeetingsForHostByUserIdメソッド
 
+与えられたユーザーIDからホスト側の確定済みミーティング情報を取得する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -380,15 +454,20 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | meetings | []Meeting |
-|  | nil | error |
-| 失敗時 | meetings | []Meeting |
-|  | err | error |
+| 正常レスポンス | []Meeting{} | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
 
 ##### GetNotConfirmedMeetingsForHostByUserIdメソッド
 
+与えられたユーザーIDからホスト側の未確定のミーティング情報を取得する関数 
+
 引数
 
 | 変数名 | 型 | 
@@ -398,15 +477,20 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | meetings | []Meeting |
-|  | nil | error |
-| 失敗時 | meetings | []Meeting |
-|  | err | error |
+| 正常レスポンス | []Meeting{} | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
 
 ##### GetNotRespondedMeetingsForHostByUserIdメソッド
 
+与えられたユーザーIDからホスト側の未返信のミーティング情報を取得する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -416,15 +500,20 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | meetings | []Meeting |
-|  | nil | error |
-| 失敗時 | meetings | []Meeting |
-|  | err | error |
+| 正常レスポンス | []Meeting{} | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
 
 ##### GetConfirmedMeetingsForGuestByUserIdメソッド
 
+与えられたユーザーIDからゲスト側の確定済みミーティング情報を取得する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -434,12 +523,15 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | meetings | []Meeting |
-|  | nil | error |
-| 失敗時 | meetings | []Meeting |
-|  | err | error |
+| 正常レスポンス | []Meeting{} | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
 
 ##### GetNotConfirmedMeetingsForGuestByUserIdメソッド
 
@@ -452,12 +544,15 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | meetings | []Meeting |
-|  | nil | error |
-| 失敗時 | meetings | []Meeting |
-|  | err | error |
+| 正常レスポンス | []Meeting{} | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
 
 ##### GetNotRespondedMeetingsForGuestByUserIdメソッド
 
@@ -470,12 +565,15 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | meetings | []Meeting |
-|  | nil | error |
-| 失敗時 | meetings | []Meeting |
-|  | err | error |
+| 正常レスポンス | []Meeting{} | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
 
 #### CandidateTimeオブジェクト
 
@@ -495,18 +593,20 @@
 
 | メソッド名 | 説明 | 
 | ---- | ---- | 
-| GetCandidateTimeByMeetingId | ミーティングIDからミーティング候補時間を取得する関数 |
-| GetCandidateTimeByMeetingIdAndUserId | ミーティングIDとユーザーIDからミーティング候補時間を取得する関数 |
-| GetAvailableTimeByMeetingId | ミーティングIDからミーティング候補時間を取得する関数 |
-| Include | ある数が数の配列の一部か判定する関数 |
-| GetLatestStartTime | 1番遅いミーティング候補時間を取得する関数 |
-| GetEarliestEndTime | 1番早いミーティング候補時間を取得する関数 |
-| CreateUserIdList | ユーザIDリストを作成する関数 |
-| IsSameSlice | 2つの配列が一致しているか判定する関数 |
-| SortByStartTime | ミーティング候補時間の配列を開始時間で並べ替える関数 |
-| AvailableTimeIsNotFound | ミーティング可能時間が存在しないか判定する関数 |
+| GetCandidateTimeByMeetingId | 与えられたミーティングIDからミーティング候補時間を取得する関数 |
+| GetCandidateTimeByMeetingIdAndUserId | 与えられたミーティングIDとユーザーIDからミーティング候補時間を取得する関数 |
+| GetAvailableTimeByMeetingId | 与えられたミーティングIDからミーティング可能な時間帯を取得する関数 |
+| Include | 与えられた数が与えられた配列に含まれているか判定する関数 |
+| GetLatestStartTime | 与えられた1番遅いミーティング開始時間を取得する関数 |
+| GetEarliestEndTime | 与えられた1番早いミーティング終了時間を取得する関数 |
+| CreateUserIdList | 与えられたユーザIDリストを作成する関数 |
+| IsSameSlice | 与えられた2つの配列が一致しているか判定する関数 |
+| SortByStartTime | 与えられたミーティング候補時間の配列を開始時間で並べ替える関数 |
+| AvailableTimeIsNotFound | 与えられたミーティング可能時間が存在しないか判定する関数 |
 
 ##### GetCandidateTimeByMeetingIdメソッド
+
+与えられたミーティングIDからミーティング候補時間を取得する関数
 
 引数
 
@@ -515,16 +615,22 @@
 | db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
 | UserId | int |
 
+
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | meetings | []Meeting |
-|  | nil | error |
-| 失敗時 | meetings | []Meeting |
-|  | err | error |
+| 正常レスポンス | []CandidateTime | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | err |
 
 ##### GetCandidateTimeByMeetingIdAndUserIdメソッド
+
+与えられたミーティングIDとユーザーIDからミーティング候補時間を取得する関数
 
 引数
 
@@ -536,16 +642,21 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | CandidateTimeList | []CandidateTime |
-|  | nil | error |
-| 失敗時 | CandidateTimeList |[]CandidateTime |
-|  | err | error |
+| 正常レスポンス | []CandidateTime | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | err |
 
 
 ##### GetAvailableTimeByMeetingIdメソッド
 
+与えられたミーティングIDからミーティング可能な時間帯を取得する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -556,14 +667,19 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | CandidateTimeList | []CandidateTime |
-|  | nil | error |
-| 失敗時 | CandidateTimeList |[]CandidateTime |
-|  | err | error |
+| 正常レスポンス | []CandidateTime | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | err |
 
 ##### Includeメソッド
+
+与えられた数が与えられた配列に含まれているか判定する関数
 
 引数
 
@@ -574,10 +690,20 @@
 
 返り値
 
-| 型 | bool | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | true/false | nil |
+| 異常レスポンス (numlistのポインタがnilの場合) | false | errors.New("The given int array is nil") |
 
 ##### GetLatestStartTimeメソッド
 
+与えられた1番遅いミーティング開始時間を取得する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -586,10 +712,20 @@
 
 返り値
 
-| 型 | time.Time | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| time.Time | 与えられた1番遅いミーティング開始時間 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | time.Time | nil |
+| 異常レスポンス (candidateTimeListのポインタがnilの場合) | time.Time | errors.New("The given list of candidateTime is nil") |
 
 ##### GetEarliestEndTimeメソッド
 
+与えられた1番早いミーティング終了時間を取得する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -598,10 +734,21 @@
 
 返り値
 
-| 型 | time.Time | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| time.Time | 与えられた1番早いミーティング終了時間 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | time.Time | nil |
+| 異常レスポンス (candidateTimeListのポインタがnilの場合) | time.Time | errors.New("The given list of candidateTime is nil") |
 
 ##### CreateUserIdListメソッド
 
+与えられたユーザIDリストを作成する関数 
+
+
 引数
 
 | 変数名 | 型 | 
@@ -610,9 +757,19 @@
 
 返り値
 
-| 型 | []int | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []int | ユーザIDの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | []int | nil |
+| 異常レスポンス (candidateTimeListのポインタがnilの場合) | []Candidate | errors.New("The given list of candidateTime is nil") |
 
 ##### IsSameSliceメソッド
+
+与えられた2つの配列が一致しているか判定する関数
 
 引数
 
@@ -623,22 +780,36 @@
 
 返り値
 
-| 型 | []int | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | []CandidateTime | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | err | 
 
 ##### SortByStartTimeメソッド
 
-引数
-
-| 変数名 | 型 | 
-| ---- | ---- | 
-| candidateTimeList | []CandidateTime |
+与えられたミーティング候補時間の配列を開始時間で並べ替える関数
 
 返り値
 
-| 型 | []CandidateTime | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | []CandidateTime | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | err |
 
 ##### AvailableTimeIsNotFoundメソッド
 
+与えられたミーティング可能時間が存在しないか判定する関数
+
 引数
 
 | 変数名 | 型 | 
@@ -647,7 +818,15 @@
 
 返り値
 
-| 型 | bool | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたミーティング可能時間が存在しないか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | true/false | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | errors.New("The given list of candidateTime is nil") |
 
 #### Participantオブジェクト
 
@@ -667,16 +846,18 @@
 
 | メソッド名 | 説明 | 
 | ---- | ---- | 
-| GetParticipantListByMeetingId | ミーティングIDから参加者リストを取得する関数 |
-| GetParticipantByUserIdAndMeetingId | ミーティングIDとユーザーIDから参加者の情報を取得する関数 |
-| ConvertToParticipant | ParticipantWithUserNameオブジェクトをParticipantオブジェクトに変換する関数 |
-| ConvertToParticipantWithUserName | ParticipantWithUserNameオブジェクトをParticipantオブジェクトに変換する関数 |
-| ConvertToParticipantWithUserNameList | Participantオブジェクトの配列をParticipantWithUserNameオブジェクトの配列に変換する関数 |
-| ConvertToParticipantList | ParticipantWithUserNameオブジェクトの配列をParticipantオブジェクトの配列に変換する関数 |
-| Min | 2つの整数の小さい方を取得する関数 |
-| HostIsInParticipant | Participantオブジェクトの配列の中にHostが含まれているか判断する関数 |
+| GetParticipantListByMeetingId | 与えられたミーティングIDから参加者リストを取得する関数 |
+| GetParticipantByUserIdAndMeetingId | 与えられたミーティングIDとユーザーIDから参加者の情報を取得する関数 |
+| ConvertToParticipant | 与えられたParticipantWithUserNameオブジェクトをParticipantオブジェクトに変換する関数 |
+| ConvertToParticipantWithUserName | 与えられたParticipantWithUserNameオブジェクトをParticipantオブジェクトに変換する関数 |
+| ConvertToParticipantWithUserNameList | 与えられたParticipantオブジェクトの配列をParticipantWithUserNameオブジェクトの配列に変換する関数 |
+| ConvertToParticipantList | 与えられたParticipantWithUserNameオブジェクトの配列をParticipantオブジェクトの配列に変換する関数 |
+| Min | 与えられた2つの整数の小さい方を取得する関数 |
+| HostIsInParticipant | 与えられたParticipantオブジェクトの配列の中にHostが含まれているか判断する関数 |
 
 ##### GetParticipantListByMeetingIdメソッド
+
+与えられたミーティングIDから参加者リストを取得する関数
 
 引数
 
@@ -687,14 +868,19 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []Participant | 与えられたミーティングIDのミーティングの参加者リスト |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | participantList | []Participant |
-|  | nil | error |
-| 失敗時 | participantList | []Participant |
-|  | err | error |
+| 正常レスポンス | []Participant | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Participante | err |
 
 ##### GetParticipantByUserIdAndMeetingIdメソッド
+
+与えられたミーティングIDとユーザーIDから参加者の情報を取得する関数
 
 引数
 
@@ -706,14 +892,19 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| []Participant | 与えられたミーティングIDのミーティングの参加者リスト |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | p | Participant |
-|  | nil | error |
-| 失敗時 | p | Participant |
-|  | err | error |
+| 正常レスポンス | []Participant | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Participante | err |
 
 ##### ConvertToParticipantメソッド
+
+与えられたParticipantWithUserNameオブジェクトをParticipantオブジェクトに変換する関数
 
 引数
 
@@ -724,14 +915,19 @@
 
 返り値
 
-| | 値 | 型 | 
+| 型 | 説明 |  
+| ---- | ---- | 
+| Participant | Participantオブジェクト |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 成功時 | p | *Participant |
-|  | nil | error |
-| 失敗時 | nil | *Participant  |
-|  | err | error |
+| 正常レスポンス | Participant | nil |
+| 異常レスポンス (pwのポインタがnilだった時) | Participant | errors.New("The given ParticipantWithUserName object is nil") |
 
 ##### ConvertToParticipantWithUserNameメソッド
+
+与えられたParticipantオブジェクトをParticipantWithUserNameオブジェクトに変換する関数
 
 引数
 
@@ -740,12 +936,21 @@
 | db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
 | p | Participant |
 
-
 返り値
 
-| 型 | ParticipantWithUserName |
+| 型 | 説明 |  
+| ---- | ---- | 
+| ParticipantWithUserName | 与えられたミーティングIDのミーティングの参加者リスト |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | ParticipantWithUserName | nil |
+| 異常レスポンス (pのポインタがnilだった時) | ParticipantWithUserName | errors.New("The given Participant object is nil") |
 
 ##### ConvertToParticipantWithUserNameListメソッド
+
+与えられたParticipantオブジェクトの配列をParticipantWithUserNameオブジェクトの配列に変換する関数
 
 引数
 
@@ -754,12 +959,22 @@
 | db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
 | plist | []Participant |
 
-
 返り値
 
-| 型 | []ParticipantWithUserName |
+| 型 | 説明 |  
+| ---- | ---- | 
+| []ParticipantWithUserName | ParticipantWithUserNameの配列 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | ParticipantWithUserName | nil |
+| 異常レスポンス (与えられた配列が空の時) | ParticipantWithUserName | errors.New("The given ParticipantWithUserName list is empty") |
 
 ##### ConvertToParticipantListメソッド
+
+与えられたParticipantWithUserNameオブジェクトの配列をParticipantオブジェクトの配列に変換する関数
+
 
 引数
 
@@ -770,9 +985,19 @@
 
 返り値
 
-| 型 | []Participant |
+| 型 | 説明 |  
+| ---- | ---- | 
+| []Participant | 与えられたミーティングIDのミーティングの参加者リスト |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | []Participant | nil |
+| 異常レスポンス (与えられた配列が空の時) | []Participant | errors.New("The given Participant list is empty") |
 
 ##### Minメソッド
+
+与えられた2つの整数の小さい方を取得する関数
 
 引数
 
@@ -783,9 +1008,20 @@
 
 返り値
 
-| 型 | int |
+| 型 | 説明 |  
+| ---- | ---- | 
+| int | 与えられた2つの整数の小さい方 |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス (aがb以下の時) | a | nil |
+| 正常レスポンス (bがa未満の時) | b | nil |
+| 異常レスポンス (aかbのポインタがnilだった場合) | -1 | errors.New("The given integer is nil") |
 
 ##### HostIsInParticipantメソッド
+
+与えられたParticipantオブジェクトの配列の中にHostが含まれているか判断する関数
 
 引数
 
@@ -795,7 +1031,15 @@
 
 返り値
 
-| 型 | bool |
+| 型 | 説明 |  
+| ---- | ---- | 
+| bool | 与えられたParticipantオブジェクトの配列の中にHostが含まれているか |
+| error | 発生したエラー |
+
+| シチュエーション | bool | error |  
+| ---- | ---- | ---- | 
+| 正常レスポンス | true/false | nil |
+| 異常レスポンス (与えられた配列が空の時) | false | errors.New("The given Participant list is empty") |
 
 
 ### フロントエンド
