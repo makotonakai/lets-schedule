@@ -610,7 +610,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []CandidateTime | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | err |
+| 異常レスポンス (SQLの実行に失敗した時) | []CandidateTime | err |
 
 ##### GetCandidateTimeByMeetingIdAndUserIdメソッド
 
@@ -634,7 +634,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []CandidateTime | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | err |
+| 異常レスポンス (SQLの実行に失敗した時) | []CandidateTime | err |
 
 
 ##### GetAvailableTimeByMeetingIdメソッド
@@ -659,7 +659,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []CandidateTime | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | err |
+| 異常レスポンス (SQLの実行に失敗した時) | []CandidateTime | err |
 
 ##### Includeメソッド
 
@@ -788,7 +788,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []CandidateTime | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | err |
+| 異常レスポンス (SQLの実行に失敗した時) | []CandidateTime | err |
 
 ##### AvailableTimeIsNotFoundメソッド
 
@@ -810,7 +810,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true/false | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Candidate | errors.New("The given list of candidateTime is nil") |
+| 異常レスポンス (SQLの実行に失敗した時) | []CandidateTime | errors.New("The given list of candidateTime is nil") |
 
 #### Participantオブジェクト
 
