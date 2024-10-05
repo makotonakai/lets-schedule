@@ -6,7 +6,6 @@ import (
 	"errors"
 	"regexp"
 	"strings"
-	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
 )
 
@@ -39,7 +38,7 @@ func IsEmailAddressValid(e string) (bool, error) {
 
 func IsEmailAddressEmptyOrNull(u User) (bool, error) {
 
-	if *u == nil {
+	if &u == nil {
 		return false, errors.New("The given User object is nil")
 	}
 
@@ -49,7 +48,7 @@ func IsEmailAddressEmptyOrNull(u User) (bool, error) {
 
 func IsUserNameEmptyOrNull(u User) (bool, error) {
 
-	if *u == nil {
+	if &u == nil {
 		return false, errors.New("The given User object is nil")
 	}
 
@@ -59,7 +58,7 @@ func IsUserNameEmptyOrNull(u User) (bool, error) {
 
 func IsPasswordEmptyOrNull(u User) (bool, error) {
 
-	if *u == nil {
+	if &u == nil {
 		return false, errors.New("The given User object is nil")
 	}
 	
@@ -69,10 +68,10 @@ func IsPasswordEmptyOrNull(u User) (bool, error) {
 
 func ErrorsExist(errorMessageList []string) (bool, error) {
 
-	if *errorMessageList == nil {
+	if &errorMessageList == nil {
 		return false, errors.New("The list of error messages doesn't exist")
 	}
-	return len((*errorMessageList)) != 0, nil
+	return len((errorMessageList)) != 0, nil
 }
 
 
