@@ -97,8 +97,8 @@
 | user_name | string |  ユーザー名 | 
 | email_address | string | メールアドレス | 
 | password | string | パスワード | 
-| is_admin | bool | 管理者かどうか | 
-| can_login | bool | ログイン可能か | 
+| is_admin | boolean | 管理者かどうか | 
+| can_login | boolean | ログイン可能か | 
 | created_at | datetime | 登録日時 | 
 | updated_at | datetime | 更新日時 | 
 
@@ -117,12 +117,12 @@
 
 返り値
 
-| 型 | 説明 |  
+| 型の種類 | 型の名称| 説明 |  
 | ---- | ---- | 
-| bool | 与えられたメールアドレスが有効かどうか |
-| error | 発生したエラー |
+| プリミティブ型 | boolean | 与えられたメールアドレスが有効かどうか |
+| オブジェクト型 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (与えられたメールアドレスが空の場合) | false | errors.New("The given email address is empty") |
@@ -142,10 +142,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたメールアドレスが有効かどうか |
+| boolean | 与えられたメールアドレスが有効かどうか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (uのポインタがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
@@ -165,10 +165,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたメールアドレスが有効かどうか |
+| boolean | 与えられたメールアドレスが有効かどうか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (uのポインタがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
@@ -187,10 +187,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたメールアドレスが有効かどうか |
+| boolean | 与えられたメールアドレスが有効かどうか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (uのポインタがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
@@ -209,10 +209,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたメールアドレスが有効かどうか |
+| boolean | 与えられたメールアドレスが有効かどうか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (errorMessageListのポイントがnilの場合) | false | errors.New("The list of error messages doesn't exist") |
@@ -232,11 +232,11 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたメールアドレスが有効かどうか |
+| boolean | 与えられたメールアドレスが有効かどうか |
 | error | 発生したエラー |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | ユーザー名とメールアドレスが存在する時 | true | nil | nil |
 | メールアドレスが見つからない時 | true | errors.New("Email address not found") | nil |
@@ -254,11 +254,11 @@
 | id | int | ミーティングID | 
 | title | string | ミーティング名 | 
 | description | text | 概要 | 
-| is_onsite | bool | オンサイト開催か (falseの場合はオンライン開催) | 
+| is_onsite | boolean | オンサイト開催か (falseの場合はオンライン開催) | 
 | place | string | 集合場所 | 
 | url | string | ミーティングURL | 
-| all_participants_responded | bool | 全員が回答したか | 
-| is_confirmed | bool | 確定したか | 
+| all_participants_responded | boolean | 全員が回答したか | 
+| is_confirmed | boolean | 確定したか | 
 | start_time | datetime | 開始日時 | 
 | end_time | datetime | 終了日時 | 
 | created_at | datetime | 登録日時 | 
@@ -296,10 +296,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたミーティングのタイトルが空白かどうか |
+| boolean | 与えられたミーティングのタイトルが空白かどうか |
 | error | 発生しうるエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
@@ -318,10 +318,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたミーティングの時間が空白かどうか |
+| boolean | 与えられたミーティングの時間が空白かどうか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
@@ -340,10 +340,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられた物理開催のミーティングで開催場所が指定されているか |
+| boolean | 与えられた物理開催のミーティングで開催場所が指定されているか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
@@ -362,10 +362,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられた物理開催のミーティングで開催場所が指定されているか |
+| boolean | 与えられた物理開催のミーティングで開催場所が指定されているか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
@@ -384,10 +384,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたハイブリッド開催のミーティングで開催場所と開催URLが両方指定されているか |
+| boolean | 与えられたハイブリッド開催のミーティングで開催場所と開催URLが両方指定されているか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
@@ -410,7 +410,7 @@
 | Meeting | 与えられたIdを持つMeetingオブジェクト |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | Meeting  | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | Meeting | err |
@@ -433,7 +433,7 @@
 | []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Meeting | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
@@ -456,7 +456,7 @@
 | []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Meeting | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
@@ -479,7 +479,7 @@
 | []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Meeting | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
@@ -502,7 +502,7 @@
 | []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Meeting | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
@@ -525,7 +525,7 @@
 | []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Meeting | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
@@ -546,7 +546,7 @@
 | []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Meeting | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
@@ -567,7 +567,7 @@
 | []Meeting | 与えられたIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Meeting | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
@@ -620,7 +620,7 @@
 | []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []CandidateTime | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []CandidateTime | err |
@@ -644,7 +644,7 @@
 | []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []CandidateTime | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []CandidateTime | err |
@@ -669,7 +669,7 @@
 | []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []CandidateTime | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []CandidateTime | err |
@@ -689,10 +689,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
+| boolean | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true/false | nil |
 | 異常レスポンス (numlistがnilの場合) | false | errors.New("The given int array is nil") |
@@ -714,7 +714,7 @@
 | time.Time | 与えられた1番遅いミーティング開始時間 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | time.Time | nil |
 | 異常レスポンス (candidateTimeListがnilの場合) | time.Time | errors.New("The given list of candidateTime is nil") |
@@ -736,7 +736,7 @@
 | time.Time | 与えられた1番早いミーティング終了時間 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | time.Time | nil |
 | 異常レスポンス (candidateTimeListがnilの場合) | time.Time | errors.New("The given list of candidateTime is nil") |
@@ -759,7 +759,7 @@
 | []int | ユーザIDの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []int | nil |
 | 異常レスポンス (candidateTimeListがnilの場合) | []int | errors.New("The given list of candidateTime is nil") |
@@ -779,10 +779,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられた2つの配列が一致しているか |
+| boolean | 与えられた2つの配列が一致しているか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true/false | nil |
 | 異常レスポンス (slice1とslice2の少なくともいずれかが空だった時) | false | errors.New("The given int array is empty") | 
@@ -798,7 +798,7 @@
 | []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []CandidateTime | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []CandidateTime | err |
@@ -817,10 +817,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたミーティング可能時間が存在しないか |
+| boolean | 与えられたミーティング可能時間が存在しないか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true/false | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []CandidateTime | errors.New("The given list of candidateTime is nil") |
@@ -834,8 +834,8 @@
 | id  | int | ID | 
 | user_id | int | ユーザーID | 
 | meeting_id | int | ミーティングID |
-| is_host | bool | 主催者かどうか | 
-| has_responded | bool | 回答の有無 | 
+| is_host | boolean | 主催者かどうか | 
+| has_responded | boolean | 回答の有無 | 
 | created_at | datetime | 登録日時 | 
 | updated_at | datetime | 更新日時 | 
 
@@ -870,7 +870,7 @@
 | []Participant | 与えられたミーティングIDのミーティングの参加者リスト |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Participant | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []Participant | err |
@@ -894,7 +894,7 @@
 | []Participant | 与えられたミーティングIDのミーティングの参加者リスト |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Participant | nil |
 | 異常レスポンス (SQLの実行に失敗した時) | []Participant | err |
@@ -917,7 +917,7 @@
 | Participant | Participantオブジェクト |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | Participant | nil |
 | 異常レスポンス (pwがnilだった時) | Participant | errors.New("The given ParticipantWithUserName object is nil") |
@@ -940,7 +940,7 @@
 | ParticipantWithUserName | 与えられたミーティングIDのミーティングの参加者リスト |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | ParticipantWithUserName | nil |
 | 異常レスポンス (pがnilだった時) | ParticipantWithUserName | errors.New("The given Participant object is nil") |
@@ -963,7 +963,7 @@
 | []ParticipantWithUserName | ParticipantWithUserNameの配列 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | ParticipantWithUserName | nil |
 | 異常レスポンス (与えられた配列が空の時) | ParticipantWithUserName | errors.New("The given ParticipantWithUserName list is empty") |
@@ -987,7 +987,7 @@
 | []Participant | 与えられたミーティングIDのミーティングの参加者リスト |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Participant | nil |
 | 異常レスポンス (与えられた配列が空の時) | []Participant | errors.New("The given Participant list is empty") |
@@ -1010,7 +1010,7 @@
 | int | 与えられた2つの整数の小さい方 |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス (aの実体がbの実体以下の時) | a | nil |
 | 正常レスポンス (bの実体がaの実体未満の時) | b | nil |
@@ -1030,10 +1030,10 @@
 
 | 型 | 説明 |  
 | ---- | ---- | 
-| bool | 与えられたParticipantオブジェクトの配列の中にHostが含まれているか |
+| boolean | 与えられたParticipantオブジェクトの配列の中にHostが含まれているか |
 | error | 発生したエラー |
 
-| シチュエーション | bool | error |  
+| シチュエーション | boolean | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true/false | nil |
 | 異常レスポンス (与えられた配列が空の時) | false | errors.New("The given Participant list is empty") |
@@ -1117,8 +1117,8 @@ APIの種類: REST API
 | username | string | ユーザー名 | |
 | email_address | string | メールアドレス | |
 | password | string | パスワード | |
-| is_admin | bool | 管理者かどうか | デフォルトはfalse |
-| can_login | bool | ログイン可能かどうか | デフォルトはtrue |
+| is_admin | boolean | 管理者かどうか | デフォルトはfalse |
+| can_login | boolean | ログイン可能かどうか | デフォルトはtrue |
 
 
 ステータスコード
@@ -1136,8 +1136,8 @@ APIの種類: REST API
 | | username | string | ユーザー名 |
 | | email_address | string | メールアドレス |
 | | password | string | パスワード |
-| | is_admin | bool | 管理者かどうか |
-| | can_login | bool | ログイン可能かどうか | 
+| | is_admin | boolean | 管理者かどうか |
+| | can_login | boolean | ログイン可能かどうか | 
 | 失敗時 | errorMessageList | array\[string\] | エラーメッセージの配列 |
 
 ##### ミーティング関連API
@@ -1155,7 +1155,7 @@ APIの種類: REST API
 | type | string | 形式 |
 | place | string | 集合場所 |
 | url | string | ミーティングURL |
-| is_confirmed | bool | 日時が決定したかどうか |
+| is_confirmed | boolean | 日時が決定したかどうか |
 
 
 ステータスコード
@@ -1176,7 +1176,7 @@ APIの種類: REST API
 | |  type | string | 形式 |
 | |  place | string | 集合場所 |
 | |  url | string | ミーティングURL |
-| |  is_confirmed | bool | 日時が決定したかどうか |
+| |  is_confirmed | boolean | 日時が決定したかどうか |
 | 失敗時 | errorMessageList | array\[string\] | エラーメッセージの配列 |
 
 
@@ -1209,8 +1209,8 @@ APIの種類: REST API
 | | type | string | 形式 |
 | | meeting_place | string | 集合場所 |
 | | meeting_url | string | ミーティングURL |
-| | all_participants_responded | bool | 全員から返信があったか |
-| | is_confirmed | bool | 日時が決まったか |
+| | all_participants_responded | boolean | 全員から返信があったか |
+| | is_confirmed | boolean | 日時が決まったか |
 | | start_time | datetime | ミーティングの開始日時 |
 | | end_time | datetime | ミーティングの終了日時 |
 | | hour | float | ミーティングの時間 (h) |
