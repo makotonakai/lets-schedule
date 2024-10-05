@@ -136,7 +136,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| u | User |
+| u | *User |
 
 返り値
 
@@ -148,10 +148,16 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The given User object is nil") |
+| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
 
 
 ##### IsUserNameEmptyOrNullメソッド
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| u | *User |
 
 与えられたユーザー名が空白か判定する関数
 
@@ -165,11 +171,17 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The given User object is nil") |
+| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
 
 ##### IsPasswordEmptyOrNullメソッド
 
 与えられたパスワードが空白か判定する関数
+
+引数
+
+| 変数名 | 型 | 
+| ---- | ---- | 
+| u | *User |
 
 返り値
 
@@ -181,7 +193,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The given User object is nil") |
+| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
 
 ##### ErrorsExistメソッド
 
@@ -191,7 +203,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| errorMessageList | []string |
+| errorMessageList | *[]string |
 
 返り値
 

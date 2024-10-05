@@ -39,7 +39,7 @@ func IsEmailAddressValid(e string) (bool, error) {
 func IsEmailAddressEmptyOrNull(u *User) (bool, error) {
 
 	if u == nil {
-		return false, errors.New("The given User object is nil")
+		return false, errors.New("The pointer of the given User object is nil")
 	}
 
 	*u.EmailAddress = strings.ReplaceAll(*u.EmailAddress, " ", "")
@@ -49,7 +49,7 @@ func IsEmailAddressEmptyOrNull(u *User) (bool, error) {
 func IsUserNameEmptyOrNull(u *User) (bool, error) {
 
 	if u == nil {
-		return false, errors.New("The given User object is nil")
+		return false, errors.New("The pointer of the given User object is nil")
 	}
 
 	*u.UserName = strings.ReplaceAll(*u.UserName, " ", "")
@@ -59,7 +59,7 @@ func IsUserNameEmptyOrNull(u *User) (bool, error) {
 func IsPasswordEmptyOrNull(u *User) (bool, error) {
 
 	if u == nil {
-		return false, errors.New("The given User object is nil")
+		return false, errors.New("The pointer of the given User object is nil")
 	}
 	
 	*u.Password = strings.ReplaceAll(*u.Password, " ", "")
@@ -75,7 +75,11 @@ func ErrorsExist(errorMessageList *[]string) (bool, error) {
 }
 
 
-func AlreadyExists(db *gorm.DB, u User) (bool, error, error) {
+func AlreadyExists(db *gorm.DB, u *User) (bool, error, error) {
+
+	if u == nil {
+		return false, errors.New("The pointer of the User object is nil"), nil
+	}
 
 	var sameEmailAddress User
 	var sameUserName User
