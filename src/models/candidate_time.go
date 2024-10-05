@@ -5,6 +5,7 @@ import (
 	"time"
 	"reflect"
 	"gorm.io/gorm"
+	"errors"
 )
 
 type CandidateTime struct {
@@ -18,21 +19,21 @@ type CandidateTime struct {
 }
 
 func IsCandidateTimeEmpty(ctlist []CandidateTime) (bool, error) {
-	if *ctlist == nil {
+	if &ctlist == nil {
 		return false, errors.New("The given array is nil")
 	}
 	return len(ctlist) == 0, nil
 }
 
 func IsAvailableTimeEmpty(at AvailableTime) (bool, error) {
-	if *at == nil {
+	if &at == nil {
 		return false, errors.New("The given AvailableTime object is nil")
 	}
 	return at.ActualStartTime == time.Time{} && at.ActualEndTime == time.Time{}, nil
 }
 
 func EmptyCandidateTimeExists(ctlist []CandidateTime) (bool, error) {
-	if *ctlist == nil {
+	if &ctlist == nil {
 		return false, errors.New("The given array is nil")
 	}
 	t := time.Time{}
@@ -45,7 +46,7 @@ func EmptyCandidateTimeExists(ctlist []CandidateTime) (bool, error) {
 }
 
 func PastCandidateTimeExists(ctlist []CandidateTime) (bool, error) {
-	if *ctlist == nil {
+	if &ctlist == nil {
 		return false, errors.New("The given array is nil")
 	}
 
@@ -87,8 +88,6 @@ func GetCandidateTimeByMeetingIdAndUserId(db *gorm.DB, MeetingId int, UserId int
 	return CandidateTimeList, nil
 }
 
-// func RegisterAvailableTime(db *gorm.DB, )
-
 func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) ([]CandidateTime, error) {
 
 	candidateTimeList := []CandidateTime{}
@@ -102,7 +101,11 @@ func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) ([]CandidateTime, e
 		
 	SortByStartTime(candidateTimeList)
 
-	userIdList := CreateUserIdList(candidateTimeList)
+	userIdList, err := CreateUserIdList(candidateTimeList)
+	if err != nil {
+		return candidateTimeList, err
+	}
+
 	userIdNum := len(userIdList)
 
 	candidateTimeNum := len(candidateTimeList)
@@ -113,12 +116,27 @@ func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) ([]CandidateTime, e
 	for index := 0; index < maxIndex; index++  {
 
 		_candidateTimeList := candidateTimeList[index:index+userIdNum]
-		_userIdList := CreateUserIdList(_candidateTimeList)
+		_userIdList, err := CreateUserIdList(_candidateTimeList)
+		if err != nil {
+			return _candidateTimeList, err
+		}
 
-		if IsSameSlice(userIdList, _userIdList) {
+		sameSlice, err := IsSameSlice(userIdList, _userIdList)
+		if err != nil {
+			return _candidateTimeList, err
+		} 
 
-			startTime := GetLatestStartTime(_candidateTimeList)
-			endTime := GetEarliestEndTime(_candidateTimeList)
+		if sameSlice {
+
+			startTime, err := GetLatestStartTime(_candidateTimeList)
+			if err != nil {
+				return _candidateTimeList, err
+			}
+
+			endTime, err := GetEarliestEndTime(_candidateTimeList)
+			if err != nil {
+				return _candidateTimeList, err
+			}
 
 			availableTime := CandidateTime{}
 			availableTime.StartTime = startTime
@@ -132,7 +150,7 @@ func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) ([]CandidateTime, e
 
 func Include(numList []int, num int) (bool, error) {
 
-	if *numList == nil {
+	if &numList == nil {
 		return false, errors.New("The given int array is nil")
 	}
 
@@ -146,8 +164,8 @@ func Include(numList []int, num int) (bool, error) {
 
 func GetLatestStartTime(candidateTimeList []CandidateTime) (time.Time, error) {
 
-	if *candidateTimeList == nil {
-		return false, errors.New("The given list of candidateTime is nil")
+	if &candidateTimeList == nil {
+		return time.Time{}, errors.New("The given list of candidateTime is nil")
 	}
 
 	latestStartTime := candidateTimeList[0].StartTime
@@ -162,8 +180,8 @@ func GetLatestStartTime(candidateTimeList []CandidateTime) (time.Time, error) {
 
 func GetEarliestEndTime(candidateTimeList []CandidateTime) (time.Time, error) {
 
-	if *candidateTimeList == nil {
-		return false, errors.New("The given list of candidateTime is nil")
+	if &candidateTimeList == nil {
+		return time.Time{}, errors.New("The given list of candidateTime is nil")
 	}
 
 	earliestEndTime := candidateTimeList[0].EndTime
@@ -178,14 +196,19 @@ func GetEarliestEndTime(candidateTimeList []CandidateTime) (time.Time, error) {
 
 func CreateUserIdList(candidateTimeList []CandidateTime) ([]int, error) {
 
-	if *candidateTimeList == nil {
+	if &candidateTimeList == nil {
 		return []int{}, errors.New("The given list of candidateTime is nil")
 	}
 
 	userIdList := []int{}
 	for _, candidateTime := range candidateTimeList {
 		userId := candidateTime.UserId
-		if !Include(userIdList, userId) {
+		include, err := Include(userIdList, userId)
+		if err != nil {
+			return userIdList, err
+		}
+
+		if !include {
 			userIdList = append(userIdList, userId)
 		}
 	}
@@ -210,9 +233,9 @@ func SortByStartTime(candidateTimeList []CandidateTime) {
 
 func AvailableTimeIsNotFound(candidateTimeList []CandidateTime) (bool, error) {
 
-	if *candidateTimeList == nil {
+	if &candidateTimeList == nil {
 		return false, errors.New("The given list of candidateTime is nil")
 	}
 	
-	return len(candidateTimeList) == 0
+	return len(candidateTimeList) == 0, nil
 }

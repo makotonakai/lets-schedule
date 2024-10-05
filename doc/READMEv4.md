@@ -860,7 +860,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Participant | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Participante | err |
+| 異常レスポンス (SQLの実行に失敗した時) | []Participant | err |
 
 ##### GetParticipantByUserIdAndMeetingIdメソッド
 
@@ -884,7 +884,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []Participant | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Participante | err |
+| 異常レスポンス (SQLの実行に失敗した時) | []Participant | err |
 
 ##### ConvertToParticipantメソッド
 
