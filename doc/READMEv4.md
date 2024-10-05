@@ -228,7 +228,7 @@
 | ---- | ---- | ---- | 
 | ユーザー名とメールアドレスが存在する時 | true | nil | nil |
 | メールアドレスが見つからない時 | true | errors.New("Email address not found") | nil |
-| ユーザー名が見つからない時 | nil | errors.New("Username not found") |
+| ユーザー名が見つからない時 | true | nil | errors.New("Username not found") |
 | ユーザー名もメールアドレスが見つからない時 | false | errors.New("Email address not found") | errors.New("Username not found") |
 
 
