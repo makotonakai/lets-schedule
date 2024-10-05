@@ -148,7 +148,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
+| 異常レスポンス (uのポインタがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
 
 
 ##### IsUserNameEmptyOrNullメソッド
@@ -171,7 +171,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
+| 異常レスポンス (uのポインタがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
 
 ##### IsPasswordEmptyOrNullメソッド
 
@@ -193,7 +193,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (uのポイントがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
+| 異常レスポンス (uのポインタがnilの場合) | false | errors.New("The pointer of the given User object is nil") |
 
 ##### ErrorsExistメソッド
 
@@ -226,7 +226,7 @@
 | 変数名 | 型 | 
 | ---- | ---- | 
 | db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| u | User |
+| u | *User |
 
 返り値
 
@@ -242,6 +242,7 @@
 | メールアドレスが見つからない時 | true | errors.New("Email address not found") | nil |
 | ユーザー名が見つからない時 | true | nil | errors.New("Username not found") |
 | ユーザー名もメールアドレスが見つからない時 | false | errors.New("Email address not found") | errors.New("Username not found") |
+| 異常レスポンス (Userのポイントがnilの場合) | false | errors.New("The pointer of the User object is nil") | nil | 
 
 
 #### Meetingオブジェクト
