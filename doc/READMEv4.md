@@ -224,22 +224,6 @@
 | error | 発生したエラー |
 | error | 発生したエラー |
 
-
-| | 値 | 型 | 
-| ---- | ---- | ---- | 
-| ユーザー名とメールアドレスが存在する時 | true | bool |
-|  | nil | error |
-|  | nil | error |
-| メールアドレスが見つからない時 | true | bool |
-|  | errors.New("Email address not found") | error |
-|  | nil | error |
-| ユーザー名が見つからない時 | true | bool |
-|  | nil | error |
-|  | errors.New("Username not found") | error |
-| ユーザー名もメールアドレスが見つからない時 | false | bool |
-|  | errors.New("Email address not found") | error |
-|  | errors.New("Username not found") | error |
-
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | ユーザー名とメールアドレスが存在する時 | true | nil | nil |
