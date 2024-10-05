@@ -2,6 +2,7 @@ package models
 
 import (
 	"time"
+	"errors"
 	"gorm.io/gorm"
 )
 
@@ -42,8 +43,8 @@ func GetParticipantByUserIdAndMeetingId(db *gorm.DB, userId int, meetingId int) 
 }
 
 func ConvertToParticipant(db *gorm.DB, pw ParticipantWithUserName) (*Participant, error) {
-	if *pw == nil {
-		return ParticipantWithUserName{}, errors.New("The given ParticipantWithUserName object is nil")
+	if &pw == nil {
+		return &Participant{}, errors.New("The given ParticipantWithUserName object is nil")
 	}
 	p := &Participant{}
 	userId, err := GetUserIdFromUserName(db, pw.UserName) 
@@ -58,7 +59,7 @@ func ConvertToParticipant(db *gorm.DB, pw ParticipantWithUserName) (*Participant
 }
 
 func ConvertToParticipantWithUserName(db *gorm.DB, p Participant) (ParticipantWithUserName, error) {
-	if *p == nil {
+	if &p == nil {
 		return ParticipantWithUserName{}, errors.New("The given Participant object is nil")
 	}
 	pw := ParticipantWithUserName{}
@@ -75,7 +76,10 @@ func ConvertToParticipantWithUserNameList(db *gorm.DB, plist []Participant) ([]P
 	}
 	pwl := []ParticipantWithUserName{}
 	for _, p := range plist {
-		pw := ConvertToParticipantWithUserName(db, p)
+		pw, err := ConvertToParticipantWithUserName(db, p)
+		if err != nil {
+			return pwl, err
+		}
 		pwl = append(pwl, pw)
 	}
 	return pwl, nil
@@ -94,13 +98,13 @@ func ConvertToParticipantList(db *gorm.DB, pwl []ParticipantWithUserName) (*[]Pa
 }
 
 func Min(a, b int) (int, error) {
-	if *a == nil || *b == nil {
+	if &a == nil || &b == nil {
 		return -1, errors.New("The given integer is nil")
 	}
 	if a <= b {
-			return a
+			return a, nil
 	}
-	return b
+	return b, nil
 }
 
 func HostIsInParticipant(plist []Participant) (bool, error) {
