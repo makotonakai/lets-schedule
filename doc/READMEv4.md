@@ -290,7 +290,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| m | Meeting |
+| m | *Meeting |
 
 返り値
 
@@ -302,7 +302,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (mのポインタがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
+| 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
 ##### IsHourEmptyメソッド
 
@@ -312,7 +312,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| m | Meeting |
+| m | *Meeting |
 
 返り値
 
@@ -324,7 +324,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (mのポインタがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
+| 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
 ##### IsOnsiteButNoPlaceSpecifiedメソッド
 
@@ -334,7 +334,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| m | Meeting |
+| m | *Meeting |
 
 返り値
 
@@ -346,7 +346,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (mのポインタがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
+| 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
 ##### IsOnlineButNoURLSpecifiedメソッド
 
@@ -356,7 +356,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| m | Meeting |
+| m | *Meeting |
 
 返り値
 
@@ -368,7 +368,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (mのポインタがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
+| 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
 ##### IsHybridButNeitherPlaceOrURLSpecifiedメソッド
 
@@ -378,7 +378,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| m | Meeting |
+| m | *Meeting |
 
 返り値
 
@@ -390,7 +390,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true / false  | nil |
-| 異常レスポンス (mのポインタがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
+| 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
 ##### GetMeetingByIdメソッド
 
@@ -682,7 +682,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| numList | []int |
+| numList | *[]int |
 | num | int |
 
 返り値
@@ -695,7 +695,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | true/false | nil |
-| 異常レスポンス (numlistのポインタがnilの場合) | false | errors.New("The given int array is nil") |
+| 異常レスポンス (numlistがnilの場合) | false | errors.New("The given int array is nil") |
 
 ##### GetLatestStartTimeメソッド
 
@@ -705,7 +705,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| candidateTimeList | []CandidateTime |
+| candidateTimeList | *[]CandidateTime |
 
 返り値
 
@@ -717,7 +717,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | time.Time | nil |
-| 異常レスポンス (candidateTimeListのポインタがnilの場合) | time.Time | errors.New("The given list of candidateTime is nil") |
+| 異常レスポンス (candidateTimeListがnilの場合) | time.Time | errors.New("The given list of candidateTime is nil") |
 
 ##### GetEarliestEndTimeメソッド
 
@@ -727,7 +727,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| candidateTimeList | []CandidateTime |
+| candidateTimeList | *[]CandidateTime |
 
 返り値
 
@@ -739,7 +739,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | time.Time | nil |
-| 異常レスポンス (candidateTimeListのポインタがnilの場合) | time.Time | errors.New("The given list of candidateTime is nil") |
+| 異常レスポンス (candidateTimeListがnilの場合) | time.Time | errors.New("The given list of candidateTime is nil") |
 
 ##### CreateUserIdListメソッド
 
@@ -750,7 +750,7 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| candidateTimeList | []CandidateTime |
+| candidateTimeList | *[]CandidateTime |
 
 返り値
 
@@ -762,7 +762,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []int | nil |
-| 異常レスポンス (candidateTimeListのポインタがnilの場合) | []int | errors.New("The given list of candidateTime is nil") |
+| 異常レスポンス (candidateTimeListがnilの場合) | []int | errors.New("The given list of candidateTime is nil") |
 
 ##### IsSameSliceメソッド
 
@@ -908,7 +908,7 @@
 | 変数名 | 型 | 
 | ---- | ---- | 
 | db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| pw | ParticipantWithUserName |
+| pw | *ParticipantWithUserName |
 
 返り値
 
@@ -920,7 +920,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | Participant | nil |
-| 異常レスポンス (pwのポインタがnilだった時) | Participant | errors.New("The given ParticipantWithUserName object is nil") |
+| 異常レスポンス (pwがnilだった時) | Participant | errors.New("The given ParticipantWithUserName object is nil") |
 
 ##### ConvertToParticipantWithUserNameメソッド
 
@@ -931,7 +931,7 @@
 | 変数名 | 型 | 
 | ---- | ---- | 
 | db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| p | Participant |
+| p | *Participant |
 
 返り値
 
@@ -943,7 +943,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | ParticipantWithUserName | nil |
-| 異常レスポンス (pのポインタがnilだった時) | ParticipantWithUserName | errors.New("The given Participant object is nil") |
+| 異常レスポンス (pがnilだった時) | ParticipantWithUserName | errors.New("The given Participant object is nil") |
 
 ##### ConvertToParticipantWithUserNameListメソッド
 
@@ -1000,8 +1000,8 @@
 
 | 変数名 | 型 | 
 | ---- | ---- | 
-| a | int |
-| b | int |
+| a | *int |
+| b | *int |
 
 返り値
 
@@ -1012,9 +1012,9 @@
 
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 正常レスポンス (aがb以下の時) | a | nil |
-| 正常レスポンス (bがa未満の時) | b | nil |
-| 異常レスポンス (aかbのポインタがnilだった場合) | -1 | errors.New("The given integer is nil") |
+| 正常レスポンス (aの実体がbの実体以下の時) | a | nil |
+| 正常レスポンス (bの実体がaの実体未満の時) | b | nil |
+| 異常レスポンス (aかbのいずれかがnilだった場合) | -1 | errors.New("The given integer is nil") |
 
 ##### HostIsInParticipantメソッド
 
