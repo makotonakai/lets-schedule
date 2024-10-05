@@ -2,6 +2,7 @@ package models
 
 import (
 	"time"
+	"errors"
 	"gorm.io/gorm"
 )
 
