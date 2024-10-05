@@ -399,8 +399,8 @@
 
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 正常レスポンス | Meeting{}  | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | Meeting{} | err |
+| 正常レスポンス | Meeting  | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | Meeting | err |
 
 ##### GetMeetingsByUserIdメソッド
 
@@ -422,8 +422,8 @@
 
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 正常レスポンス | []Meeting{} | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
+| 正常レスポンス | []Meeting | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
 
 ##### GetConfirmedMeetingsForHostByUserIdメソッド
 
@@ -445,8 +445,8 @@
 
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 正常レスポンス | []Meeting{} | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
+| 正常レスポンス | []Meeting | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
 
 ##### GetNotConfirmedMeetingsForHostByUserIdメソッド
 
@@ -468,8 +468,8 @@
 
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 正常レスポンス | []Meeting{} | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
+| 正常レスポンス | []Meeting | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
 
 ##### GetNotRespondedMeetingsForHostByUserIdメソッド
 
@@ -491,8 +491,8 @@
 
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 正常レスポンス | []Meeting{} | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
+| 正常レスポンス | []Meeting | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
 
 ##### GetConfirmedMeetingsForGuestByUserIdメソッド
 
@@ -514,8 +514,8 @@
 
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 正常レスポンス | []Meeting{} | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
+| 正常レスポンス | []Meeting | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
 
 ##### GetNotConfirmedMeetingsForGuestByUserIdメソッド
 
@@ -535,8 +535,8 @@
 
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 正常レスポンス | []Meeting{} | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
+| 正常レスポンス | []Meeting | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
 
 ##### GetNotRespondedMeetingsForGuestByUserIdメソッド
 
@@ -556,8 +556,8 @@
 
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
-| 正常レスポンス | []Meeting{} | nil |
-| 異常レスポンス (SQLの実行に失敗した時) | []Meeting{} | err |
+| 正常レスポンス | []Meeting | nil |
+| 異常レスポンス (SQLの実行に失敗した時) | []Meeting | err |
 
 #### CandidateTimeオブジェクト
 
