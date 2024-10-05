@@ -42,6 +42,9 @@ func GetParticipantByUserIdAndMeetingId(db *gorm.DB, userId int, meetingId int) 
 }
 
 func ConvertToParticipant(db *gorm.DB, pw ParticipantWithUserName) (*Participant, error) {
+	if *pw == nil {
+		return ParticipantWithUserName{}, errors.New("The given ParticipantWithUserName object is nil")
+	}
 	p := &Participant{}
 	userId, err := GetUserIdFromUserName(db, pw.UserName) 
 	if err != nil {

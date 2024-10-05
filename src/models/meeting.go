@@ -31,49 +31,49 @@ type AvailableTime struct {
 
 func IsTitleEmpty(m Meeting) (bool, error) {
 	if *m == nil {
-		return false, errors.New("The given Meeting object is nil")
+		return false, errors.New("The given Meeting object doesn't exist")
 	}
 	return m.Title == "", nil
 }
 
 func IsHourEmpty(m Meeting) (bool, error) {
 	if *m == nil {
-		return false, errors.New("The given Meeting object is nil")
+		return false, errors.New("The given Meeting object doesn't exist")
 	}
 	return m.Hour == 0, nil
 }
 
 func IsOnsiteButNoPlaceSpecified(m Meeting) (bool, error) {
 	if *m == nil {
-		return false, errors.New("The given Meeting object is nil")
+		return false, errors.New("The given Meeting object doesn't exist")
 	}
 	return m.IsOnsite == true && m.IsOnline == false && m.Place == "", nil
 }
 
 func IsOnlineButNoURLSpecified(m Meeting) (bool, error) {
 	if *m == nil {
-		return false, errors.New("The given Meeting object is nil")
+		return false, errors.New("The given Meeting object doesn't exist")
 	}
 	return m.IsOnsite == false && m.IsOnline == true && m.Url == "", nil
 }
 
 func IsHybridButNeitherPlaceOrURLSpecified(m Meeting) (bool, error) {
 	if *m == nil {
-		return false, errors.New("The given Meeting object is nil")
+		return false, errors.New("The given Meeting object doesn't exist")
 	}
 	return m.IsOnsite == true && m.IsOnline == true && m.Place == "" && m.Url == "", nil
 }
 
 func IsHybridButNoPlaceSpecified(m Meeting) (bool, error) {
 	if *m == nil {
-		return false, errors.New("The given Meeting object is nil")
+		return false, errors.New("The given Meeting object doesn't exist")
 	}
 	return m.IsOnsite == true && m.IsOnline == true && m.Place == "", nil
 }
 
 func IsHybridButNoURLSpecified(m Meeting) (bool, error) {
 	if *m == nil {
-		return false, errors.New("The given Meeting object is nil")
+		return false, errors.New("The given Meeting object doesn't exist")
 	}
 	return m.IsOnsite == true && m.IsOnline == true && m.Url == "", nil
 }

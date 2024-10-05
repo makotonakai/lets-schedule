@@ -179,7 +179,7 @@ func GetEarliestEndTime(candidateTimeList []CandidateTime) (time.Time, error) {
 func CreateUserIdList(candidateTimeList []CandidateTime) ([]int, error) {
 
 	if *candidateTimeList == nil {
-		return false, errors.New("The given list of candidateTime is nil")
+		return []int{}, errors.New("The given list of candidateTime is nil")
 	}
 
 	userIdList := []int{}
