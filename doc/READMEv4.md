@@ -749,7 +749,7 @@
 | シチュエーション | bool | error |  
 | ---- | ---- | ---- | 
 | 正常レスポンス | []int | nil |
-| 異常レスポンス (candidateTimeListのポインタがnilの場合) | []Candidate | errors.New("The given list of candidateTime is nil") |
+| 異常レスポンス (candidateTimeListのポインタがnilの場合) | []int | errors.New("The given list of candidateTime is nil") |
 
 ##### IsSameSliceメソッド
 
