@@ -36,42 +36,42 @@ func IsEmailAddressValid(e string) (bool, error) {
 	return emailRegex.MatchString(e), nil
 }
 
-func IsEmailAddressEmptyOrNull(u User) (bool, error) {
+func IsEmailAddressEmptyOrNull(u *User) (bool, error) {
 
-	if &u == nil {
+	if u == nil {
 		return false, errors.New("The given User object is nil")
 	}
 
-	u.EmailAddress = strings.ReplaceAll(u.EmailAddress, " ", "")
-	return u.EmailAddress == "", nil
+	*u.EmailAddress = strings.ReplaceAll(*u.EmailAddress, " ", "")
+	return *u.EmailAddress == "", nil
 }
 
-func IsUserNameEmptyOrNull(u User) (bool, error) {
+func IsUserNameEmptyOrNull(u *User) (bool, error) {
 
-	if &u == nil {
+	if u == nil {
 		return false, errors.New("The given User object is nil")
 	}
 
-	u.UserName = strings.ReplaceAll(u.UserName, " ", "")
-	return u.UserName == "", nil
+	*u.UserName = strings.ReplaceAll(*u.UserName, " ", "")
+	return *u.UserName == "", nil
 }
 
-func IsPasswordEmptyOrNull(u User) (bool, error) {
+func IsPasswordEmptyOrNull(u *User) (bool, error) {
 
-	if &u == nil {
+	if u == nil {
 		return false, errors.New("The given User object is nil")
 	}
 	
-	u.Password = strings.ReplaceAll(u.Password, " ", "")
-	return u.Password == "", nil
+	*u.Password = strings.ReplaceAll(*u.Password, " ", "")
+	return *u.Password == "", nil
 }
 
-func ErrorsExist(errorMessageList []string) (bool, error) {
+func ErrorsExist(errorMessageList *[]string) (bool, error) {
 
-	if &errorMessageList == nil {
+	if errorMessageList == nil {
 		return false, errors.New("The list of error messages doesn't exist")
 	}
-	return len((errorMessageList)) != 0, nil
+	return len((*errorMessageList)) != 0, nil
 }
 
 
