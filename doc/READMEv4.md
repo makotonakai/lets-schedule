@@ -111,9 +111,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| e | string |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| e | プリミティブ型 | string |
 
 返り値
 
@@ -134,9 +134,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| u | *User |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- | 
+| u | オブジェクト型 | *User |
 
 返り値
 
@@ -155,9 +155,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| u | *User |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| u | オブジェクト型 | *User |
 
 与えられたユーザー名が空白か判定する関数
 
@@ -179,9 +179,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| u | *User |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| u | オブジェクト型 | *User |
 
 返り値
 
@@ -201,9 +201,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| errorMessageList | *[]string |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| errorMessageList | オブジェクト型 | *[]string |
 
 返り値
 
@@ -223,10 +223,10 @@
 
 引数
 
-| 型の種類 | 型の名称| 説明 |  
-| ---- | ---- | ---- |  
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| u | *User |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- | 
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| u | オブジェクト型 | *User |
 
 返り値
 
@@ -288,9 +288,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| m | *Meeting |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| m | オブジェクト型 | *Meeting |
 
 返り値
 
@@ -310,9 +310,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| m | *Meeting |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| m | オブジェクト型 | *Meeting |
 
 返り値
 
@@ -332,9 +332,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| m | *Meeting |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| m | オブジェクト型 | *Meeting |
 
 返り値
 
@@ -354,9 +354,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| m | *Meeting |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| m | オブジェクト型 | *Meeting |
 
 返り値
 
@@ -376,9 +376,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| m | *Meeting |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| m | オブジェクト型 | *Meeting |
 
 返り値
 
@@ -398,10 +398,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| Id | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- | 
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| Id | プリミティブ型 | int |
 
 返り値
 
@@ -421,10 +421,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| UserId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | プリミティブ型 | int |
 
 返り値
 
@@ -444,10 +444,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| UserId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | プリミティブ型 | int |
 
 返り値
 
@@ -467,10 +467,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| UserId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | プリミティブ型 | int |
 
 返り値
 
@@ -490,10 +490,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| UserId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db |  オブジェクト型 |([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | プリミティブ型 | int |
 
 返り値
 
@@ -513,10 +513,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| UserId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- | 
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | プリミティブ型 | int |
 
 返り値
 
@@ -534,10 +534,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| UserId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | プリミティブ型 | int |
 
 返り値
 
@@ -555,10 +555,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| UserId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | プリミティブ型 | int |
 
 返り値
 
@@ -607,10 +607,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| UserId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- | 
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | プリミティブ型 | int |
 
 
 返り値
@@ -631,11 +631,11 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| MeetingId | int |
-| UserId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- | 
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| MeetingId | プリミティブ型 | int |
+| UserId | プリミティブ型 | int |
 
 返り値
 
@@ -656,11 +656,11 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| MeetingId | int |
-| UserId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| MeetingId | プリミティブ型 | int |
+| UserId | プリミティブ型 | int |
 
 返り値
 
@@ -680,10 +680,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| numList | *[]int |
-| num | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| numList | プリミティブ型 | *[]int |
+| num | プリミティブ型 | int |
 
 返り値
 
@@ -703,9 +703,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| candidateTimeList | *[]CandidateTime |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| candidateTimeList | オブジェクト型 | *[]CandidateTime |
 
 返り値
 
@@ -725,9 +725,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| candidateTimeList | *[]CandidateTime |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| candidateTimeList | オブジェクト型 | *[]CandidateTime |
 
 返り値
 
@@ -748,9 +748,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| candidateTimeList | *[]CandidateTime |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| candidateTimeList | オブジェクト型 | *[]CandidateTime |
 
 返り値
 
@@ -770,10 +770,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| slice1 | []int |
-| slice2 | []int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| slice1 | プリミティブ型 | []int |
+| slice2 | プリミティブ型 | []int |
 
 返り値
 
@@ -793,8 +793,8 @@
 
 返り値
 
-| 型の種類 | 型の名称 | 説明 |  
-| ---- | ---- | ---- | 
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
 | オブジェクト型 | []CandidateTime | 与えられたMeetingIdを持つMeetingオブジェクトの配列 |
 | オブジェクト型 | error | 発生したエラー |
 
@@ -809,9 +809,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| candidateTimeList | []CandidateTime |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| candidateTimeList | オブジェクト型 | []CandidateTime |
 
 返り値
 
@@ -858,10 +858,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| Id | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| Id | プリミティブ型 | int |
 
 返り値
 
@@ -881,11 +881,11 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| UserId | int |
-| MeetingId | int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| UserId | プリミティブ型 | int |
+| MeetingId | プリミティブ型 | int |
 
 返り値
 
@@ -905,10 +905,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| pw | *ParticipantWithUserName |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| pw | オブジェクト型 | *ParticipantWithUserName |
 
 返り値
 
@@ -928,10 +928,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| p | *Participant |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| p | オブジェクト型 | *Participant |
 
 返り値
 
@@ -951,10 +951,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| plist | []Participant |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| plist | オブジェクト型 | []Participant |
 
 返り値
 
@@ -975,10 +975,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| db | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
-| pwlist | []ParticipantWithUserName |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| db | オブジェクト型 | ([*gorm.DB](https://pkg.go.dev/gorm.io/gorm#DB)型の構造体ポインタ) |
+| pwlist | オブジェクト型 | []ParticipantWithUserName |
 
 返り値
 
@@ -998,10 +998,10 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| a | *int |
-| b | *int |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| a | プリミティブ型 | *int |
+| b | プリミティブ型 | *int |
 
 返り値
 
@@ -1022,9 +1022,9 @@
 
 引数
 
-| 変数名 | 型 | 
-| ---- | ---- | 
-| plist | []Participant |
+| 変数名 | 型の種類 | 型の名称 |
+| ---- | ---- | ---- |
+| plist | オブジェクト型 | []Participant |
 
 返り値
 
