@@ -25,58 +25,53 @@ type Meeting struct {
 	UpdatedAt time.Time `gorm:"autoUpdateTime:int" json:"updated_at"`
 }
 
-type AvailableTime struct {
-	ActualStartTime time.Time `json:"actual_start_time"`
-	ActualEndTime   time.Time `json:"actual_end_time"`
-}
-
-func IsTitleEmpty(m Meeting) (bool, error) {
-	if &m == nil {
+func IsTitleEmpty(m *Meeting) (bool, error) {
+	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return m.Title == "", nil
+	return *m.Title == "", nil
 }
 
-func IsHourEmpty(m Meeting) (bool, error) {
-	if &m == nil {
+func IsHourEmpty(m *Meeting) (bool, error) {
+	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return m.Hour == 0, nil
+	return *m.Hour == 0, nil
 }
 
-func IsOnsiteButNoPlaceSpecified(m Meeting) (bool, error) {
-	if &m == nil {
+func IsOnsiteButNoPlaceSpecified(m *Meeting) (bool, error) {
+	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return m.IsOnsite == true && m.IsOnline == false && m.Place == "", nil
+	return *m.IsOnsite == true && *m.IsOnline == false && *m.Place == "", nil
 }
 
-func IsOnlineButNoURLSpecified(m Meeting) (bool, error) {
-	if &m == nil {
+func IsOnlineButNoURLSpecified(m *Meeting) (bool, error) {
+	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return m.IsOnsite == false && m.IsOnline == true && m.Url == "", nil
+	return *m.IsOnsite == false && *m.IsOnline == true && *m.Url == "", nil
 }
 
-func IsHybridButNeitherPlaceOrURLSpecified(m Meeting) (bool, error) {
-	if &m == nil {
+func IsHybridButNeitherPlaceOrURLSpecified(m *Meeting) (bool, error) {
+	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return m.IsOnsite == true && m.IsOnline == true && m.Place == "" && m.Url == "", nil
+	return *m.IsOnsite == true && *m.IsOnline == true && *m.Place == "" && *m.Url == "", nil
 }
 
-func IsHybridButNoPlaceSpecified(m Meeting) (bool, error) {
-	if &m == nil {
+func IsHybridButNoPlaceSpecified(*m Meeting) (bool, error) {
+	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return m.IsOnsite == true && m.IsOnline == true && m.Place == "", nil
+	return *m.IsOnsite == true && *m.IsOnline == true && *m.Place == "", nil
 }
 
-func IsHybridButNoURLSpecified(m Meeting) (bool, error) {
-	if &m == nil {
+func IsHybridButNoURLSpecified(*m Meeting) (bool, error) {
+	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return m.IsOnsite == true && m.IsOnline == true && m.Url == "", nil
+	return *m.IsOnsite == true && *m.IsOnline == true && *m.Url == "", nil
 }
 
 func GetMeetingById(db *gorm.DB, Id int) (Meeting, error) {

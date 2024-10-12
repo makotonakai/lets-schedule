@@ -18,26 +18,37 @@ type CandidateTime struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func IsCandidateTimeEmpty(ctlist []CandidateTime) (bool, error) {
-	if &ctlist == nil {
-		return false, errors.New("The given array is nil")
-	}
-	return len(ctlist) == 0, nil
+type AvailableTime struct {
+	ActualStartTime time.Time `json:"actual_start_time"`
+	ActualEndTime   time.Time `json:"actual_end_time"`
 }
 
-func IsAvailableTimeEmpty(at AvailableTime) (bool, error) {
-	if &at == nil {
+func IsCandidateTimeEmpty(ctlist *[]CandidateTime) (bool, error) {
+	if ctlist == nil {
+		return false, errors.New("The given array is nil")
+	}
+
+	return len(*ctlist) == 0, nil
+}
+
+func IsAvailableTimeEmpty(at *AvailableTime) (bool, error) {
+	if at == nil {
 		return false, errors.New("The given AvailableTime object is nil")
 	}
-	return at.ActualStartTime == time.Time{} && at.ActualEndTime == time.Time{}, nil
+	return *at.ActualStartTime == time.Time{} && *at.ActualEndTime == time.Time{}, nil
 }
 
-func EmptyCandidateTimeExists(ctlist []CandidateTime) (bool, error) {
-	if &ctlist == nil {
+func EmptyCandidateTimeExists(ctlist *[]CandidateTime) (bool, error) {
+	if ctlist == nil {
 		return false, errors.New("The given array is nil")
 	}
+
+	if len(*ctlist) == 0 {
+		return false, errors.New("The given array is empty")
+	}
+
 	t := time.Time{}
-	for _, ct := range ctlist {
+	for _, ct := range *ctlist {
 		if ct.StartTime.Equal(t) || ct.EndTime.Equal(t) {
 			return true, nil
 		}
@@ -45,13 +56,17 @@ func EmptyCandidateTimeExists(ctlist []CandidateTime) (bool, error) {
 	return false, nil
 }
 
-func PastCandidateTimeExists(ctlist []CandidateTime) (bool, error) {
-	if &ctlist == nil {
+func PastCandidateTimeExists(ctlist *[]CandidateTime) (bool, error) {
+	if ctlist == nil {
 		return false, errors.New("The given array is nil")
 	}
 
+	if len(*ctlist) == 0 {
+		return false, errors.New("The given array is empty")
+	}
+
 	now := time.Now()
-	for _, ct := range ctlist {
+	for _, ct := range *ctlist {
 		if ct.StartTime.Before(now) || ct.EndTime.Before(now) {
 			return true, nil
 		}
@@ -148,13 +163,21 @@ func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) ([]CandidateTime, e
 	return availableTimeList, nil
 }
 
-func Include(numList []int, num int) (bool, error) {
+func Include(numList *[]int, *num int) (bool, error) {
 
-	if &numList == nil {
+	if numList == nil {
 		return false, errors.New("The given int array is nil")
 	}
 
-	for _, val := range numList {
+	if num == nil {
+		return false, errors.New("The given int is nil")
+	}
+
+	if len(*numList) == 0 {
+		return false, errors.New("The given int array is empty")
+	}
+
+	for _, val := range *numList {
 		if val == num {
 			return true, nil
 		}
@@ -162,10 +185,14 @@ func Include(numList []int, num int) (bool, error) {
 	return false, nil
 }
 
-func GetLatestStartTime(candidateTimeList []CandidateTime) (time.Time, error) {
+func GetLatestStartTime(candidateTimeList *[]CandidateTime) (time.Time, error) {
 
-	if &candidateTimeList == nil {
+	if candidateTimeList == nil {
 		return time.Time{}, errors.New("The given list of candidateTime is nil")
+	}
+
+	if len(*candidateTimeList) == 0 {
+		time.Time{}, errors.New("The given list of candidateTime is empty")
 	}
 
 	latestStartTime := candidateTimeList[0].StartTime
@@ -178,10 +205,14 @@ func GetLatestStartTime(candidateTimeList []CandidateTime) (time.Time, error) {
 	return latestStartTime, nil
 }
 
-func GetEarliestEndTime(candidateTimeList []CandidateTime) (time.Time, error) {
+func GetEarliestEndTime(candidateTimeList *[]CandidateTime) (time.Time, error) {
 
-	if &candidateTimeList == nil {
+	if candidateTimeList == nil {
 		return time.Time{}, errors.New("The given list of candidateTime is nil")
+	}
+
+	if len(*candidateTimeList) == 0 {
+		time.Time{}, errors.New("The given list of candidateTime is empty")
 	}
 
 	earliestEndTime := candidateTimeList[0].EndTime
@@ -194,10 +225,14 @@ func GetEarliestEndTime(candidateTimeList []CandidateTime) (time.Time, error) {
 	return earliestEndTime, nil
 }
 
-func CreateUserIdList(candidateTimeList []CandidateTime) ([]int, error) {
+func CreateUserIdList(candidateTimeList *[]CandidateTime) ([]int, error) {
 
-	if &candidateTimeList == nil {
+	if candidateTimeList == nil {
 		return []int{}, errors.New("The given list of candidateTime is nil")
+	}
+
+	if len(*candidateTimeList) == 0 {
+		time.Time{}, errors.New("The given list of candidateTime is empty")
 	}
 
 	userIdList := []int{}
@@ -215,14 +250,19 @@ func CreateUserIdList(candidateTimeList []CandidateTime) ([]int, error) {
 	return userIdList, nil
 }
 
-func IsSameSlice(slice1, slice2 []int) (bool, error) {
+func IsSameSlice(slice1, slice2 *[]int) (bool, error) {
 
-	if len(slice1) == 0 || len(slice2) == 0 {
+	if slice1 == nil || slice2 == nil {
+		return false, errors.New("The given int array is nil")
+	}
+	
+	if len(*slice1) == 0 || len(*slice2) == 0 {
 		return false, errors.New("The given int array is empty")
 	}
-	sort.Ints(slice1)
-	sort.Ints(slice2)
-	return reflect.DeepEqual(slice1, slice2), nil
+
+	sort.Ints(*slice1)
+	sort.Ints(*slice2)
+	return reflect.DeepEqual(*slice1, *slice2), nil
 }
 
 func SortByStartTime(candidateTimeList []CandidateTime) {
@@ -231,11 +271,11 @@ func SortByStartTime(candidateTimeList []CandidateTime) {
 	})
 }
 
-func AvailableTimeIsNotFound(candidateTimeList []CandidateTime) (bool, error) {
+func AvailableTimeIsNotFound(candidateTimeList *[]CandidateTime) (bool, error) {
 
-	if &candidateTimeList == nil {
+	if candidateTimeList == nil {
 		return false, errors.New("The given list of candidateTime is nil")
 	}
 	
-	return len(candidateTimeList) == 0, nil
+	return len(*candidateTimeList) == 0, nil
 }

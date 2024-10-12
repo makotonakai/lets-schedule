@@ -38,6 +38,14 @@ func CreateMeeting(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, config.URLIsNotSpecified)
 	}
 
+	if models.IsHybridButNoPlaceSpecified(newMeeting) {
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.NeitherPlaceOrURLIsSpecified)
+	}
+
+	if models.IsHybridButNoURLSpecified(newMeeting) {
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.NeitherPlaceOrURLIsSpecified)
+	}
+
 	if models.IsHybridButNeitherPlaceOrURLSpecified(newMeeting) {
 		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.NeitherPlaceOrURLIsSpecified)
 	}
