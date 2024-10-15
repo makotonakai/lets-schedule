@@ -35,7 +35,7 @@ func IsAvailableTimeEmpty(at *AvailableTime) (bool, error) {
 	if at == nil {
 		return false, errors.New("The given AvailableTime object is nil")
 	}
-	return *at.ActualStartTime == time.Time{} && *at.ActualEndTime == time.Time{}, nil
+	return at.ActualStartTime == time.Time{} && at.ActualEndTime == time.Time{}, nil
 }
 
 func EmptyCandidateTimeExists(ctlist *[]CandidateTime) (bool, error) {
@@ -116,7 +116,7 @@ func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) ([]CandidateTime, e
 		
 	SortByStartTime(candidateTimeList)
 
-	userIdList, err := CreateUserIdList(candidateTimeList)
+	userIdList, err := CreateUserIdList(&candidateTimeList)
 	if err != nil {
 		return candidateTimeList, err
 	}
@@ -131,24 +131,24 @@ func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) ([]CandidateTime, e
 	for index := 0; index < maxIndex; index++  {
 
 		_candidateTimeList := candidateTimeList[index:index+userIdNum]
-		_userIdList, err := CreateUserIdList(_candidateTimeList)
+		_userIdList, err := CreateUserIdList(&_candidateTimeList)
 		if err != nil {
 			return _candidateTimeList, err
 		}
 
-		sameSlice, err := IsSameSlice(userIdList, _userIdList)
+		sameSlice, err := IsSameSlice(&userIdList, &_userIdList)
 		if err != nil {
 			return _candidateTimeList, err
 		} 
 
 		if sameSlice {
 
-			startTime, err := GetLatestStartTime(_candidateTimeList)
+			startTime, err := GetLatestStartTime(&_candidateTimeList)
 			if err != nil {
 				return _candidateTimeList, err
 			}
 
-			endTime, err := GetEarliestEndTime(_candidateTimeList)
+			endTime, err := GetEarliestEndTime(&_candidateTimeList)
 			if err != nil {
 				return _candidateTimeList, err
 			}
@@ -163,7 +163,7 @@ func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) ([]CandidateTime, e
 	return availableTimeList, nil
 }
 
-func Include(numList *[]int, *num int) (bool, error) {
+func Include(numList *[]int, num *int) (bool, error) {
 
 	if numList == nil {
 		return false, errors.New("The given int array is nil")
@@ -178,7 +178,7 @@ func Include(numList *[]int, *num int) (bool, error) {
 	}
 
 	for _, val := range *numList {
-		if val == num {
+		if val == *num {
 			return true, nil
 		}
 	}
@@ -192,12 +192,13 @@ func GetLatestStartTime(candidateTimeList *[]CandidateTime) (time.Time, error) {
 	}
 
 	if len(*candidateTimeList) == 0 {
-		time.Time{}, errors.New("The given list of candidateTime is empty")
+		return time.Time{}, errors.New("The given list of candidateTime is empty")
 	}
 
-	latestStartTime := candidateTimeList[0].StartTime
-	for i := 1; i < len(candidateTimeList); i++ {
-		startTime := candidateTimeList[i].StartTime
+	cl := *candidateTimeList
+	latestStartTime := cl[0].StartTime
+	for i := 1; i < len(cl); i++ {
+		startTime := cl[i].StartTime
 		if startTime.After(latestStartTime) {
 			latestStartTime = startTime
 		}
@@ -212,12 +213,13 @@ func GetEarliestEndTime(candidateTimeList *[]CandidateTime) (time.Time, error) {
 	}
 
 	if len(*candidateTimeList) == 0 {
-		time.Time{}, errors.New("The given list of candidateTime is empty")
+		return time.Time{}, errors.New("The given list of candidateTime is empty")
 	}
 
-	earliestEndTime := candidateTimeList[0].EndTime
-	for i := 1; i < len(candidateTimeList); i++ {
-		endTime := candidateTimeList[i].EndTime
+	cl := *candidateTimeList
+	earliestEndTime := cl[0].EndTime
+	for i := 1; i < len(cl); i++ {
+		endTime := cl[i].EndTime
 		if endTime.Before(earliestEndTime) {
 			earliestEndTime = endTime
 		}
@@ -232,13 +234,13 @@ func CreateUserIdList(candidateTimeList *[]CandidateTime) ([]int, error) {
 	}
 
 	if len(*candidateTimeList) == 0 {
-		time.Time{}, errors.New("The given list of candidateTime is empty")
+		return []int{}, errors.New("The given list of candidateTime is empty")
 	}
 
 	userIdList := []int{}
-	for _, candidateTime := range candidateTimeList {
+	for _, candidateTime := range *candidateTimeList {
 		userId := candidateTime.UserId
-		include, err := Include(userIdList, userId)
+		include, err := Include(&userIdList, &userId)
 		if err != nil {
 			return userIdList, err
 		}

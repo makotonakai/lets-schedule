@@ -29,49 +29,56 @@ func IsTitleEmpty(m *Meeting) (bool, error) {
 	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return *m.Title == "", nil
+	m_ := *m
+	return m_.Title == "", nil
 }
 
 func IsHourEmpty(m *Meeting) (bool, error) {
 	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return *m.Hour == 0, nil
+	m_ := *m
+	return m_.Hour == 0, nil
 }
 
 func IsOnsiteButNoPlaceSpecified(m *Meeting) (bool, error) {
 	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return *m.IsOnsite == true && *m.IsOnline == false && *m.Place == "", nil
+	m_ := *m
+	return m_.IsOnsite == true && m_.IsOnline == false && m_.Place == "", nil
 }
 
 func IsOnlineButNoURLSpecified(m *Meeting) (bool, error) {
 	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return *m.IsOnsite == false && *m.IsOnline == true && *m.Url == "", nil
+	m_ := *m
+	return m_.IsOnsite == false && m_.IsOnline == true && m_.Url == "", nil
 }
 
 func IsHybridButNeitherPlaceOrURLSpecified(m *Meeting) (bool, error) {
 	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return *m.IsOnsite == true && *m.IsOnline == true && *m.Place == "" && *m.Url == "", nil
+	m_ := *m
+	return m_.IsOnsite == true && m_.IsOnline == true && m_.Place == "" && m_.Url == "", nil
 }
 
-func IsHybridButNoPlaceSpecified(*m Meeting) (bool, error) {
+func IsHybridButNoPlaceSpecified(m *Meeting) (bool, error) {
 	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return *m.IsOnsite == true && *m.IsOnline == true && *m.Place == "", nil
+	m_ := *m
+	return m_.IsOnsite == true && m_.IsOnline == true && m_.Place == "", nil
 }
 
-func IsHybridButNoURLSpecified(*m Meeting) (bool, error) {
+func IsHybridButNoURLSpecified(m *Meeting) (bool, error) {
 	if m == nil {
 		return false, errors.New("The given Meeting object doesn't exist")
 	}
-	return *m.IsOnsite == true && *m.IsOnline == true && *m.Url == "", nil
+	m_ := *m
+	return m_.IsOnsite == true && m_.IsOnline == true && m_.Url == "", nil
 }
 
 func GetMeetingById(db *gorm.DB, Id int) (Meeting, error) {

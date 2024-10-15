@@ -41,9 +41,9 @@ func IsEmailAddressEmptyOrNull(u *User) (bool, error) {
 	if u == nil {
 		return false, errors.New("The pointer of the given User object is nil")
 	}
-
-	*u.EmailAddress = strings.ReplaceAll(*u.EmailAddress, " ", "")
-	return *u.EmailAddress == "", nil
+	u_ := *u
+	u_.EmailAddress = strings.ReplaceAll(u_.EmailAddress, " ", "")
+	return u_.EmailAddress == "", nil
 }
 
 func IsUserNameEmptyOrNull(u *User) (bool, error) {
@@ -51,9 +51,9 @@ func IsUserNameEmptyOrNull(u *User) (bool, error) {
 	if u == nil {
 		return false, errors.New("The pointer of the given User object is nil")
 	}
-
-	*u.UserName = strings.ReplaceAll(*u.UserName, " ", "")
-	return *u.UserName == "", nil
+	u_ := *u
+	u_.UserName = strings.ReplaceAll(u_.UserName, " ", "")
+	return u_.UserName == "", nil
 }
 
 func IsPasswordEmptyOrNull(u *User) (bool, error) {
@@ -61,9 +61,9 @@ func IsPasswordEmptyOrNull(u *User) (bool, error) {
 	if u == nil {
 		return false, errors.New("The pointer of the given User object is nil")
 	}
-	
-	*u.Password = strings.ReplaceAll(*u.Password, " ", "")
-	return *u.Password == "", nil
+	u_ := *u
+	u_.Password = strings.ReplaceAll(u_.Password, " ", "")
+	return u_.Password == "", nil
 }
 
 func ErrorsExist(errorMessageList *[]string) (bool, error) {

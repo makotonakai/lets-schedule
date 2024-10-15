@@ -47,7 +47,8 @@ func ConvertToParticipant(db *gorm.DB, pw *ParticipantWithUserName) (*Participan
 		return &Participant{}, errors.New("The given ParticipantWithUserName object is nil")
 	}
 	p := &Participant{}
-	userId, err := GetUserIdFromUserName(db, *pw.UserName) 
+	pw_ := *pw
+	userId, err := GetUserIdFromUserName(db, pw_.UserName) 
 	if err != nil {
 		return nil, err
 	}
@@ -60,13 +61,15 @@ func ConvertToParticipant(db *gorm.DB, pw *ParticipantWithUserName) (*Participan
 
 func ConvertToParticipantWithUserName(db *gorm.DB, p *Participant) (*ParticipantWithUserName, error) {
 	if p == nil {
-		return ParticipantWithUserName{}, errors.New("The given Participant object is nil")
+		return &ParticipantWithUserName{}, errors.New("The given Participant object is nil")
 	}
 	pw := &ParticipantWithUserName{}
-	pw.UserName, err = GetUserNameFromUserId(db, *p.UserId)
+	p_ := *p
+	userName, err := GetUserNameFromUserId(db, p_.UserId)
 	if err != nil {
 		return nil, err
 	}
+	pw.UserName = userName
 	pw.MeetingId = p.MeetingId
 	pw.IsHost = p.IsHost
 	pw.HasResponded = p.HasResponded
@@ -75,20 +78,20 @@ func ConvertToParticipantWithUserName(db *gorm.DB, p *Participant) (*Participant
 
 func ConvertToParticipantWithUserNameList(db *gorm.DB, pl *[]Participant) (*[]ParticipantWithUserName, error) {
 	if pl == nil {
-		return []ParticipantWithUserName{}, errors.New("The given ParticipantWithUserName list is nil")
+		return &[]ParticipantWithUserName{}, errors.New("The given ParticipantWithUserName list is nil")
 	}
 	if len(*pl) == 0 {
-		return []ParticipantWithUserName{}, errors.New("The given ParticipantWithUserName list is empty")
+		return &[]ParticipantWithUserName{}, errors.New("The given ParticipantWithUserName list is empty")
 	}
 	pwl := []ParticipantWithUserName{}
-	for _, p := range pl {
-		pw, err := ConvertToParticipantWithUserName(db, p)
+	for _, p := range *pl {
+		pw, err := ConvertToParticipantWithUserName(db, &p)
 		if err != nil {
-			return pwl, err
+			return &pwl, err
 		}
-		pwl = append(pwl, pw)
+		pwl = append(pwl, *pw)
 	}
-	return pwl, nil
+	return &pwl, nil
 }
 
 func ConvertToParticipantList(db *gorm.DB, pwl *[]ParticipantWithUserName) (*[]Participant, error) {
@@ -96,12 +99,12 @@ func ConvertToParticipantList(db *gorm.DB, pwl *[]ParticipantWithUserName) (*[]P
 		return &[]Participant{}, errors.New("The given Participant list is nil")
 	}
 	if len(*pwl) == 0 {
-		return []Participant{}, errors.New("The given Participant list is empty")
+		return &[]Participant{}, errors.New("The given Participant list is empty")
 	}
 
 	pl := &[]Participant{}
-	for _, pw := range pwl {
-		p, err := ConvertToParticipant(db, pw)
+	for _, pw := range *pwl {
+		p, err := ConvertToParticipant(db, &pw)
 		if err != nil {
 			return nil, err
 		}
@@ -129,7 +132,7 @@ func HostIsInParticipant(pl *[]Participant) (bool, error) {
 		return false, errors.New("The given Participant list is empty")
 	}
 	host := Participant{}
-	for _, p := range pl {
+	for _, p := range *pl {
 		if p.IsHost == true {
 			host = p
 		}
