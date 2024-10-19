@@ -7,9 +7,11 @@ import (
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
-func TestErrorsExistTrue(t *testing.T){
-	errors := []string{""}
-	result, err := models.ErrorsExist(&errors)
+
+func TestIsTitleEmptySuccess(t *testing.T){
+	m := models.Meeting{}
+	m.Title = ""
+	result, err := models.IsTitleEmpty(&m)
 	expected := true
 
 	if result != expected {
@@ -21,9 +23,10 @@ func TestErrorsExistTrue(t *testing.T){
 	}
 }
 
-func TestErrorsExistFalse(t *testing.T){
-	errors := []string{}
-	result, err := models.ErrorsExist(&errors)
+func TestIsTitleEmptyFail(t *testing.T){
+	m := models.Meeting{}
+	m.Title = "hoge"
+	result, err := models.IsTitleEmpty(&m)
 	expected := false
 
 	if result != expected {
@@ -35,15 +38,16 @@ func TestErrorsExistFalse(t *testing.T){
 	}
 }
 
-func TestErrorsExistNil(t *testing.T){
-	result, err := models.ErrorsExist(nil)
+func TestIsTitleEmptyNil(t *testing.T){
+	result, err := models.IsTitleEmpty(nil)
 	expected := false
 
 	if result != expected {
 			t.Errorf("got %t, wanted %t", result, expected)
 	}
 
-	if !errors.Is(err, config.ErrListOfErrorsDoesntExist) {
-		t.Errorf("got %s, wanted %s", err.Error(), config.ErrListOfErrorsDoesntExist.Error())
+	if !errors.Is(err, config.ErrMeetingDoesNotExist) {
+		t.Errorf("got %s, wanted %s", err.Error(), config.ErrMeetingDoesNotExist.Error())
 	}
+
 }

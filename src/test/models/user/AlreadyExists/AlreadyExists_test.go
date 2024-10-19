@@ -2,15 +2,17 @@ package test
 
 import (
 	"fmt"
+	"errors"
 	"regexp"
 	"testing"
 	"github.com/DATA-DOG/go-sqlmock"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
-func TestErrorsExistWithExistingUser(t *testing.T){
+func TestAlreadyExistsWithExistingUser(t *testing.T){
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %v", err)
@@ -49,12 +51,20 @@ func TestErrorsExistWithExistingUser(t *testing.T){
 		AddRow(1, "user", "user@email.com")) // Simulate username does not exist
 
 	// Call the AlreadyExists function
-	result, _, _:= models.AlreadyExists(gormDB, testUser)
+	result, emailAddressErr, userNameErr := models.AlreadyExists(gormDB, &testUser)
 	expected := true
 
 	// Verify the result
 	if result != expected {
 		t.Errorf("expected user to exist, but AlreadyExists returned false")
+	}
+
+	if emailAddressErr != nil {
+		t.Errorf("got %t, wanted nil", emailAddressErr)
+	}
+
+	if userNameErr != nil {
+		t.Errorf("got %t, wanted nil", userNameErr)
 	}
 
 	// Ensure all expectations were met
@@ -64,7 +74,7 @@ func TestErrorsExistWithExistingUser(t *testing.T){
 
 }
 
-func TestErrorsExistEmptyWithExistingUserName(t *testing.T){
+func TestAlreadyExistsEmptyWithExistingUserName(t *testing.T){
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %v", err)
@@ -101,9 +111,8 @@ func TestErrorsExistEmptyWithExistingUserName(t *testing.T){
 		WillReturnRows(sqlmock.NewRows([]string{"id", "user_name", "email_address"}).
 		AddRow(1, "user", "user@email.com")) // Simulate username does not exist
 
-
 	// Call the AlreadyExists function
-	result, emailAddressErr, _ := models.AlreadyExists(gormDB, testUser)
+	result, emailAddressErr, userNameErr := models.AlreadyExists(gormDB, &testUser)
 	expected := true
 
 	// Verify the result
@@ -111,9 +120,13 @@ func TestErrorsExistEmptyWithExistingUserName(t *testing.T){
 		t.Errorf("expected user to exist, but AlreadyExists returned false")
 	}
 
-	if emailAddressErr == nil {
-		t.Errorf("expected email address error, but returned nil")
-	} 
+	if !errors.Is(emailAddressErr, config.ErrEmailAddressNotFound) {
+		t.Errorf("got %s, wanted %s", err.Error(), config.ErrEmailAddressNotFound.Error())
+	}
+
+	if userNameErr != nil {
+		t.Errorf("got %t, wanted nil", userNameErr)
+	}
 
 	// Ensure all expectations were met
 	if err := mock.ExpectationsWereMet(); err != nil {
@@ -122,7 +135,7 @@ func TestErrorsExistEmptyWithExistingUserName(t *testing.T){
 
 }
 
-func TestErrorsExistEmptyWithExistingEmailAddress(t *testing.T){
+func TestAlreadyExistsEmptyWithExistingEmailAddress(t *testing.T){
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %v", err)
@@ -161,7 +174,7 @@ func TestErrorsExistEmptyWithExistingEmailAddress(t *testing.T){
 
 
 	// Call the AlreadyExists function
-	result, _, userNameErr := models.AlreadyExists(gormDB, testUser)
+	result, emailAddressErr, userNameErr := models.AlreadyExists(gormDB, &testUser)
 	expected := true
 
 	// Verify the result
@@ -169,9 +182,13 @@ func TestErrorsExistEmptyWithExistingEmailAddress(t *testing.T){
 		t.Errorf("expected user to exist, but AlreadyExists returned false")
 	}
 
-	if userNameErr == nil {
-		t.Errorf("expected username error, but returned nil")
+	if emailAddressErr != nil {
+		t.Errorf("got %t, wanted nil", emailAddressErr)
 	} 
+
+	if !errors.Is(userNameErr, config.ErrUserNameNotFound) {
+		t.Errorf("got %s, wanted %s", err.Error(), config.ErrUserNameNotFound.Error())
+	}
 
 	// Ensure all expectations were met
 	if err := mock.ExpectationsWereMet(); err != nil {
@@ -180,7 +197,7 @@ func TestErrorsExistEmptyWithExistingEmailAddress(t *testing.T){
 
 }
 
-func TestErrorsExistEmptyWithNonExistingUser(t *testing.T){
+func TestAlreadyExistsEmptyWithNonExistingUser(t *testing.T){
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %v", err)
@@ -218,7 +235,7 @@ func TestErrorsExistEmptyWithNonExistingUser(t *testing.T){
 
 
 	// Call the AlreadyExists function
-	result, emailAddressErr, userNameErr := models.AlreadyExists(gormDB, testUser)
+	result, emailAddressErr, userNameErr := models.AlreadyExists(gormDB, &testUser)
 	expected := false
 
 	// Verify the result
@@ -226,14 +243,56 @@ func TestErrorsExistEmptyWithNonExistingUser(t *testing.T){
 		t.Errorf("expected user to exist, but AlreadyExists returned false")
 	}
 
-	if emailAddressErr == nil {
-		t.Errorf("email address error, but returned nil")
-	} 
+	if !errors.Is(emailAddressErr, config.ErrEmailAddressNotFound) {
+		t.Errorf("got %s, wanted %s", err.Error(), config.ErrEmailAddressNotFound.Error())
+	}
 
-	if userNameErr == nil {
-		t.Errorf("expected username error, but returned nil")
-	} 
+	if !errors.Is(userNameErr, config.ErrUserNameNotFound) {
+		t.Errorf("got %s, wanted %s", err.Error(), config.ErrUserNameNotFound.Error())
+	}
 
+	// Ensure all expectations were met
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("unfulfilled expectations: %v", err)
+	}
+
+}
+
+func TestAlreadyExistsEmptyNil(t *testing.T){
+
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("failed to open sqlmock database: %v", err)
+	}
+	defer db.Close()
+
+	// Set up GORM to use the mock DB with the MySQL driver
+	dialector := mysql.New(mysql.Config{
+		Conn:                      db,
+		SkipInitializeWithVersion: true, // Skip version check
+	})
+	gormDB, err := gorm.Open(dialector, &gorm.Config{})
+	if err != nil {
+		t.Fatalf("failed to initialize GORM DB: %v", err)
+	}
+
+	// Call the AlreadyExists function
+	result, emailAddressErr, userNameErr := models.AlreadyExists(gormDB, nil)
+	expected := false
+
+	// Verify the result
+	if result != expected {
+		t.Errorf("expected user to exist, but AlreadyExists returned false")
+	}
+
+	if !errors.Is(emailAddressErr, config.ErrUserIsNil) {
+		t.Errorf("got %s, wanted %s", err.Error(), config.ErrUserIsNil.Error())
+	}
+
+	if userNameErr != nil {
+		t.Errorf("got %t, wanted nil", userNameErr)
+	}
+	
 	// Ensure all expectations were met
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("unfulfilled expectations: %v", err)

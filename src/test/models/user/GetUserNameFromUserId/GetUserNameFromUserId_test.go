@@ -2,11 +2,13 @@ package test
 
 import (
 	"fmt"
+	"errors"
 	"regexp"
 	"testing"
 	"github.com/DATA-DOG/go-sqlmock"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
@@ -22,7 +24,7 @@ func TestGetUserNameFromUserIdSuccess(t *testing.T){
 		Conn:                      db,
 		SkipInitializeWithVersion: true, // Skip version check
 	})
-	gormDB, err := gorm.Open(dialector, &gorm.Config{})
+	gormDB, e := gorm.Open(dialector, &gorm.Config{})
 	if err != nil {
 		t.Fatalf("failed to initialize GORM DB: %v", err)
 	}
@@ -39,6 +41,10 @@ func TestGetUserNameFromUserIdSuccess(t *testing.T){
 
 	if result != expected {
 		t.Errorf("expected to get username %s, but you actually got %s", result, expected)
+	}
+
+	if e != nil {
+		t.Errorf("got %t, wanted nil", e)
 	}
 
 	// Ensure all expectations were met
@@ -71,15 +77,15 @@ func TestGetUserNameFromUserIdFail(t *testing.T){
 		WithArgs(id).
 		WillReturnError(fmt.Errorf("user with id %d not found", id))
 
-	result, err := models.GetUserNameFromUserId(gormDB, id)
+	result, e := models.GetUserNameFromUserId(gormDB, id)
 	expected := ""
 
 	if result != expected {
 		t.Errorf("expected to get username %s, but you actually got %s", result, expected)
 	}
 
-	if err == nil {
-		t.Errorf("expected to get an error")
+	if !errors.Is(e, config.ErrUserWithUserIdDoesNotExist) {
+		t.Errorf("got %s, wanted %s", e.Error(), config.ErrUserWithUserIdDoesNotExist.Error())
 	}
 
 	// Ensure all expectations were met
