@@ -1,12 +1,11 @@
 package models
 
 import (
-	"fmt"
 	"time"
-	"errors"
 	"regexp"
 	"strings"
 	"gorm.io/gorm"
+	"github.com/MakotoNakai/lets-schedule/config"
 )
 
 type User struct {	
@@ -30,16 +29,16 @@ type NewPassword struct {
 
 func IsEmailAddressValid(e string) (bool, error) {
 	if e == "" {
-		return false, errors.New("The given email address is empty")
+		return false, config.ErrEmailAddressIsEmpty
 	}
-	emailRegex := regexp.MustCompile(`^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,}$`)
+	emailRegex := regexp.MustCompile(`^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`)
 	return emailRegex.MatchString(e), nil
 }
 
 func IsEmailAddressEmptyOrNull(u *User) (bool, error) {
 
 	if u == nil {
-		return false, errors.New("The pointer of the given User object is nil")
+		return false, config.ErrUserIsNil
 	}
 	u_ := *u
 	u_.EmailAddress = strings.ReplaceAll(u_.EmailAddress, " ", "")
@@ -49,7 +48,7 @@ func IsEmailAddressEmptyOrNull(u *User) (bool, error) {
 func IsUserNameEmptyOrNull(u *User) (bool, error) {
 
 	if u == nil {
-		return false, errors.New("The pointer of the given User object is nil")
+		return false, config.ErrUserIsNil
 	}
 	u_ := *u
 	u_.UserName = strings.ReplaceAll(u_.UserName, " ", "")
@@ -59,7 +58,7 @@ func IsUserNameEmptyOrNull(u *User) (bool, error) {
 func IsPasswordEmptyOrNull(u *User) (bool, error) {
 
 	if u == nil {
-		return false, errors.New("The pointer of the given User object is nil")
+		return false, config.ErrUserIsNil
 	}
 	u_ := *u
 	u_.Password = strings.ReplaceAll(u_.Password, " ", "")
@@ -69,7 +68,7 @@ func IsPasswordEmptyOrNull(u *User) (bool, error) {
 func ErrorsExist(errorMessageList *[]string) (bool, error) {
 
 	if errorMessageList == nil {
-		return false, errors.New("The list of error messages doesn't exist")
+		return false, config.ErrListOfErrorsDoesntExist
 	}
 	return len((*errorMessageList)) != 0, nil
 }
@@ -78,7 +77,7 @@ func ErrorsExist(errorMessageList *[]string) (bool, error) {
 func AlreadyExists(db *gorm.DB, u *User) (bool, error, error) {
 
 	if u == nil {
-		return false, errors.New("The pointer of the User object is nil"), nil
+		return false, config.ErrUserIsNil, nil
 	}
 
 	var sameEmailAddress User
@@ -88,11 +87,11 @@ func AlreadyExists(db *gorm.DB, u *User) (bool, error, error) {
 	userNameErr := db.Table("users").Select("*").Where("users.user_name = ?", u.UserName).Find(&sameUserName).Error
 
 	if emailAddressErr != nil && userNameErr != nil {
-		return false, errors.New("Email address not found"), errors.New("Username not found")
+		return false, config.ErrEmailAddressNotFound, config.ErrUserNameNotFound
 	} else if emailAddressErr != nil {
-		return true, errors.New("Email address not found"),  nil
+		return true, config.ErrEmailAddressNotFound,  nil
 	} else if userNameErr != nil {
-		return true, nil, errors.New("Username not found")
+		return true, nil, config.ErrUserNameNotFound
 	} else {
 		return true, nil, nil
 	}
@@ -107,7 +106,7 @@ func GetUserIdFromUserName(db *gorm.DB, UserName string) (int, error) {
 
 	// Check if user was found
 	if err != nil {
-			return -1, errors.New(fmt.Sprintf("user with username '%s' not found", UserName))
+			return -1, config.ErrUserWithUserNameDoesNotExist
 	}
 
 	return user.Id, nil
@@ -120,7 +119,7 @@ func GetUserNameFromUserId(db *gorm.DB, UserId int) (string, error) {
 		Where("users.id = ?", UserId).
 		Find(&user).Error
 	if err != nil {
-		return "", errors.New(fmt.Sprintf("user with id '%d' not found", UserId))
+		return "", config.ErrUserWithUserIdDoesNotExist
 	}
 	return user.UserName, nil
 }
@@ -133,7 +132,7 @@ func GetUserIdFromEmailAddress(db *gorm.DB, EmailAddress string) (int, error) {
 		Find(&User).Error
 
 	if err != nil {
-		return -1, errors.New(fmt.Sprintf("user with email address '%s' not found", EmailAddress))
+		return -1, config.ErrUserIdWithEmailAddressDoesNotExist
 	}
 
 	return User.Id, nil

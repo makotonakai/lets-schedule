@@ -4,6 +4,7 @@ import (
 	"time"
 	"errors"
 	"gorm.io/gorm"
+	"github.com/MakotoNakai/lets-schedule/config"
 )
 
 type Meeting struct {
@@ -27,7 +28,7 @@ type Meeting struct {
 
 func IsTitleEmpty(m *Meeting) (bool, error) {
 	if m == nil {
-		return false, errors.New("The given Meeting object doesn't exist")
+		return false, config.ErrMeetingDoesNotExist
 	}
 	m_ := *m
 	return m_.Title == "", nil
@@ -35,15 +36,18 @@ func IsTitleEmpty(m *Meeting) (bool, error) {
 
 func IsHourEmpty(m *Meeting) (bool, error) {
 	if m == nil {
-		return false, errors.New("The given Meeting object doesn't exist")
+		return false, config.ErrMeetingDoesNotExist
 	}
 	m_ := *m
+	if m_.Hour < 0 {
+		return false, config.ErrMeetingHourIsNegative
+	}
 	return m_.Hour == 0, nil
 }
 
 func IsOnsiteButNoPlaceSpecified(m *Meeting) (bool, error) {
 	if m == nil {
-		return false, errors.New("The given Meeting object doesn't exist")
+		return false, config.ErrMeetingDoesNotExist
 	}
 	m_ := *m
 	return m_.IsOnsite == true && m_.IsOnline == false && m_.Place == "", nil
@@ -51,7 +55,7 @@ func IsOnsiteButNoPlaceSpecified(m *Meeting) (bool, error) {
 
 func IsOnlineButNoURLSpecified(m *Meeting) (bool, error) {
 	if m == nil {
-		return false, errors.New("The given Meeting object doesn't exist")
+		return false, config.ErrMeetingDoesNotExist
 	}
 	m_ := *m
 	return m_.IsOnsite == false && m_.IsOnline == true && m_.Url == "", nil
@@ -59,7 +63,7 @@ func IsOnlineButNoURLSpecified(m *Meeting) (bool, error) {
 
 func IsHybridButNeitherPlaceOrURLSpecified(m *Meeting) (bool, error) {
 	if m == nil {
-		return false, errors.New("The given Meeting object doesn't exist")
+		return false, config.ErrMeetingDoesNotExist
 	}
 	m_ := *m
 	return m_.IsOnsite == true && m_.IsOnline == true && m_.Place == "" && m_.Url == "", nil
@@ -67,7 +71,7 @@ func IsHybridButNeitherPlaceOrURLSpecified(m *Meeting) (bool, error) {
 
 func IsHybridButNoPlaceSpecified(m *Meeting) (bool, error) {
 	if m == nil {
-		return false, errors.New("The given Meeting object doesn't exist")
+		return false, config.ErrMeetingDoesNotExist
 	}
 	m_ := *m
 	return m_.IsOnsite == true && m_.IsOnline == true && m_.Place == "", nil
@@ -75,7 +79,7 @@ func IsHybridButNoPlaceSpecified(m *Meeting) (bool, error) {
 
 func IsHybridButNoURLSpecified(m *Meeting) (bool, error) {
 	if m == nil {
-		return false, errors.New("The given Meeting object doesn't exist")
+		return false, config.ErrMeetingDoesNotExist
 	}
 	m_ := *m
 	return m_.IsOnsite == true && m_.IsOnline == true && m_.Url == "", nil
