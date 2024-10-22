@@ -14,7 +14,7 @@ import (
 )
 
 
-func TestGetConfirmedMeetingsForHostByUserIdFirst(t *testing.T){
+func TestGetNotConfirmedMeetingsForGuestByUserIdFirst(t *testing.T){
 
 	db, mock, err := sqlmock.New()
 	if err != nil {
@@ -41,12 +41,12 @@ func TestGetConfirmedMeetingsForHostByUserIdFirst(t *testing.T){
 	createdAt := time.Date(2024, time.September, 19, 19, 0, 0, 0, time.UTC)
 	updatedAt := time.Date(2024, time.September, 19, 20, 0, 0, 0, time.UTC)
 
-	mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `meetings` inner join participants on participants.meeting_id = meetings.id inner join users on users.id = participants.user_id WHERE (participants.user_id = ? AND participants.is_host = ?) AND meetings.is_confirmed = ?")).
-		WithArgs(userId, 1, 1).
+	mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `meetings` inner join participants on participants.meeting_id = meetings.id inner join users on users.id = participants.user_id WHERE (participants.user_id = ? AND participants.is_host = ? AND participants.has_responded = ?) AND meetings.is_confirmed = ?")).
+		WithArgs(userId, 0, 1, 0).
 		WillReturnRows(sqlmock.NewRows([]string{"id", "title", "description", "is_onsite", "is_online", "place", "url", "all_participants_responded", "is_confirmed", "start_time", "end_time", "actual_start_time", "actual_end_time", "hour", "created_at", "updated_at"}).
 			AddRow(1, "hoge", "hoge", true, true, "hoge", "zoom.com", true, true, startTime,  endTime, actualStartTime,  actualEndTime, 1, createdAt,  updatedAt))
 
-	result, err := models.GetConfirmedMeetingsForHostByUserId(gormDB, userId)
+	result, err := models.GetNotConfirmedMeetingsForGuestByUserId(gormDB, userId)
 	expected := []models.Meeting{
 		{
 			Id: 1,
@@ -58,7 +58,7 @@ func TestGetConfirmedMeetingsForHostByUserIdFirst(t *testing.T){
 			Url: "zoom.com",
 			AllParticipantsResponded: true,
 			IsConfirmed: true,
-			StartTime: startTime,
+			StartTime: startTime, 
 			EndTime: endTime,
 			ActualStartTime: actualStartTime,
 			ActualEndTime: actualEndTime,
@@ -84,7 +84,7 @@ func TestGetConfirmedMeetingsForHostByUserIdFirst(t *testing.T){
 
 }
 
-func TestGetConfirmedMeetingsForHostByUserIdNil(t *testing.T){
+func TestGetNotConfirmedMeetingsForGuestByUserIdNil(t *testing.T){
 
 	db, mock, err := sqlmock.New()
 	if err != nil {
@@ -105,11 +105,11 @@ func TestGetConfirmedMeetingsForHostByUserIdNil(t *testing.T){
 
 	userId := 100
 
-	mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `meetings` inner join participants on participants.meeting_id = meetings.id inner join users on users.id = participants.user_id WHERE (participants.user_id = ? AND participants.is_host = ?) AND meetings.is_confirmed = ?")).
-		WithArgs(userId, 1, 1).
+	mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `meetings` inner join participants on participants.meeting_id = meetings.id inner join users on users.id = participants.user_id WHERE (participants.user_id = ? AND participants.is_host = ? AND participants.has_responded = ?) AND meetings.is_confirmed = ?")).
+		WithArgs(userId, 0, 1, 0).
 		WillReturnError(fmt.Errorf("record not found"))
 
-	result, err := models.GetConfirmedMeetingsForHostByUserId(gormDB, userId)
+	result, err := models.GetNotConfirmedMeetingsForGuestByUserId(gormDB, userId)
 	expected := []models.Meeting{}
 	
 	// Verify the result
