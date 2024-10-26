@@ -3,9 +3,10 @@ package models
 import (
 	"sort"
 	"time"
+	"errors"
 	"reflect"
 	"gorm.io/gorm"
-	"errors"
+	"github.com/MakotoNakai/lets-schedule/config"
 )
 
 type CandidateTime struct {
@@ -25,7 +26,7 @@ type AvailableTime struct {
 
 func IsCandidateTimeEmpty(ctlist *[]CandidateTime) (bool, error) {
 	if ctlist == nil {
-		return false, errors.New("The given array is nil")
+		return false, config.ErrArrayIsNil
 	}
 
 	return len(*ctlist) == 0, nil
@@ -33,18 +34,18 @@ func IsCandidateTimeEmpty(ctlist *[]CandidateTime) (bool, error) {
 
 func IsAvailableTimeEmpty(at *AvailableTime) (bool, error) {
 	if at == nil {
-		return false, errors.New("The given AvailableTime object is nil")
+		return false, config.ErrAvailableTimeIsNil
 	}
 	return at.ActualStartTime == time.Time{} && at.ActualEndTime == time.Time{}, nil
 }
 
 func EmptyCandidateTimeExists(ctlist *[]CandidateTime) (bool, error) {
 	if ctlist == nil {
-		return false, errors.New("The given array is nil")
+		return false, config.ErrArrayIsNil
 	}
 
 	if len(*ctlist) == 0 {
-		return false, errors.New("The given array is empty")
+		return false, config.ErrArrayIsEmpty
 	}
 
 	t := time.Time{}
@@ -58,11 +59,11 @@ func EmptyCandidateTimeExists(ctlist *[]CandidateTime) (bool, error) {
 
 func PastCandidateTimeExists(ctlist *[]CandidateTime) (bool, error) {
 	if ctlist == nil {
-		return false, errors.New("The given array is nil")
+		return false, config.ErrArrayIsNil
 	}
 
 	if len(*ctlist) == 0 {
-		return false, errors.New("The given array is empty")
+		return false, config.ErrArrayIsEmpty
 	}
 
 	now := time.Now()
@@ -79,11 +80,11 @@ func GetCandidateTimeByMeetingId(db *gorm.DB, MeetingId int) ([]CandidateTime, e
 
 	CandidateTimeList := []CandidateTime{}
 	err := db.Table("candidate_times").
-		Select("candidate_times.*").
+		Select("*").
 		Where("candidate_times.meeting_id = ?", MeetingId).
 		Find(&CandidateTimeList).Error
 	if err != nil {
-		return CandidateTimeList, err
+		return CandidateTimeList, config.ErrRecordNotFound
 	}
 	return CandidateTimeList, nil
 
@@ -93,12 +94,12 @@ func GetCandidateTimeByMeetingIdAndUserId(db *gorm.DB, MeetingId int, UserId int
 
 	CandidateTimeList := []CandidateTime{}
 	err := db.Table("candidate_times").
-		Select("candidate_times.*").
+		Select("*").
 		Where("candidate_times.meeting_id = ?", MeetingId).
 		Where("candidate_times.user_id = ?", UserId).
 		Find(&CandidateTimeList).Error
 	if err != nil {
-		return CandidateTimeList, err
+		return CandidateTimeList, config.ErrRecordNotFound
 	}
 	return CandidateTimeList, nil
 }
@@ -107,11 +108,11 @@ func GetAvailableTimeByMeetingId(db *gorm.DB, MeetingId int) ([]CandidateTime, e
 
 	candidateTimeList := []CandidateTime{}
 	err := db.Table("candidate_times").
-		Select("candidate_times.*").
+		Select("*").
 		Where("candidate_times.meeting_id = ?", MeetingId).
 		Find(&candidateTimeList).Error
 	if err != nil {
-		return candidateTimeList, err
+		return candidateTimeList, config.ErrRecordNotFound
 	}
 		
 	SortByStartTime(candidateTimeList)

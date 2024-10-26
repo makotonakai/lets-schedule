@@ -2,8 +2,8 @@ package models
 
 import (
 	"time"
-	"errors"
 	"gorm.io/gorm"
+	"github.com/MakotoNakai/lets-schedule/config"
 )
 
 type Participant struct {
@@ -19,11 +19,11 @@ type Participant struct {
 func GetParticipantListByMeetingId(db *gorm.DB, Id int) ([]Participant, error) {
 	participantList := []Participant{}
 	err := db.Table("participants").
-		Select("participants.*").
+		Select("*").
 		Where("participants.meeting_id = ?", Id).
 		Find(&participantList).Error
 	if err != nil {
-		return participantList, err
+		return participantList, config.ErrRecordNotFound
 	}
 	return participantList, nil
 }
@@ -31,12 +31,12 @@ func GetParticipantListByMeetingId(db *gorm.DB, Id int) ([]Participant, error) {
 func GetParticipantByUserIdAndMeetingId(db *gorm.DB, userId int, meetingId int) (Participant, error) {
 	p := Participant{}
 	err := db.Table("participants").
-		Select("participants.*").
+		Select("*").
 		Where("participants.user_id = ?", userId).
 		Where("participants.meeting_id = ?", meetingId).
 		Find(&p).Error
 	if err != nil {
-		return p, err
+		return p, config.ErrRecordNotFound
 	}
 	return p, nil
 
@@ -44,7 +44,7 @@ func GetParticipantByUserIdAndMeetingId(db *gorm.DB, userId int, meetingId int) 
 
 func ConvertToParticipant(db *gorm.DB, pw *ParticipantWithUserName) (*Participant, error) {
 	if pw == nil {
-		return &Participant{}, errors.New("The given ParticipantWithUserName object is nil")
+		return &Participant{}, config.ErrParticipantWithUserNameIsNil
 	}
 	p := &Participant{}
 	pw_ := *pw
@@ -61,7 +61,7 @@ func ConvertToParticipant(db *gorm.DB, pw *ParticipantWithUserName) (*Participan
 
 func ConvertToParticipantWithUserName(db *gorm.DB, p *Participant) (*ParticipantWithUserName, error) {
 	if p == nil {
-		return &ParticipantWithUserName{}, errors.New("The given Participant object is nil")
+		return &ParticipantWithUserName{}, config.ErrParticipantIsNil
 	}
 	pw := &ParticipantWithUserName{}
 	p_ := *p
@@ -78,10 +78,10 @@ func ConvertToParticipantWithUserName(db *gorm.DB, p *Participant) (*Participant
 
 func ConvertToParticipantWithUserNameList(db *gorm.DB, pl *[]Participant) (*[]ParticipantWithUserName, error) {
 	if pl == nil {
-		return &[]ParticipantWithUserName{}, errors.New("The given ParticipantWithUserName list is nil")
+		return &[]ParticipantWithUserName{}, config.ErrParticipantWithUserNameListIsNil
 	}
 	if len(*pl) == 0 {
-		return &[]ParticipantWithUserName{}, errors.New("The given ParticipantWithUserName list is empty")
+		return &[]ParticipantWithUserName{}, config.ErrParticipantWithUserNameListIsEmpty
 	}
 	pwl := []ParticipantWithUserName{}
 	for _, p := range *pl {
@@ -94,12 +94,13 @@ func ConvertToParticipantWithUserNameList(db *gorm.DB, pl *[]Participant) (*[]Pa
 	return &pwl, nil
 }
 
+
 func ConvertToParticipantList(db *gorm.DB, pwl *[]ParticipantWithUserName) (*[]Participant, error) {
 	if pwl == nil {
-		return &[]Participant{}, errors.New("The given Participant list is nil")
+		return &[]Participant{}, config.ErrParticipantListIsNil
 	}
 	if len(*pwl) == 0 {
-		return &[]Participant{}, errors.New("The given Participant list is empty")
+		return &[]Participant{}, config.ErrParticipantListIsEmpty
 	}
 
 	pl := &[]Participant{}
@@ -113,11 +114,11 @@ func ConvertToParticipantList(db *gorm.DB, pwl *[]ParticipantWithUserName) (*[]P
 	return pl, nil
 }
 
-func Min(a, b int) (int, error) {
-	if &a == nil || &b == nil {
-		return -1, errors.New("The given integer is nil")
+func Min(a, b *int) (*int, error) {
+	if a == nil || b == nil {
+		return new(int), config.ErrIntegerIsNil
 	}
-	if a <= b {
+	if *a <= *b {
 			return a, nil
 	}
 	return b, nil
@@ -125,18 +126,15 @@ func Min(a, b int) (int, error) {
 
 func HostIsInParticipant(pl *[]Participant) (bool, error) {
 	if pl == nil {
-		return false, errors.New("The given Participant list is nil")
+		return false, config.ErrParticipantListIsNil
 	}
 
 	if len(*pl) == 0 {
-		return false, errors.New("The given Participant list is empty")
+		return false, config.ErrParticipantListIsEmpty
 	}
-	host := Participant{}
+
 	for _, p := range *pl {
 		if p.IsHost == true {
-			host = p
-		}
-		if host.Id == p.Id {
 			return true, nil
 		}
 	}

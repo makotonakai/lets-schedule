@@ -2,7 +2,6 @@ package models
 
 import (
 	"time"
-	"errors"
 	"gorm.io/gorm"
 	"github.com/MakotoNakai/lets-schedule/config"
 )
@@ -88,11 +87,11 @@ func IsHybridButNoURLSpecified(m *Meeting) (bool, error) {
 func GetMeetingById(db *gorm.DB, Id int) (Meeting, error) {
 	meeting := Meeting{}
 	err := db.Table("meetings").
-		Select("meetings.*").
+		Select("*").
 		Where("meetings.id = ?", Id).
 		Find(&meeting).Error
 	if err != nil {
-		return meeting, err
+		return meeting, config.ErrRecordNotFound
 	}
 	return meeting, nil
 }
@@ -100,13 +99,13 @@ func GetMeetingById(db *gorm.DB, Id int) (Meeting, error) {
 func GetMeetingsByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
 	err := db.Table("meetings").
-		Select("meetings.*").
+		Select("*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("users.id = ?", UserId).
 		Find(&meetings).Error
 	if err != nil {
-		return meetings, err
+		return meetings, config.ErrRecordNotFound
 	}
 	return meetings, nil
 }
@@ -114,14 +113,14 @@ func GetMeetingsByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 func GetConfirmedMeetingsForHostByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
 	err := db.Table("meetings").
-		Select("meetings.*").
+		Select("*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 1).
 		Where("meetings.is_confirmed = ?", 1).
 		Find(&meetings).Error
 	if err != nil {
-		return meetings, err
+		return meetings, config.ErrRecordNotFound
 	}
 	return meetings, nil
 }
@@ -129,14 +128,14 @@ func GetConfirmedMeetingsForHostByUserId(db *gorm.DB, UserId int) ([]Meeting, er
 func GetNotConfirmedMeetingsForHostByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
 	err := db.Table("meetings").
-		Select("meetings.*").
+		Select("*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 1).
 		Where("meetings.is_confirmed = ? AND meetings.all_participants_responded = ?", 0, 1).
 		Find(&meetings).Error
 	if err != nil {
-		return meetings, err
+		return meetings, config.ErrRecordNotFound
 	}
 	return meetings, nil
 }
@@ -144,14 +143,14 @@ func GetNotConfirmedMeetingsForHostByUserId(db *gorm.DB, UserId int) ([]Meeting,
 func GetNotRespondedMeetingsForHostByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
 	err := db.Table("meetings").
-		Select("meetings.*").
+		Select("*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 1).
 		Where("meetings.is_confirmed = ? AND meetings.all_participants_responded = ?", 0, 0).
 		Find(&meetings).Error
 	if err != nil {
-		return meetings, err
+		return meetings, config.ErrRecordNotFound
 	}
 	return meetings, nil
 }
@@ -159,14 +158,14 @@ func GetNotRespondedMeetingsForHostByUserId(db *gorm.DB, UserId int) ([]Meeting,
 func GetConfirmedMeetingsForGuestByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
 	err := db.Table("meetings").
-		Select("meetings.*").
+		Select("*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ?", UserId, 0).
 		Where("meetings.is_confirmed = ?", 1).
 		Find(&meetings).Error
 	if err != nil {
-		return meetings, err
+		return meetings, config.ErrRecordNotFound
 	}
 	return meetings, nil
 }
@@ -174,14 +173,14 @@ func GetConfirmedMeetingsForGuestByUserId(db *gorm.DB, UserId int) ([]Meeting, e
 func GetNotConfirmedMeetingsForGuestByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
 	err := db.Table("meetings").
-		Select("meetings.*").
+		Select("*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ? AND participants.has_responded = ?", UserId, 0, 1).
 		Where("meetings.is_confirmed = ?", 0).
 		Find(&meetings).Error
 	if err != nil {
-		return meetings, err
+		return meetings, config.ErrRecordNotFound
 	}
 	return meetings, nil
 }
@@ -189,14 +188,14 @@ func GetNotConfirmedMeetingsForGuestByUserId(db *gorm.DB, UserId int) ([]Meeting
 func GetNotRespondedMeetingsForGuestByUserId(db *gorm.DB, UserId int) ([]Meeting, error) {
 	meetings := []Meeting{}
 	err := db.Table("meetings").
-		Select("meetings.*").
+		Select("*").
 		Joins("inner join participants on participants.meeting_id = meetings.id").
 		Joins("inner join users on users.id = participants.user_id").
 		Where("participants.user_id = ? AND participants.is_host = ? AND participants.has_responded = ?", UserId, 0, 0).
 		Where("meetings.is_confirmed = ?", 0).
 		Find(&meetings).Error
 	if err != nil {
-		return meetings, err
+		return meetings, config.ErrRecordNotFound
 	}
 	return meetings, nil
 }
