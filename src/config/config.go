@@ -1,5 +1,9 @@
 package config
 
+import (
+	"errors"
+)
+
 var (
 	EmailAddressIsEmpty = "メールアドレスが入力されていません"
 	UserNameIsEmpty = "ユーザー名が入力されていません"
@@ -17,4 +21,25 @@ var (
 	NeitherPlaceOrURLIsSpecified = "開催場所もURLも指定されていません"
 	CandidateTimeIsEmpty = "空のミーティング候補時間があります"
 	CandidateTimeIsPast = "過去のミーティング候補時間があります"
+	ErrUserIsNil = errors.New("The pointer of the given User object is nil")
+	ErrListOfErrorsDoesntExist = errors.New("The list of error messages doesn't exist")
+	ErrEmailAddressIsEmpty = errors.New("The given email address is empty")
+	ErrEmailAddressNotFound = errors.New("Email address not found")
+	ErrUserNameNotFound = errors.New("Username not found")
+	ErrUserWithUserNameDoesNotExist = errors.New("User with the given username does not exist")
+	ErrUserWithUserIdDoesNotExist = errors.New("User with the given user id does not exist")
+	ErrUserIdWithEmailAddressDoesNotExist = errors.New("User id with the given email address does not exist")
+	ErrMeetingDoesNotExist = errors.New("The given Meeting object doesn't exist")
+	ErrMeetingHourIsNegative = errors.New("The meeting hour needs to be more than 0")
+	ErrRecordNotFound = errors.New("record not found")
+	ErrArrayIsNil = errors.New("The given array is nil")
+	ErrArrayIsEmpty = errors.New("The given array is empty")
+	ErrAvailableTimeIsNil = errors.New("The given AvailableTime object is nil")
+	ErrParticipantIsNil = errors.New("The given Participant object is nil")
+	ErrParticipantWithUserNameIsNil = errors.New("The given ParticipantWithUserName object is nil")
+	ErrParticipantListIsEmpty = errors.New("The given Participant list is empty")
+	ErrParticipantListIsNil = errors.New("The given Participant list is nil")
+	ErrParticipantWithUserNameListIsEmpty = errors.New("The given ParticipantWithUserName list is empty")
+	ErrParticipantWithUserNameListIsNil = errors.New("The given ParticipantWithUserName list is nil")
+	ErrIntegerIsNil = errors.New("The given integer is nil")
 )
