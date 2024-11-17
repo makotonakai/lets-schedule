@@ -23,7 +23,7 @@ var (
 	CandidateTimeIsPast = "過去のミーティング候補時間があります"
 	ErrIdConversionFailed = errors.New("The given id is failed to be converted to an integer")
 	ErrUserIsNil = errors.New("The pointer of the given User object is nil")
-	ErrListOfErrorsDoesntExist = errors.New("The list of error messages doesn't exist")
+	ErrListOfErrorsNotFound = errors.New("The list of error messages doesn't exist")
 	ErrEmailAddressIsEmpty = errors.New("The given email address is empty")
 	ErrEmailAddressNotFound = errors.New("Email address not found")
 	ErrUserNotFound = errors.New("The given user object doesn't exist")

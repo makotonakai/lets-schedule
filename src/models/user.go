@@ -68,7 +68,7 @@ func IsPasswordEmptyOrNull(u *User) (bool, error) {
 func ErrorsExist(errorMessageList *[]string) (bool, error) {
 
 	if errorMessageList == nil {
-		return false, config.ErrListOfErrorsDoesntExist
+		return false, config.ErrListOfErrorsNotFound
 	}
 	return len((*errorMessageList)) != 0, nil
 }

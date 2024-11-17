@@ -43,7 +43,7 @@ func TestErrorsExistNil(t *testing.T){
 			t.Errorf("got %t, wanted %t", result, expected)
 	}
 
-	if !errors.Is(err, config.ErrListOfErrorsDoesntExist) {
-		t.Errorf("got %s, wanted %s", err.Error(), config.ErrListOfErrorsDoesntExist.Error())
+	if !errors.Is(err, config.ErrListOfErrorsNotFound) {
+		t.Errorf("got %s, wanted %s", err.Error(), config.ErrListOfErrorsNotFound.Error())
 	}
 }
