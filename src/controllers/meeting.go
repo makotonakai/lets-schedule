@@ -39,15 +39,16 @@ func CreateMeeting(c echo.Context) error {
 	}
 
 	if models.IsHybridButNoPlaceSpecified(newMeeting) {
-		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.NeitherPlaceOrURLIsSpecified)
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.PlaceIsNotSpecified)
 	}
 
 	if models.IsHybridButNoURLSpecified(newMeeting) {
-		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.NeitherPlaceOrURLIsSpecified)
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.URLIsNotSpecified)
 	}
 
 	if models.IsHybridButNeitherPlaceOrURLSpecified(newMeeting) {
-		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.NeitherPlaceOrURLIsSpecified)
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.PlaceIsNotSpecified)
+		errorMessageListAboutMeeting = append(errorMessageListAboutMeeting, config.URLIsNotSpecified)
 	}
 
 	if models.ErrorsExist(errorMessageListAboutMeeting) {
@@ -65,13 +66,13 @@ func GetAllMeetings(c echo.Context) error {
 	id_str := c.Param("user_id")
 	id, err := strconv.Atoi(id_str)
 	if err != nil {
-		log.Fatal(err)
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 	db.First(&user, id)
 
-	meetings := models.GetMeetingsByUserId(db, id)
+	meetings, err := models.GetMeetingsByUserId(db, id)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrRecordNotFound)
 	}
 
 	return c.JSON(http.StatusOK, meetings)
@@ -84,9 +85,12 @@ func GetMeetingById(c echo.Context) error {
 	id_str := c.Param("id")
 	id, err := strconv.Atoi(id_str)
 	if err != nil {
-		log.Fatal(err)
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
-	db.First(&meeting, id)
+	err := db.First(&meeting, id)
+	if err != {
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingDoesNotExist)
+	}
 
 	return c.JSON(http.StatusOK, meeting)
 
@@ -98,9 +102,13 @@ func GetConfirmedMeetingsForHost(c echo.Context) error {
 	id_str := c.Param("user_id")
 	id, err := strconv.Atoi(id_str)
 	if err != nil {
-		log.Fatal(err)
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
-	db.First(&user, id)
+	
+	err := db.First(&user, id)
+	if err != {
+		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+	}
 
 	confirmedMeetingsForHost := models.GetConfirmedMeetingsForHostByUserId(db, id)
 	if err != nil {
@@ -117,10 +125,12 @@ func GetNotConfirmedMeetingsForHost(c echo.Context) error {
 	id_str := c.Param("user_id")
 	id, err := strconv.Atoi(id_str)
 	if err != nil {
-		log.Fatal(err)
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
-	db.First(&user, id)
-
+	err := db.First(&user, id)
+	if err != {
+		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+	}
 	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForHostByUserId(db, id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
@@ -136,9 +146,12 @@ func GetNotRespondedMeetingsForHost(c echo.Context) error {
 	id_str := c.Param("user_id")
 	id, err := strconv.Atoi(id_str)
 	if err != nil {
-		log.Fatal(err)
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
-	db.First(&user, id)
+	err := db.First(&user, id)
+	if err != {
+		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+	}
 
 	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForHostByUserId(db, id)
 	if err != nil {
@@ -155,9 +168,12 @@ func GetConfirmedMeetingsForGuest(c echo.Context) error {
 	id_str := c.Param("user_id")
 	id, err := strconv.Atoi(id_str)
 	if err != nil {
-		log.Fatal(err)
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
-	db.First(&user, id)
+	err := db.First(&user, id)
+	if err != {
+		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+	}
 
 	confirmedMeetingsForHost := models.GetConfirmedMeetingsForGuestByUserId(db, id)
 	if err != nil {
@@ -174,9 +190,12 @@ func GetNotConfirmedMeetingsForGuest(c echo.Context) error {
 	id_str := c.Param("user_id")
 	id, err := strconv.Atoi(id_str)
 	if err != nil {
-		log.Fatal(err)
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
-	db.First(&user, id)
+	err := db.First(&user, id)
+	if err != {
+		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+	}
 
 	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForGuestByUserId(db, id)
 	if err != nil {
@@ -193,9 +212,12 @@ func GetNotRespondedMeetingsForGuest(c echo.Context) error {
 	id_str := c.Param("user_id")
 	id, err := strconv.Atoi(id_str)
 	if err != nil {
-		log.Fatal(err)
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
-	db.First(&user, id)
+	err := db.First(&user, id)
+	if err != {
+		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+	}
 
 	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForGuestByUserId(db, id)
 	if err != nil {
@@ -211,14 +233,18 @@ func UpdateMeetingById(c echo.Context) error {
 	paramId := c.Param("id")
 	id, err := strconv.Atoi(paramId)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
 	oldMeeting := models.Meeting{}
-	db.First(&oldMeeting, id)
+	err := db.First(&oldMeeting, id)
+	if err != {
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingDoesNotExist)
+	}
 
 	newMeeting := models.Meeting{}
-	err = c.Bind(&newMeeting)
+	err := c.Bind(&newMeeting)
+
 
 	errorMessageListAboutMeeting := []string{}
 

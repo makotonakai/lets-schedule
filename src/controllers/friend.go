@@ -24,8 +24,10 @@ func CreateFriend(c echo.Context) error {
 	FriendUserName := newFriendWithUserName.FriendUserName
 
 	newFriend := models.Friend{}
-	newFriend.UserId = models.GetUserIdFromUserName(db, UserName)
-	newFriend.FriendUserId = models.GetUserIdFromUserName(db, FriendUserName)
+	userId, err := models.GetUserIdFromUserName(db, UserName)
+	newFriend.UserId = userId
+	newFriendId, err := models.GetUserIdFromUserName(db, FriendUserName)
+	newFriend.FriendUserId = newFriendId
 
 	db.Create(&newFriend)
 	return c.JSON(http.StatusCreated, newFriend)

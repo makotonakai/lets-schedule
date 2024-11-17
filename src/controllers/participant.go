@@ -29,7 +29,6 @@ func CreateParticipant(c echo.Context) error {
     UserName := ParticipantWithUserName.UserName
     Participant.UserId, err = models.GetUserIdFromUserName(db, UserName)
     if err != nil {
-      log.Printf("GetUserIdFromUserName Error: %v", err)
       return c.JSON(http.StatusBadRequest, err.Error())
     }
 
@@ -43,50 +42,41 @@ func CreateParticipant(c echo.Context) error {
     newParticipantList = append(newParticipantList, Participant)
   }
 
-  if models.HostIsInParticipant(newParticipantList) {
-    return c.JSON(http.StatusBadRequest, "Host is already a participant")
-  }
-
   result := db.Create(&newParticipantList)
   if result.Error != nil {
     log.Printf("DB Create Error: %v", result.Error)
-    return c.JSON(http.StatusBadRequest, result.Error.Error())
+    return c.JSON(http.StatusBadRequest, config.ErrParticipantWithUserNameListFailedToRegister)
   }
 
   return c.JSON(http.StatusCreated, newParticipantList)
 }
 
 
-
-func GetAllParticipant(c echo.Context) error {
-
-	participantList := []models.Participant{}
-
-	db.Find(&participantList)
-	return c.JSON(http.StatusOK, participantList)
-
-}
-
 func GetParticipantByMeetingId(c echo.Context) error {
 
 	pmi := c.Param("meeting_id")
 	mi, err := strconv.Atoi(pmi)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
-	pl := models.GetParticipantListByMeetingId(db, mi)
-	pwl := models.ConvertToParticipantWithUserNameList(db, pl)
-
+	pl, err := models.GetParticipantListByMeetingId(db, mi)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	pwl, err := models.ConvertToParticipantWithUserNameList(db, pl)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
 	return c.JSON(http.StatusOK, pwl)
 
 }
 
-func UpdateParticipantByUserIdAndMeetingId(c echo.Context) error {
+func UpdateParticipantByMeetingId(c echo.Context) error {
 	pmi := c.Param("meeting_id")
 	mi, err := strconv.Atoi(pmi)
 	if err != nil {
-			return c.JSON(http.StatusBadRequest, err.Error())
+			return c.JSON(http.StatusBadRequest, ErrIdConversionFailed)
 	}
 
 	participantWithUserNameList := []models.ParticipantWithUserName{}

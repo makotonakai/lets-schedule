@@ -49,14 +49,18 @@ func GetCandidateTimeWithUserNameByMeetingId(c echo.Context) error {
 	MeetingIdString := c.Param("meeting_id")
 	MeetingId, err := strconv.Atoi(MeetingIdString)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
 	newCandidateTimeList := []models.CandidateTime{}
-	db.Table("candidate_times").
+	err := db.Table("candidate_times").
 		Select("candidate_times.*").
 		Where("candidate_times.meeting_id = ?", MeetingId).
 		Find(&newCandidateTimeList)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, config.ErrRecordNotFound)
+	}
 
 	CandidateTimeWithUserNameList := []models.CandidateTimeWithUserName{}
 
@@ -65,7 +69,7 @@ func GetCandidateTimeWithUserNameByMeetingId(c echo.Context) error {
 			CandidateTimeWithUserName := models.CandidateTimeWithUserName{}
 			UserId := CandidateTime.UserId
 
-			CandidateTimeWithUserName.UserName = models.GetUserNameFromUserId(db, UserId)
+			CandidateTimeWithUserName.UserName, _ = models.GetUserNameFromUserId(db, UserId)
 			CandidateTimeWithUserName.MeetingId = CandidateTime.MeetingId
 			CandidateTimeWithUserName.StartTime = CandidateTime.StartTime
 			CandidateTimeWithUserName.EndTime = CandidateTime.EndTime
@@ -82,13 +86,13 @@ func GetCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 	UserIdString := c.Param("user_id")
 	UserId, err := strconv.Atoi(UserIdString)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
 	MeetingIdString := c.Param("meeting_id")
 	MeetingId, err := strconv.Atoi(MeetingIdString)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
 	CandidateTimeList := []models.CandidateTime{}
@@ -103,13 +107,13 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 	pui := c.Param("user_id")
 	ui, err := strconv.Atoi(pui)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 	
 	pmi := c.Param("meeting_id")
 	mi, err := strconv.Atoi(pmi)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
 	oldCTList := []models.CandidateTime{}
@@ -195,7 +199,7 @@ func GetAvailableTimeByMeetingId(c echo.Context) error {
 	pmi := c.Param("meeting_id")
 	mi, err := strconv.Atoi(pmi)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 	availableTimeList := models.GetAvailableTimeByMeetingId(db, mi)
 	if models.AvailableTimeIsNotFound(availableTimeList) {
@@ -208,7 +212,7 @@ func UpdateAvailableTimeByMeetingId(c echo.Context) error {
 	paramId := c.Param("meeting_id")
 	id, err := strconv.Atoi(paramId)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
 	oldMeeting := models.Meeting{}
