@@ -23,7 +23,7 @@ func GetParticipantListByMeetingId(db *gorm.DB, Id int) ([]Participant, error) {
 		Where("participants.meeting_id = ?", Id).
 		Find(&participantList).Error
 	if err != nil {
-		return participantList, config.ErrRecordNotFound
+		return participantList, config.ErrMeetingDoesNotExist
 	}
 	return participantList, nil
 }
@@ -78,10 +78,10 @@ func ConvertToParticipantWithUserName(db *gorm.DB, p *Participant) (*Participant
 
 func ConvertToParticipantWithUserNameList(db *gorm.DB, pl *[]Participant) (*[]ParticipantWithUserName, error) {
 	if pl == nil {
-		return &[]ParticipantWithUserName{}, config.ErrParticipantWithUserNameListIsNil
+		return &[]ParticipantWithUserName{}, config.ErrParticipantListIsNil
 	}
 	if len(*pl) == 0 {
-		return &[]ParticipantWithUserName{}, config.ErrParticipantWithUserNameListIsEmpty
+		return &[]ParticipantWithUserName{}, config.ErrParticipantListIsEmpty
 	}
 	pwl := []ParticipantWithUserName{}
 	for _, p := range *pl {
@@ -97,10 +97,10 @@ func ConvertToParticipantWithUserNameList(db *gorm.DB, pl *[]Participant) (*[]Pa
 
 func ConvertToParticipantList(db *gorm.DB, pwl *[]ParticipantWithUserName) (*[]Participant, error) {
 	if pwl == nil {
-		return &[]Participant{}, config.ErrParticipantListIsNil
+		return &[]Participant{}, config.ErrParticipantWithUserNameListIsNil
 	}
 	if len(*pwl) == 0 {
-		return &[]Participant{}, config.ErrParticipantListIsEmpty
+		return &[]Participant{}, config.ErrParticipantWithUserNameListIsEmpty
 	}
 
 	pl := &[]Participant{}
