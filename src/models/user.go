@@ -106,7 +106,7 @@ func GetUserIdFromUserName(db *gorm.DB, UserName string) (int, error) {
 
 	// Check if user was found
 	if err != nil {
-			return -1, config.ErrUserWithUserNameDoesNotExist
+			return -1, config.ErrUserWithUserNameNotFound
 	}
 
 	return user.Id, nil
@@ -119,7 +119,7 @@ func GetUserNameFromUserId(db *gorm.DB, UserId int) (string, error) {
 		Where("users.id = ?", UserId).
 		Find(&user).Error
 	if err != nil {
-		return "", config.ErrUserWithUserIdDoesNotExist
+		return "", config.ErrUserWithUserIdNotFound
 	}
 	return user.UserName, nil
 }
@@ -132,7 +132,7 @@ func GetUserIdFromEmailAddress(db *gorm.DB, EmailAddress string) (int, error) {
 		Find(&User).Error
 
 	if err != nil {
-		return -1, config.ErrUserIdWithEmailAddressDoesNotExist
+		return -1, config.ErrUserIdWithEmailAddressNotFound
 	}
 
 	return User.Id, nil

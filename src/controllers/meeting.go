@@ -89,7 +89,7 @@ func GetMeetingById(c echo.Context) error {
 	}
 	err := db.First(&meeting, id)
 	if err != {
-		return c.JSON(http.StatusBadRequest, config.ErrMeetingDoesNotExist)
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
 	}
 
 	return c.JSON(http.StatusOK, meeting)
@@ -107,7 +107,7 @@ func GetConfirmedMeetingsForHost(c echo.Context) error {
 	
 	err := db.First(&user, id)
 	if err != {
-		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
 	confirmedMeetingsForHost := models.GetConfirmedMeetingsForHostByUserId(db, id)
@@ -129,7 +129,7 @@ func GetNotConfirmedMeetingsForHost(c echo.Context) error {
 	}
 	err := db.First(&user, id)
 	if err != {
-		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForHostByUserId(db, id)
 	if err != nil {
@@ -150,7 +150,7 @@ func GetNotRespondedMeetingsForHost(c echo.Context) error {
 	}
 	err := db.First(&user, id)
 	if err != {
-		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
 	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForHostByUserId(db, id)
@@ -172,7 +172,7 @@ func GetConfirmedMeetingsForGuest(c echo.Context) error {
 	}
 	err := db.First(&user, id)
 	if err != {
-		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
 	confirmedMeetingsForHost := models.GetConfirmedMeetingsForGuestByUserId(db, id)
@@ -194,7 +194,7 @@ func GetNotConfirmedMeetingsForGuest(c echo.Context) error {
 	}
 	err := db.First(&user, id)
 	if err != {
-		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
 	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForGuestByUserId(db, id)
@@ -216,7 +216,7 @@ func GetNotRespondedMeetingsForGuest(c echo.Context) error {
 	}
 	err := db.First(&user, id)
 	if err != {
-		return c.JSON(http.StatusBadRequest, config.ErrUserDoesNotExist)
+		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
 	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForGuestByUserId(db, id)
@@ -239,7 +239,7 @@ func UpdateMeetingById(c echo.Context) error {
 	oldMeeting := models.Meeting{}
 	err := db.First(&oldMeeting, id)
 	if err != {
-		return c.JSON(http.StatusBadRequest, config.ErrMeetingDoesNotExist)
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
 	}
 
 	newMeeting := models.Meeting{}

@@ -321,7 +321,7 @@ func TestIsHybridButNeitherPlaceOrURLSpecifiedNil(t *testing.T){
 			t.Errorf("got %t, wanted %t", result, expected)
 	}
 
-	if !errors.Is(err, config.ErrMeetingDoesNotExist) {
-		t.Errorf("got %s, wanted %s", err.Error(), config.ErrMeetingDoesNotExist.Error())
+	if !errors.Is(err, config.ErrMeetingNotFound) {
+		t.Errorf("got %s, wanted %s", err.Error(), config.ErrMeetingNotFound.Error())
 	}
 }

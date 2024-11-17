@@ -84,8 +84,8 @@ func TestGetUserIdFromUserNameFail(t *testing.T){
 		t.Errorf("expected to get user id %d, but you actually got %d", result, expected)
 	}
 
-	if !errors.Is(e, config.ErrUserWithUserNameDoesNotExist) {
-		t.Errorf("got %s, wanted %s", err.Error(), config.ErrUserWithUserNameDoesNotExist.Error())
+	if !errors.Is(e, config.ErrUserWithUserNameNotFound) {
+		t.Errorf("got %s, wanted %s", err.Error(), config.ErrUserWithUserNameNotFound.Error())
 	}
 
 	// Ensure all expectations were met

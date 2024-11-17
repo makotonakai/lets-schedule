@@ -23,7 +23,7 @@ func GetParticipantListByMeetingId(db *gorm.DB, Id int) ([]Participant, error) {
 		Where("participants.meeting_id = ?", Id).
 		Find(&participantList).Error
 	if err != nil {
-		return participantList, config.ErrMeetingDoesNotExist
+		return participantList, config.ErrMeetingNotFound
 	}
 	return participantList, nil
 }
