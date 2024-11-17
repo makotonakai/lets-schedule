@@ -26,18 +26,20 @@ create table if not exists meetings (
   is_confirmed boolean not null,
   start_time timestamp null default null,
   end_time timestamp null default null,
+  actual_start_time timestamp null default null,
+  actual_end_time timestamp null default null,
   hour decimal not null,
   created_at timestamp not null default current_timestamp,
   updated_at timestamp not null default current_timestamp on update current_timestamp,
   primary key(id)
 );
 
-insert into meetings values (1, "第1回ミーティング", "アイデア出し", true, false, "会議室1", "なし", 1, 1, "2022-09-19 19:00:00", "2022-09-19 22:00:00", 1, current_timestamp, current_timestamp);
-insert into meetings values (2, "第2回ミーティング", "要件定義", false, true, "なし", "http://meeting2-zoom.com", 1, 0, null, null, 1, current_timestamp, current_timestamp);
-insert into meetings values (3, "第3回ミーティング", "技術選定", true, true, "会議室", "http://meeting3-zoom.com", 0, 0, null, null, 1, current_timestamp, current_timestamp);
-insert into meetings values (4, "第4回ミーティング", "DB設計", true, true, "会議室", "http://meeting4-zoom.com", 1, 1, "2022-09-19 19:00:00", "2022-09-19 20:00:00", 1, current_timestamp, current_timestamp);
-insert into meetings values (5, "第5回ミーティング", "実装", true, true, "会議室", "http://meeting5-zoom.com", 0, 0, null, null, 1, current_timestamp, current_timestamp);
-insert into meetings values (6, "第6回ミーティング", "デプロイ", true, true, "会議室", "http://meeting6-zoom.com", 0, 0, null, null, 1, current_timestamp, current_timestamp);
+insert into meetings values (1, "第1回ミーティング", "アイデア出し", true, false, "会議室1", "なし", 1, 1, "2022-09-19 19:00:00", "2022-09-19 22:00:00", null, null, 1, current_timestamp, current_timestamp);
+insert into meetings values (2, "第2回ミーティング", "要件定義", false, true, "なし", "http://meeting2-zoom.com", 1, 0, null, null, null, null, 1, current_timestamp, current_timestamp);
+insert into meetings values (3, "第3回ミーティング", "技術選定", true, true, "会議室", "http://meeting3-zoom.com", 0, 0, null, null, null, null, 1, current_timestamp, current_timestamp);
+insert into meetings values (4, "第4回ミーティング", "DB設計", true, true, "会議室", "http://meeting4-zoom.com", 1, 1, "2022-09-19 19:00:00", "2022-09-19 20:00:00", null, null, 1, current_timestamp, current_timestamp);
+insert into meetings values (5, "第5回ミーティング", "実装", true, true, "会議室", "http://meeting5-zoom.com", 0, 0, null, null, null, null, 1, current_timestamp, current_timestamp);
+insert into meetings values (6, "第6回ミーティング", "デプロイ", true, true, "会議室", "http://meeting6-zoom.com", 0, 0, null, null, null, null, 1, current_timestamp, current_timestamp);
 
 create table if not exists participants (
   id bigint(11) not null auto_increment,
