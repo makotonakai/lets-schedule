@@ -52,14 +52,6 @@ func CreateUser(c echo.Context) error {
 
 }
 
-func GetAllUser(c echo.Context) error {
-
-	userList := []models.User{}
-
-	db.Find(&userList)
-	return c.JSON(http.StatusOK, userList)
-
-}
 
 func GetUserById(c echo.Context) error {
 
