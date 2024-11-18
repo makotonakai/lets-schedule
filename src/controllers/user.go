@@ -107,7 +107,7 @@ func ResetPassword(c echo.Context) error {
 
 	err = models.ResetPassword(db, id, np.NewPassword)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToResetPassword)
 	}
 
 	return c.JSON(http.StatusOK, np.NewPassword)

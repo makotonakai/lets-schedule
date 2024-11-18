@@ -32,6 +32,7 @@ var (
 	ErrUserWithUserNameNotFound = errors.New("入力されたユーザー名を持つユーザーが見つかりませんでした")
 	ErrUserWithUserIdNotFound = errors.New("入力されたユーザーIDを持つユーザーが見つかりませんでした")
 	ErrUserIdWithEmailAddressNotFound = errors.New("入力されたメールアドレスを持つユーザーのIDが見つかりませんでしたでした")
+	ErrFailedToResetPassword = errors.New("パスワードの変更に失敗しました")
 	ErrMeetingNotFound = errors.New("ミーティングが存在しませんが見つかりませんでした")
 	ErrMeetingHourIsNegative = errors.New("ミーティング時間は0より大きい値を入力して下さい")
 	ErrRecordNotFound = errors.New("DBのレコードが見つかりませんでした")

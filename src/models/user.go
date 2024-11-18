@@ -141,7 +141,9 @@ func GetUserIdFromEmailAddress(db *gorm.DB, EmailAddress string) (int, error) {
 func ResetPassword(db *gorm.DB, Id int, NewPassword string) error {
 
 	err := db.Model(&User{}).Where("id = ?", Id).Update("password", NewPassword).Error
-	return err
+	if err != nil {
+		return config.ErrFailedToResetPassword
+	}
 }
 
 
