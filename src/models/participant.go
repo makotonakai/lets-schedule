@@ -50,7 +50,7 @@ func ConvertToParticipant(db *gorm.DB, pw *ParticipantWithUserName) (*Participan
 	pw_ := *pw
 	userId, err := GetUserIdFromUserName(db, pw_.UserName) 
 	if err != nil {
-		return nil, err
+		return nil, config.ErrUserWithUserNameNotFound
 	}
 	p.UserId = userId
 	p.MeetingId = pw.MeetingId
@@ -67,7 +67,7 @@ func ConvertToParticipantWithUserName(db *gorm.DB, p *Participant) (*Participant
 	p_ := *p
 	userName, err := GetUserNameFromUserId(db, p_.UserId)
 	if err != nil {
-		return nil, err
+		return nil, config.ErrUserWithUserIdNotFound
 	}
 	pw.UserName = userName
 	pw.MeetingId = p.MeetingId
@@ -87,7 +87,7 @@ func ConvertToParticipantWithUserNameList(db *gorm.DB, pl *[]Participant) (*[]Pa
 	for _, p := range *pl {
 		pw, err := ConvertToParticipantWithUserName(db, &p)
 		if err != nil {
-			return &pwl, err
+			return &pwl, config.ErrUserWithUserIdNotFound
 		}
 		pwl = append(pwl, *pw)
 	}

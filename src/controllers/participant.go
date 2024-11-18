@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"github.com/labstack/echo/v4"
 
+	"github.com/MakotoNakai/lets-schedule/config"
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
@@ -19,7 +20,7 @@ func CreateParticipant(c echo.Context) error {
   err := c.Bind(&newParticipantWithUserNameList)
   if err != nil {
     log.Printf("Bind Error: %v", err) // Log the bind error
-    return c.JSON(http.StatusBadRequest, err.Error())
+    return c.JSON(http.StatusBadRequest, ErrFailedToBindParticipantWithUserNameList)
   }
 
   newParticipantList := []models.Participant{}
@@ -29,7 +30,7 @@ func CreateParticipant(c echo.Context) error {
     UserName := ParticipantWithUserName.UserName
     Participant.UserId, err = models.GetUserIdFromUserName(db, UserName)
     if err != nil {
-      return c.JSON(http.StatusBadRequest, err.Error())
+      return c.JSON(http.StatusBadRequest, config.ErrUserWithUserNameNotFound)
     }
 
     Participant.MeetingId = ParticipantWithUserName.MeetingId
@@ -62,11 +63,11 @@ func GetParticipantByMeetingId(c echo.Context) error {
 
 	pl, err := models.GetParticipantListByMeetingId(db, mi)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
 	}
 	pwl, err := models.ConvertToParticipantWithUserNameList(db, pl)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, err)
 	}
 	return c.JSON(http.StatusOK, pwl)
 
@@ -82,7 +83,7 @@ func UpdateParticipantByMeetingId(c echo.Context) error {
 	participantWithUserNameList := []models.ParticipantWithUserName{}
 	err = c.Bind(&participantWithUserNameList)
 	if err != nil {
-			return c.JSON(http.StatusBadRequest, err.Error())
+			return c.JSON(http.StatusBadRequest, config.ErrParticipantWithUserNameListFailedToRegister)
 	}
 
 	oldParticipantList := models.GetParticipantListByMeetingId(db, mi)
@@ -101,7 +102,7 @@ func UpdateParticipantByMeetingId(c echo.Context) error {
 			if err != nil {
 					// If an error occurs, roll back the transaction
 					tx.Rollback()
-					return c.JSON(http.StatusBadRequest, err.Error())
+					return c.JSON(http.StatusBadRequest, err)
 			}
 			// Update participant
 			tx.Model(&oldp).Updates(newp)
@@ -115,7 +116,7 @@ func UpdateParticipantByMeetingId(c echo.Context) error {
 					if err := tx.Delete(&oldp).Error; err != nil {
 							// Rollback and return error
 							tx.Rollback()
-							return c.JSON(http.StatusBadRequest, err.Error())
+							return c.JSON(http.StatusBadRequest, config.ErrFailedToDeleteParticipant)
 					}
 			}
 	}
@@ -128,13 +129,13 @@ func UpdateParticipantByMeetingId(c echo.Context) error {
 					if err != nil {
 							// Rollback and return error
 							tx.Rollback()
-							return c.JSON(http.StatusBadRequest, err.Error())
+							return c.JSON(http.StatusBadRequest, err)
 					}
 					// Create new participant
 					if err := tx.Create(&newp).Error; err != nil {
 							// Rollback and return error
 							tx.Rollback()
-							return c.JSON(http.StatusBadRequest, err.Error())
+							return c.JSON(http.StatusBadRequest, config.ErrFailedToCreateParticipant)
 					}
 					newParticipantList = append(newParticipantList, *newp)
 			}
@@ -142,7 +143,7 @@ func UpdateParticipantByMeetingId(c echo.Context) error {
 
 	// Commit the transaction if all operations were successful
 	if err := tx.Commit().Error; err != nil {
-			return c.JSON(http.StatusBadRequest, "Failed to commit transaction")
+			return c.JSON(http.StatusBadRequest, config.ErrFailedToExecuteTransaction)
 	}
 
 	return c.JSON(http.StatusOK, newParticipantList)
@@ -155,7 +156,7 @@ func DeleteParticipant(c echo.Context) error {
 	
 	err := c.Bind(&participant)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindParticipant)
 	}
 
 	db.Delete(&participant)
