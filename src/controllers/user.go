@@ -52,14 +52,13 @@ func CreateUser(c echo.Context) error {
 
 }
 
-
 func GetUserById(c echo.Context) error {
 
 	user := models.User{}
 	err := c.Bind(&user)
 
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindUser)
 	}
 
 	db.First(&user)
@@ -72,7 +71,7 @@ func UpdateUser(c echo.Context) error {
 
 	err := c.Bind(&user)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindUser)
 	}
 
 	db.Save(&user)
@@ -85,7 +84,7 @@ func DeleteUser(c echo.Context) error {
 
 	err := c.Bind(&user)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindUser)
 	}
 
 	db.Delete(&user)
@@ -103,7 +102,7 @@ func ResetPassword(c echo.Context) error {
 	np := models.NewPassword{}
 	err = c.Bind(&np)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindUser)
 	}
 
 	err = models.ResetPassword(db, id, np.NewPassword)
