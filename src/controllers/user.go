@@ -96,7 +96,7 @@ func ResetPassword(c echo.Context) error {
 	id_str := c.Param("id")
 	id, err := strconv.Atoi(id_str)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
 	np := models.NewPassword{}
