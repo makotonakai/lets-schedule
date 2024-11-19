@@ -20,7 +20,7 @@ func CreateMeeting(c echo.Context) error {
 	newMeeting := models.Meeting{}
 	err := c.Bind(&newMeeting)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, ErrFailedToBindMeeting)
 	}
 
 	errorMessageListAboutMeeting := []string{}
@@ -55,7 +55,11 @@ func CreateMeeting(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, errorMessageListAboutMeeting)
 	}
 
-	db.Create(&newMeeting)
+	err = db.Create(&newMeeting)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, ErrFailedToCreateMeeting)
+	}
+
 	return c.JSON(http.StatusCreated, newMeeting)
 	
 }
@@ -68,7 +72,11 @@ func GetAllMeetings(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
-	db.First(&user, id)
+	
+	err = db.First(&user, id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
+	} 
 
 	meetings, err := models.GetMeetingsByUserId(db, id)
 	if err != nil {
@@ -87,6 +95,7 @@ func GetMeetingById(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
+
 	err := db.First(&meeting, id)
 	if err != {
 		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
@@ -110,9 +119,9 @@ func GetConfirmedMeetingsForHost(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
-	confirmedMeetingsForHost := models.GetConfirmedMeetingsForHostByUserId(db, id)
+	confirmedMeetingsForHost, err := models.GetConfirmedMeetingsForHostByUserId(db, id)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
 	}
 
 	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
@@ -127,13 +136,15 @@ func GetNotConfirmedMeetingsForHost(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
+
 	err := db.First(&user, id)
 	if err != {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
+
 	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForHostByUserId(db, id)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
 	}
 
 	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
@@ -148,6 +159,7 @@ func GetNotRespondedMeetingsForHost(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
+
 	err := db.First(&user, id)
 	if err != {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
@@ -155,7 +167,7 @@ func GetNotRespondedMeetingsForHost(c echo.Context) error {
 
 	confirmedMeetingsForHost := models.GetNotRespondedMeetingsForHostByUserId(db, id)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
 	}
 
 	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
@@ -170,6 +182,7 @@ func GetConfirmedMeetingsForGuest(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
+
 	err := db.First(&user, id)
 	if err != {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
@@ -177,7 +190,7 @@ func GetConfirmedMeetingsForGuest(c echo.Context) error {
 
 	confirmedMeetingsForHost := models.GetConfirmedMeetingsForGuestByUserId(db, id)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
 	}
 
 	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
@@ -192,6 +205,7 @@ func GetNotConfirmedMeetingsForGuest(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
+
 	err := db.First(&user, id)
 	if err != {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
@@ -199,7 +213,7 @@ func GetNotConfirmedMeetingsForGuest(c echo.Context) error {
 
 	confirmedMeetingsForHost := models.GetNotConfirmedMeetingsForGuestByUserId(db, id)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
 	}
 
 	return c.JSON(http.StatusOK, confirmedMeetingsForHost)
@@ -214,6 +228,7 @@ func GetNotRespondedMeetingsForGuest(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
+
 	err := db.First(&user, id)
 	if err != {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
@@ -244,7 +259,9 @@ func UpdateMeetingById(c echo.Context) error {
 
 	newMeeting := models.Meeting{}
 	err := c.Bind(&newMeeting)
-
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, ErrFailedToBindMeeting)
+	}
 
 	errorMessageListAboutMeeting := []string{}
 
@@ -272,7 +289,11 @@ func UpdateMeetingById(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, errorMessageListAboutMeeting)
 	}
 	
-	db.Model(&oldMeeting).Updates(newMeeting)
+	err = db.Model(&oldMeeting).Updates(newMeeting)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToUpdateMeeting)
+	}
+
 	return c.JSON(http.StatusOK, newMeeting)
 
 }
@@ -283,10 +304,14 @@ func DeleteMeeting(c echo.Context) error {
 	
 	err := c.Bind(&Meeting)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, ErrFailedToBindMeeting)
 	}
 
-	db.Delete(&Meeting)
+	err = db.Delete(&Meeting)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, ErrFailedToDeleteMeeting)
+	}
+	
 	return c.JSON(http.StatusNoContent, Meeting)
 
 }
