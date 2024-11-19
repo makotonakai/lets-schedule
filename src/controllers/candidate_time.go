@@ -18,7 +18,7 @@ func CreateCandidateTime(c echo.Context) error {
 	newCandidateTime := []models.CandidateTime{}
 	err := c.Bind(&newCandidateTime)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
 	}
 
 	errorMessageListAboutCandidateTime := []string{}
@@ -39,7 +39,11 @@ func CreateCandidateTime(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, errorMessageListAboutCandidateTime)
 	}
 
-	db.Create(&newCandidateTime)
+	err = db.Create(&newCandidateTime)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToCreateCandidateTime)
+	}
+
 	return c.JSON(http.StatusCreated, newCandidateTime)
 	
 }
@@ -59,7 +63,7 @@ func GetCandidateTimeWithUserNameByMeetingId(c echo.Context) error {
 		Find(&newCandidateTimeList)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, config.ErrRecordNotFound)
+		c.JSON(http.StatusBadRequest, config.ErrCandidateTimeNotFound)
 	}
 
 	CandidateTimeWithUserNameList := []models.CandidateTimeWithUserName{}
@@ -121,9 +125,8 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 
 	newCTList := []models.CandidateTime{}
 	err = c.Bind(&newCTList)
-
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTimeList)
 	}
 
 	errorMessageListAboutCandidateTime := []string{}
@@ -159,23 +162,36 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 	for i := 0; i < minlen; i++ {
 		oldct := oldCTList[i]
 		newct := newCTList[i]
-		tx.Model(&oldct).Updates(newct)
+		err := tx.Model(&oldct).Updates(newct)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, config.ErrFailedToUpdateCandidateTime)
+		}
 		ctList = append(ctList, oldct)
 	}
 
 	if oldlen < newlen {
 		newct := newCTList[oldlen:newlen]
-		db.Create(&newct)
+		err := db.Create(&newct)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, config.ErrFailedToCreateCandidateTime)
+		}
 	}
 
 	if len(oldCTList) > len(newCTList) {
 		for i := len(newCTList); i < len(oldCTList); i++ {
 			oldp := oldCTList[i]
-			tx.Delete(&oldp)
+			err := tx.Delete(&oldp)
+			if err != nil {
+				return c.JSON(http.StatusBadRequest, config.ErrFailedToDeleteCandidateTime)
+			}
 		}
 	}
 
-	tx.Commit()
+	err = tx.Commit()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToExecuteTransaction)
+	}
+
 	return c.JSON(http.StatusOK, ctList)
 
 }
@@ -186,10 +202,14 @@ func DeleteCandidateTime(c echo.Context) error {
 	
 	err := c.Bind(&CandidateTime)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
 	}
 
-	db.Delete(&CandidateTime)
+	err = db.Delete(&CandidateTime)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToDeleteCandidateTime)
+	}
+
 	return c.JSON(http.StatusNoContent, CandidateTime)
 
 }
@@ -222,7 +242,7 @@ func UpdateAvailableTimeByMeetingId(c echo.Context) error {
 
 	availableTime := models.AvailableTime{}
 	if err := c.Bind(&availableTime); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
 	}
 
 	errorMessageListAboutAvailableTime := []string{}
@@ -256,7 +276,10 @@ func UpdateAvailableTimeByMeetingId(c echo.Context) error {
 func IsAvailableTimeMoreThanExpected(availableTime models.AvailableTime, id int) bool {
 
 	meeting := models.Meeting{}
-	db.First(&meeting, id)
+	err := db.First(&meeting, id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
+	}
 
 	startTime := availableTime.ActualStartTime
 	endTime := availableTime.ActualEndTime
