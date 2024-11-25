@@ -96,8 +96,8 @@ func GetMeetingById(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
-	err := db.First(&meeting, id)
-	if err != {
+	err = db.First(&meeting, id)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
 	}
 
@@ -114,8 +114,8 @@ func GetConfirmedMeetingsForHost(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 	
-	err := db.First(&user, id)
-	if err != {
+	err = db.First(&user, id)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
@@ -137,8 +137,8 @@ func GetNotConfirmedMeetingsForHost(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
-	err := db.First(&user, id)
-	if err != {
+	err = db.First(&user, id)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
@@ -160,8 +160,8 @@ func GetNotRespondedMeetingsForHost(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
-	err := db.First(&user, id)
-	if err != {
+	err = db.First(&user, id)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
@@ -183,8 +183,8 @@ func GetConfirmedMeetingsForGuest(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
-	err := db.First(&user, id)
-	if err != {
+	err = db.First(&user, id)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
@@ -207,7 +207,7 @@ func GetNotConfirmedMeetingsForGuest(c echo.Context) error {
 	}
 
 	err := db.First(&user, id)
-	if err != {
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
@@ -229,8 +229,8 @@ func GetNotRespondedMeetingsForGuest(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
-	err := db.First(&user, id)
-	if err != {
+	err = db.First(&user, id)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
 	}
 
@@ -252,8 +252,8 @@ func UpdateMeetingById(c echo.Context) error {
 	}
 
 	oldMeeting := models.Meeting{}
-	err := db.First(&oldMeeting, id)
-	if err != {
+	err = db.First(&oldMeeting, id)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
 	}
 
