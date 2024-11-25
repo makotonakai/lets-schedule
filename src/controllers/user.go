@@ -23,7 +23,7 @@ func CreateUser(c echo.Context) error {
 
 	err := c.Bind(&newUser)
 	if err != nil {
-		errorMessageList = append(errorMessageList, config.ErrFailedToBindUser)
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindUser)
 	}
 
 	if models.IsEmailAddressEmptyOrNull(newUser) == true {
