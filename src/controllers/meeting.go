@@ -15,6 +15,16 @@ import (
 // Handlers
 //----------
 
+// CreateMeeting creates a new meeting
+// @Summary Create a new meeting
+// @Description Create a meeting with title, type (onsite, online, or hybrid), and other details
+// @Tags meetings
+// @Accept json
+// @Produce json
+// @Param meeting body models.Meeting true "Meeting details"
+// @Success 201 {object} models.Meeting
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/meetings/new [post]
 func CreateMeeting(c echo.Context) error {
 	
 	newMeeting := models.Meeting{}
@@ -64,7 +74,16 @@ func CreateMeeting(c echo.Context) error {
 	
 }
 
-func GetAllMeetings(c echo.Context) error {
+// CreateMeeting creates a new meeting
+// @Summary Create a new meeting
+// @Description Create a meeting with title, type (onsite, online, or hybrid), and other details
+// @Tags meetings
+// @Produce json
+// @Param user_id path int true "User ID"
+// @Success 200 {object} models.Meeting
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/meetings/user/{user_id} [get]
+func GetMeetingsByUserId(c echo.Context) error {
 
 	user := models.User{}
 	id_str := c.Param("user_id")
@@ -86,6 +105,7 @@ func GetAllMeetings(c echo.Context) error {
 	return c.JSON(http.StatusOK, meetings)
 
 }
+
 
 func GetMeetingById(c echo.Context) error {
 

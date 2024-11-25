@@ -64,7 +64,7 @@ func Initialize() *echo.Echo {
 	r.GET("", handlers.Restricted)
 
 	r.GET("/meetings/:id", controllers.GetMeetingById)
-	r.GET("/meetings/user/:user_id", controllers.GetAllMeetings)
+	r.GET("/meetings/user/:user_id", controllers.GetMeetingsByUserId)
 	r.GET("/meetings/host/confirmed/:user_id", controllers.GetConfirmedMeetingsForHost)
 	r.GET("/meetings/host/not-confirmed/:user_id", controllers.GetNotConfirmedMeetingsForHost)
 	r.GET("/meetings/host/not-responded/:user_id", controllers.GetNotRespondedMeetingsForHost)
