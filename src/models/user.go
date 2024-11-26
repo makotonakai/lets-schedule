@@ -144,6 +144,7 @@ func ResetPassword(db *gorm.DB, Id int, NewPassword string) error {
 	if err != nil {
 		return config.ErrFailedToResetPassword
 	}
+	return nil
 }
 
 
