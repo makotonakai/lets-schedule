@@ -17,6 +17,15 @@ import (
 var db = database.Connect()
 var errorMessageList = []string{}
 
+// CreateUser creates a new user
+// @Summary Create a new user
+// @Description Create a new user
+// @Accept json
+// @Produce json
+// @Param user body models.User true "Details of candidate time"
+// @Success 201 {object} models.User
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/signup [post]
 func CreateUser(c echo.Context) error {
 
 	newUser := models.User{}
@@ -91,6 +100,15 @@ func DeleteUser(c echo.Context) error {
 	return c.JSON(http.StatusNoContent, user)
 }
 
+// CreateUser creates a new user
+// @Summary Create a new user
+// @Description Create a new user
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {object} string "New password"
+// @Failure 400 {object} string "Error message"
+// @Router /user/{id}/reset-password [post]
 func ResetPassword(c echo.Context) error {
 
 	id_str := c.Param("id")

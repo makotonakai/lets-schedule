@@ -17,14 +17,14 @@ import (
 
 // CreateMeeting creates a new meeting
 // @Summary Create a new meeting
-// @Description Create a meeting with title, type (onsite, online, or hybrid), and other details
+// @Description Create a new meeting 
 // @Tags meetings
 // @Accept json
 // @Produce json
 // @Param meeting body models.Meeting true "Meeting details"
 // @Success 201 {object} models.Meeting
 // @Failure 400 {object} string "Error message"
-// @Router /api/restricted/meetings/new [post]
+// @Router /api/signup [post]
 func CreateMeeting(c echo.Context) error {
 	
 	newMeeting := models.Meeting{}
@@ -74,9 +74,9 @@ func CreateMeeting(c echo.Context) error {
 	
 }
 
-// CreateMeeting creates a new meeting
-// @Summary Create a new meeting
-// @Description Create a meeting with title, type (onsite, online, or hybrid), and other details
+// GetMeetingsByUserId gets meetings by user id
+// @Summary Get meetings by user id
+// @Description Get meetings by user id
 // @Tags meetings
 // @Produce json
 // @Param user_id path int true "User ID"
@@ -106,7 +106,15 @@ func GetMeetingsByUserId(c echo.Context) error {
 
 }
 
-
+// GetMeetingById gets meetings by meeting id
+// @Summary Get meetings by meeting id
+// @Description Get meetings by meeting id
+// @Tags meetings
+// @Produce json
+// @Param id path int true "Meeting ID"
+// @Success 200 {object} models.Meeting
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/meetings/{id} [get]
 func GetMeetingById(c echo.Context) error {
 
 	meeting := models.Meeting{}
@@ -125,6 +133,15 @@ func GetMeetingById(c echo.Context) error {
 
 }
 
+// GetConfirmedMeetingsForHost gets meetings that are confirmed for host by user id
+// @Summary Get meetings that are confirmed for host by user id
+// @Description Get meetings that are confirmed for host by user id
+// @Tags meetings
+// @Produce json
+// @Param user_id path int true "User ID"
+// @Success 200 {object} models.Meeting
+// @Failure 400 {object} string "Error message"
+// @Router /meetings/host/confirmed/{user_id} [get]
 func GetConfirmedMeetingsForHost(c echo.Context) error {
 
 	user := models.User{}
@@ -148,6 +165,15 @@ func GetConfirmedMeetingsForHost(c echo.Context) error {
 
 }
 
+// GetNotConfirmedMeetingsForHost gets meetings that are not confirmed for host by user id
+// @Summary Get meetings that are not confirmed for host by user id
+// @Description Get meetings that are not confirmed for host by user id
+// @Tags meetings
+// @Produce json
+// @Param user_id path int true "User ID"
+// @Success 200 {object} models.Meeting
+// @Failure 400 {object} string "Error message"
+// @Router /meetings/host/not-confirmed/{user_id} [get]
 func GetNotConfirmedMeetingsForHost(c echo.Context) error {
 
 	user := models.User{}
@@ -171,6 +197,15 @@ func GetNotConfirmedMeetingsForHost(c echo.Context) error {
 
 }
 
+// GetNotRespondedMeetingsForHost gets that are not responded by host by user id
+// @Summary Get meetings that are not responded by host by user id
+// @Description Get meetings that are not responded by host by user id
+// @Tags meetings
+// @Produce json
+// @Param user_id path int true "User ID"
+// @Success 200 {object} models.Meeting
+// @Failure 400 {object} string "Error message"
+// @Router /meetings/host/not-responded/{user_id} [get]
 func GetNotRespondedMeetingsForHost(c echo.Context) error {
 
 	user := models.User{}
@@ -194,6 +229,15 @@ func GetNotRespondedMeetingsForHost(c echo.Context) error {
 
 }
 
+// GetConfirmedMeetingsForGuest gets meetings that are confirmed by guest by user id
+// @Summary Get meetings that are confirmed by guest by user id
+// @Description Get meetings that are not responded by host by user id
+// @Tags meetings
+// @Produce json
+// @Param user_id path int true "User ID"
+// @Success 200 {object} models.Meeting
+// @Failure 400 {object} string "Error message"
+// @Router /meetings/guest/confirmed/{user_id} [get]
 func GetConfirmedMeetingsForGuest(c echo.Context) error {
 
 	user := models.User{}
@@ -217,6 +261,15 @@ func GetConfirmedMeetingsForGuest(c echo.Context) error {
 
 }
 
+// GetNotConfirmedMeetingsForGuest gets meetings that are not confirmed by guest by user id
+// @Summary Get meetings that are not confirmed by guest by user id
+// @Description Get meetings that are not confirmed by guest by user id
+// @Tags meetings
+// @Produce json
+// @Param user_id path int true "User ID"
+// @Success 200 {object} models.Meeting
+// @Failure 400 {object} string "Error message"
+// @Router /meetings/guest/not-confirmed/{user_id} [get]
 func GetNotConfirmedMeetingsForGuest(c echo.Context) error {
 
 	user := models.User{}
@@ -240,6 +293,15 @@ func GetNotConfirmedMeetingsForGuest(c echo.Context) error {
 
 }
 
+// GetNotRespondedMeetingsForGuest gets meetings that are not responded by guest by user id
+// @Summary Get meetings that are not responded by guest by user id
+// @Description Get meetings that are not responded by guest by user id
+// @Tags meetings
+// @Produce json
+// @Param user_id path int true "User ID"
+// @Success 200 {object} models.Meeting
+// @Failure 400 {object} string "Error message"
+// @Router /meetings/guest/not-responded/{user_id} [get]
 func GetNotRespondedMeetingsForGuest(c echo.Context) error {
 
 	user := models.User{}
@@ -263,6 +325,15 @@ func GetNotRespondedMeetingsForGuest(c echo.Context) error {
 
 }
 
+// UpdateMeetingById updates meeting by meeting id
+// @Summary Update meeting by meeting id
+// @Description Update meeting by meeting id
+// @Tags meetings
+// @Produce json
+// @Param id path int true "Meeting ID"
+// @Success 200 {object} models.Meeting
+// @Failure 400 {object} string "Error message"
+// @Router /meetings/{id} [put]
 func UpdateMeetingById(c echo.Context) error {
 
 	paramId := c.Param("id")

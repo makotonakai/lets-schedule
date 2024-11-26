@@ -15,6 +15,16 @@ import (
 // Handlers
 //----------
 
+// CreateParticipant creates new participants
+// @Summary Create new participants
+// @Description Create participants and other details
+// @Tags participants
+// @Accept json
+// @Produce json
+// @Param participant body models.ParticipantWithUserName true "List of ParticipantWithUserName"
+// @Success 201 {object} models.ParticipantWithUserName
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/participants/new [post]
 func CreateParticipant(c echo.Context) error {
   newParticipantWithUserNameList := []models.ParticipantWithUserName{}
   err := c.Bind(&newParticipantWithUserNameList)
@@ -52,7 +62,16 @@ func CreateParticipant(c echo.Context) error {
   return c.JSON(http.StatusCreated, newParticipantList)
 }
 
-
+// GetParticipantByMeetingId gets participant by meeting id
+// @Summary Get participant by meeting id
+// @Description Get participant by meeting id
+// @Tags participants
+// @Accept json
+// @Produce json
+// @Param meeting_id path int true "Meeting ID"
+// @Success 200 {object} models.ParticipantWithUserName
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/participants/meeting/{meeting_id} [get]
 func GetParticipantByMeetingId(c echo.Context) error {
 
 	pmi := c.Param("meeting_id")
@@ -73,6 +92,16 @@ func GetParticipantByMeetingId(c echo.Context) error {
 
 }
 
+// UpdateParticipantByMeetingId updates participant by meeting id
+// @Summary Update participant by meeting id
+// @Description Update participant by meeting id
+// @Tags participants
+// @Accept json
+// @Produce json
+// @Param meeting_id path int true "Meeting ID"
+// @Success 200 {object} models.ParticipantWithUserName
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/participants/meeting/{meeting_id} [put]
 func UpdateParticipantByMeetingId(c echo.Context) error {
 	pmi := c.Param("meeting_id")
 	mi, err := strconv.Atoi(pmi)

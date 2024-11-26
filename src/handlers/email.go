@@ -10,6 +10,15 @@ import (
 	"github.com/MakotoNakai/lets-schedule/models"
 )
 
+// CreateUser creates a new user
+// @Summary Create a new user
+// @Description Create a new user
+// @Accept json
+// @Produce json
+// @Param user body models.EmailAddress true "Details of email address"
+// @Success 201 {object} models.EmailAddress
+// @Failure 400 {object} string "Error message"
+// @Router /api/send-email [post]
 func SendEmail(c echo.Context) error {
 
 	ea := models.EmailAddress{}

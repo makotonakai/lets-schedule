@@ -13,6 +13,15 @@ import (
 // Handlers
 //----------
 
+// CreateMeeting creates a new candidate time
+// @Summary Create a new candidate time
+// @Description Create a new candidate time
+// @Accept json
+// @Produce json
+// @Param meeting body models.CandidateTime true "Details of candidate time"
+// @Success 201 {object} models.CandidateTime
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/candidate_times/new [post]
 func CreateCandidateTime(c echo.Context) error {
 	
 	newCandidateTime := []models.CandidateTime{}
@@ -48,6 +57,15 @@ func CreateCandidateTime(c echo.Context) error {
 	
 }
 
+// GetCandidateTimeWithUserNameByMeetingId gets a CandidateTimeWithUserName by meeting id
+// @Summary Get a CandidateTimeWithUserName by meeting id
+// @Description Get a CandidateTimeWithUserName by meeting id
+// @Accept json
+// @Produce json
+// @Param meeting_id path int true "Meeting ID"
+// @Success 200 {object} models.CandidateTimeWithUserName 
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/candidate_times/meeting/{meeting_id} [get]
 func GetCandidateTimeWithUserNameByMeetingId(c echo.Context) error {
 
 	MeetingIdString := c.Param("meeting_id")
@@ -85,6 +103,16 @@ func GetCandidateTimeWithUserNameByMeetingId(c echo.Context) error {
 	return c.JSON(http.StatusOK, CandidateTimeWithUserNameList)
 }
 
+// GetCandidateTimeByUserIdAndMeetingId gets a candidate time by user id and meeting id
+// @Summary Get a candidate time by user id and meeting id
+// @Description Get a candidate time by user id and meeting id
+// @Accept json
+// @Produce json
+// @Param user_id path int true "User ID"
+// @Param meeting_id path int true "Meeting ID"
+// @Success 200 {object} models.CandidateTime
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/candidate_times/user/{user_id}/meeting/{meeting_id} [get]
 func GetCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 
 	UserIdString := c.Param("user_id")
@@ -106,6 +134,16 @@ func GetCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 
 }
 
+// UpdateCandidateTimeByUserIdAndMeetingId updates a candidate time by user id and meeting id
+// @Summary Update a candidate time by user id and meeting id
+// @Description Update a candidate time by user id and meeting id
+// @Accept json
+// @Produce json
+// @Param user_id path int true "User ID"
+// @Param meeting_id path int true "Meeting ID"
+// @Success 200 {object} models.CandidateTime
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/candidate_times/user/{user_id}/meeting/{meeting_id} [put]
 func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 
 	pui := c.Param("user_id")
@@ -214,6 +252,15 @@ func DeleteCandidateTime(c echo.Context) error {
 
 }
 
+// GetAvailableTimeByMeetingId gets an available time by meeting id
+// @Summary Get an available time by meeting id
+// @Description Get an available time by meeting id
+// @Accept json
+// @Produce json
+// @Param meeting_id path int true "Meeting ID"
+// @Success 200 {object} models.CandidateTime
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/candidate_times/available-time/{meeting_id} [get]
 func GetAvailableTimeByMeetingId(c echo.Context) error {
 
 	pmi := c.Param("meeting_id")
@@ -228,6 +275,15 @@ func GetAvailableTimeByMeetingId(c echo.Context) error {
 	return c.JSON(http.StatusOK, availableTimeList)
 }
 
+// UpdateAvailableTimeByMeetingId gets an available time by meeting id
+// @Summary Update an available time by meeting id
+// @Description Update an available time by meeting id
+// @Accept json
+// @Produce json
+// @Param meeting_id path int true "Meeting ID"
+// @Success 200 {object} models.CandidateTime
+// @Failure 400 {object} string "Error message"
+// @Router /api/restricted/candidate_times/available-time/{meeting_id} [put]
 func UpdateAvailableTimeByMeetingId(c echo.Context) error {
 	paramId := c.Param("meeting_id")
 	id, err := strconv.Atoi(paramId)

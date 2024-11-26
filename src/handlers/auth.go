@@ -26,6 +26,21 @@ type JWTCustomClaims struct {
 	jwt.StandardClaims
 }
 
+type Credential struct {
+	Id       int    `json:"id"`
+	UserName string `json:"user_name"`
+	Token string `json:"token"`
+}
+
+// Login generates a authorization token if the login becomes successful
+// @Summary Generate a authorization token if the login becomes successful
+// @Description Generate a authorization token if the login becomes successful
+// @Tags handler
+// @Accept json
+// @Produce json
+// @Success 200 {object} Credential
+// @Failure 401 {object} string "Error message"
+// @Router /api/login [get]
 func Login(c echo.Context) error {
 
 	u := models.User{}
@@ -81,7 +96,7 @@ func Login(c echo.Context) error {
 	session.Values["token"] = t
 	session.Save(c.Request(), c.Response())
 
-	return c.JSON(http.StatusOK, echo.Map{
+	return c.JSON(http.StatusOK, Credential{
 		"id":        strconv.Itoa(user.Id),
 		"user_name": user.UserName,
 		"token":     t,
@@ -89,10 +104,22 @@ func Login(c echo.Context) error {
 
 }
 
+// Accessible returns "Accessible" when the api server is alive
+// @Summary Return "Accessible" when the api server is alive
+// @Description Return "Accessible" when the api server is alive
+// @Tags handler
+// @Success 200 {string} Accessible
+// @Router /api/ [get]
 func Accessible(c echo.Context) error {
 	return c.JSON(http.StatusOK, "Accessible")
 }
 
+// Restricted returns a greeting if the given token is valid
+// @Summary Return a greeting if the given token is valid
+// @Description Return a greeting if the given token is valid
+// @Tags handler
+// @Success 200 {string} Accessible
+// @Router /api/restricted [get]
 func Restricted(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(*JWTCustomClaims)
