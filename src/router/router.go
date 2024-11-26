@@ -8,6 +8,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
+	"github.com/swaggo/echo-swagger"
+	_ "github.com/swaggo/echo-swagger/example/docs"
+
 	"github.com/gorilla/sessions"
   "github.com/labstack/echo-contrib/session"
 
@@ -52,6 +55,7 @@ func Initialize() *echo.Echo {
 	api.POST("/login", handlers.Login)
 	api.POST("/signup", controllers.CreateUser)
 	api.POST("/send-email", handlers.SendEmail)
+	api.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	api.POST("/user/:id/reset-password", controllers.ResetPassword)
 
