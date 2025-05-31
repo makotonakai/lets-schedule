@@ -50,11 +50,11 @@ func Login(c echo.Context) error {
 	}
 
 	if models.IsUserNameEmptyOrNull(u) == true {
-		errorMessageList = append(errorMessageList, config.UserNameIsEmpty)
+		errorMessageList = append(errorMessageList, config.UserNameIsEmpty.Error())
 	}
 
 	if models.IsPasswordEmptyOrNull(u) == true {
-		errorMessageList = append(errorMessageList, config.PasswordIsEmpty)
+		errorMessageList = append(errorMessageList, config.PasswordIsEmpty.Error())
 	}
 
 	if models.ErrorsExist(errorMessageList) {
@@ -97,9 +97,9 @@ func Login(c echo.Context) error {
 	session.Save(c.Request(), c.Response())
 
 	return c.JSON(http.StatusOK, Credential{
-		"id":        strconv.Itoa(user.Id),
-		"user_name": user.UserName,
-		"token":     t,
+		Id:        user.Id,
+		UserName: user.UserName,
+		Token:     t,
 	})
 
 }

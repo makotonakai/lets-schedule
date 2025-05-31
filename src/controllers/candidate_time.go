@@ -32,23 +32,32 @@ func CreateCandidateTime(c echo.Context) error {
 
 	errorMessageListAboutCandidateTime := []string{}
 
-	if models.IsCandidateTimeEmpty(newCandidateTime) == true {
-		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty)
+
+	emptyCandidateTimeExists, err := models.EmptyCandidateTimeExists(&newCandidateTime);
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
 	}
 
-	if models.EmptyCandidateTimeExists(newCandidateTime) == true {
-		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty)
+	pastCandidateTimeExists, err := models.PastCandidateTimeExists(&newCandidateTime)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
 	}
 
-	if models.PastCandidateTimeExists(newCandidateTime) == true {
-		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsPast)
+	if emptyCandidateTimeExists {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty.Error())
 	}
 
-	if models.ErrorsExist(errorMessageListAboutCandidateTime) {
+	if pastCandidateTimeExists {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsPast.Error())
+	}
+
+	errorsExist := models.ErrorsExist(errorMessageListAboutCandidateTime);
+
+	if errorsExist {
 		return c.JSON(http.StatusBadRequest, errorMessageListAboutCandidateTime)
 	}
 
-	err = db.Create(&newCandidateTime)
+	err = db.Create(&newCandidateTime).Error
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrFailedToCreateCandidateTime)
 	}
@@ -75,10 +84,10 @@ func GetCandidateTimeWithUserNameByMeetingId(c echo.Context) error {
 	}
 
 	newCandidateTimeList := []models.CandidateTime{}
-	err := db.Table("candidate_times").
+	err = db.Table("candidate_times").
 		Select("candidate_times.*").
 		Where("candidate_times.meeting_id = ?", MeetingId).
-		Find(&newCandidateTimeList)
+		Find(&newCandidateTimeList).Error
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, config.ErrCandidateTimeNotFound)
@@ -128,7 +137,10 @@ func GetCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 	}
 
 	CandidateTimeList := []models.CandidateTime{}
-	CandidateTimeList = models.GetCandidateTimeByMeetingIdAndUserId(db, MeetingId, UserId)
+	CandidateTimeList, err = models.GetCandidateTimeByMeetingIdAndUserId(db, MeetingId, UserId)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
+	}
 
 	return c.JSON(http.StatusOK, CandidateTimeList)
 
@@ -159,7 +171,10 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 	}
 
 	oldCTList := []models.CandidateTime{}
-	oldCTList = models.GetCandidateTimeByMeetingIdAndUserId(db, mi, ui)
+	oldCTList, err = models.GetCandidateTimeByMeetingIdAndUserId(db, mi, ui)
+	if err != nil {
+			return c.JSON(http.StatusBadRequest, config.ErrUserNotFound)
+	}
 
 	newCTList := []models.CandidateTime{}
 	err = c.Bind(&newCTList)
@@ -169,19 +184,27 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 
 	errorMessageListAboutCandidateTime := []string{}
 
-	if models.IsCandidateTimeEmpty(newCTList) == true {
-		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty)
+	IsCandidateTimeEmpty, err := models.EmptyCandidateTimeExists(&newCTList);
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
 	}
 
-	if models.EmptyCandidateTimeExists(newCTList) == true {
-		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty)
+	pastCandidateTimeExists, err := models.PastCandidateTimeExists(&newCTList)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
 	}
 
-	if models.PastCandidateTimeExists(newCTList) == true {
-		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsPast)
+	if IsCandidateTimeEmpty {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsEmpty.Error())
 	}
 
-	if models.ErrorsExist(errorMessageListAboutCandidateTime) {
+	if pastCandidateTimeExists {
+		errorMessageListAboutCandidateTime = append(errorMessageListAboutCandidateTime, config.CandidateTimeIsPast.Error())
+	}
+
+	errorsExist := models.ErrorsExist(errorMessageListAboutCandidateTime)
+
+	if errorsExist {
 		return c.JSON(http.StatusBadRequest, errorMessageListAboutCandidateTime)
 	}
 
@@ -194,9 +217,12 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 	oldlen := len(oldCTList)
 	newlen := len(newCTList)
 	minlen := models.Min(oldlen, newlen)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrIntegerIsNil)
+	}
 
 	tx := db.Begin()
-
+	
 	for i := 0; i < minlen; i++ {
 		oldct := oldCTList[i]
 		newct := newCTList[i]
@@ -225,7 +251,7 @@ func UpdateCandidateTimeByUserIdAndMeetingId(c echo.Context) error {
 		}
 	}
 
-	err = tx.Commit()
+	err = tx.Commit().Error
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrFailedToExecuteTransaction)
 	}
@@ -243,7 +269,7 @@ func DeleteCandidateTime(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
 	}
 
-	err = db.Delete(&CandidateTime)
+	err = db.Delete(&CandidateTime).Error
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrFailedToDeleteCandidateTime)
 	}
@@ -263,13 +289,19 @@ func DeleteCandidateTime(c echo.Context) error {
 // @Router /api/restricted/candidate_times/available-time/{meeting_id} [get]
 func GetAvailableTimeByMeetingId(c echo.Context) error {
 
-	pmi := c.Param("meeting_id")
-	mi, err := strconv.Atoi(pmi)
+	mistr := c.Param("meeting_id")
+	mi, err := strconv.Atoi(mistr)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
-	availableTimeList := models.GetAvailableTimeByMeetingId(db, mi)
-	if models.AvailableTimeIsNotFound(availableTimeList) {
+
+	availableTimeList, err := models.GetAvailableTimeByMeetingId(db, mi)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.MeetingNotFound)
+	}
+
+	availableTimeNotFound, _ := models.AvailableTimeIsNotFound(&availableTimeList)
+	if availableTimeNotFound {
 		return c.JSON(http.StatusBadRequest, config.AvailableTimeNotFound)
 	}
 	return c.JSON(http.StatusOK, availableTimeList)
@@ -298,25 +330,41 @@ func UpdateAvailableTimeByMeetingId(c echo.Context) error {
 
 	availableTime := models.AvailableTime{}
 	if err := c.Bind(&availableTime); err != nil {
-		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
+		return c.JSON(http.StatusBadRequest, config.MeetingNotFound)
 	}
 
 	errorMessageListAboutAvailableTime := []string{}
 
-	if models.IsAvailableTimeEmpty(availableTime) == true {
-		errorMessageListAboutAvailableTime = append(errorMessageListAboutAvailableTime, config.AvailableTimeNotFound)
+	availableTimeEmpty, err := models.IsAvailableTimeEmpty(&availableTime);
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.AvailableTimeNotFound)
 	}
 
-
-	if IsAvailableTimeMoreThanExpected(availableTime, id) {
-		errorMessageListAboutAvailableTime = append(errorMessageListAboutAvailableTime, config.AvailableTimeTooLong)
+	availableTimeMoreThanExpected, err := IsAvailableTimeMoreThanExpected(availableTime, id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
 	}
 
-	if IsAvailableTimeWithinLimit(availableTime, id) {
-		errorMessageListAboutAvailableTime = append(errorMessageListAboutAvailableTime, config.AvailableTimeOutOfLimit)
+	availableTimeNotWithinLimit, err := IsAvailableTimeWithinLimit(availableTime, id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, config.ErrFailedToBindCandidateTime)
 	}
 
-	if models.ErrorsExist(errorMessageListAboutAvailableTime) {
+	if availableTimeEmpty {
+		errorMessageListAboutAvailableTime = append(errorMessageListAboutAvailableTime, config.AvailableTimeNotFound.Error())
+	}
+
+	if availableTimeMoreThanExpected {
+		errorMessageListAboutAvailableTime = append(errorMessageListAboutAvailableTime, config.AvailableTimeTooLong.Error())
+	}
+
+	if availableTimeNotWithinLimit {
+		errorMessageListAboutAvailableTime = append(errorMessageListAboutAvailableTime, config.AvailableTimeOutOfLimit.Error())
+	}
+
+	errorsExist := models.ErrorsExist(errorMessageListAboutAvailableTime)
+
+	if errorsExist {
 		return c.JSON(http.StatusBadRequest, errorMessageListAboutAvailableTime)
 	}
 
@@ -329,12 +377,12 @@ func UpdateAvailableTimeByMeetingId(c echo.Context) error {
 	return c.JSON(http.StatusOK, oldMeeting)
 }
 
-func IsAvailableTimeMoreThanExpected(availableTime models.AvailableTime, id int) bool {
+func IsAvailableTimeMoreThanExpected(availableTime models.AvailableTime, id int) (bool, error) {
 
 	meeting := models.Meeting{}
-	err := db.First(&meeting, id)
+	err := db.First(&meeting, id).Error
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
+		return false, err
 	}
 
 	startTime := availableTime.ActualStartTime
@@ -343,22 +391,27 @@ func IsAvailableTimeMoreThanExpected(availableTime models.AvailableTime, id int)
 	duration := endTime.Sub(startTime)
 	hours := duration.Hours()
 
-	return hours > float64(meeting.Hour)
+	return hours > float64(meeting.Hour), nil
 
 }
 
-func IsAvailableTimeWithinLimit(availableTime models.AvailableTime, id int) bool {
-	availableTimeList := models.GetAvailableTimeByMeetingId(db, id)
-	if models.AvailableTimeIsNotFound(availableTimeList) {
-		return false
+func IsAvailableTimeWithinLimit(availableTime models.AvailableTime, id int) (bool, error) {
+	availableTimeList, err := models.GetAvailableTimeByMeetingId(db, id)
+	if err != nil {
+		return false, err
+	}
+
+	_, err = models.AvailableTimeIsNotFound(&availableTimeList)
+	if err != nil {
+		return false, nil
 	}
 
 	for _, at := range availableTimeList {
 		if at.StartTime.Before(availableTime.ActualEndTime) && at.EndTime.Before(availableTime.ActualStartTime) {
-			return true
+			return true, nil
 		}
 	}
-	return false
+	return false, nil
 }
 
 

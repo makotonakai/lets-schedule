@@ -28,7 +28,10 @@ func SendEmail(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	ui := models.GetUserIdFromEmailAddress(db, ea.EmailAddress)
+	ui, err := models.GetUserIdFromEmailAddress(db, ea.EmailAddress)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
 
 	m := gomail.NewMessage()
 	m.SetHeader("From", "from@email.com")

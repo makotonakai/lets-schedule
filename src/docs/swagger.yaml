@@ -1,0 +1,679 @@
+definitions:
+  handlers.Credential:
+    properties:
+      id:
+        type: integer
+      token:
+        type: string
+      user_name:
+        type: string
+    type: object
+  models.CandidateTime:
+    properties:
+      created_at:
+        type: string
+      end_time:
+        type: string
+      id:
+        type: integer
+      meeting_id:
+        type: integer
+      start_time:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.CandidateTimeWithUserName:
+    properties:
+      end_time:
+        type: string
+      meeting_id:
+        type: integer
+      start_time:
+        type: string
+      user_name:
+        type: string
+    type: object
+  models.EmailAddress:
+    properties:
+      email_address:
+        type: string
+    type: object
+  models.Meeting:
+    properties:
+      actual_end_time:
+        type: string
+      actual_start_time:
+        type: string
+      all_participants_responded:
+        type: boolean
+      created_at:
+        type: string
+      description:
+        type: string
+      end_time:
+        type: string
+      hour:
+        type: integer
+      id:
+        type: integer
+      is_confirmed:
+        type: boolean
+      is_online:
+        type: boolean
+      is_onsite:
+        type: boolean
+      place:
+        type: string
+      start_time:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      url:
+        type: string
+    type: object
+  models.ParticipantWithUserName:
+    properties:
+      has_responded:
+        type: boolean
+      is_host:
+        type: boolean
+      meeting_id:
+        type: integer
+      user_name:
+        type: string
+    type: object
+  models.User:
+    properties:
+      can_login:
+        type: boolean
+      created_at:
+        type: string
+      email_address:
+        type: string
+      id:
+        type: integer
+      is_admin:
+        type: boolean
+      password:
+        type: string
+      updated_at:
+        type: string
+      user_name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/:
+    get:
+      description: Return "Accessible" when the api server is alive
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Return "Accessible" when the api server is alive
+      tags:
+      - handler
+  /api/login:
+    get:
+      consumes:
+      - application/json
+      description: Generate a authorization token if the login becomes successful
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Credential'
+        "401":
+          description: Error message
+          schema:
+            type: string
+      summary: Generate a authorization token if the login becomes successful
+      tags:
+      - handler
+  /api/restricted:
+    get:
+      description: Return a greeting if the given token is valid
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Return a greeting if the given token is valid
+      tags:
+      - handler
+  /api/restricted/candidate_times/available-time/{meeting_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get an available time by meeting id
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: meeting_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CandidateTime'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get an available time by meeting id
+    put:
+      consumes:
+      - application/json
+      description: Update an available time by meeting id
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: meeting_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CandidateTime'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Update an available time by meeting id
+  /api/restricted/candidate_times/meeting/{meeting_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a CandidateTimeWithUserName by meeting id
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: meeting_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CandidateTimeWithUserName'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get a CandidateTimeWithUserName by meeting id
+  /api/restricted/candidate_times/new:
+    post:
+      consumes:
+      - application/json
+      description: Create a new candidate time
+      parameters:
+      - description: Details of candidate time
+        in: body
+        name: meeting
+        required: true
+        schema:
+          $ref: '#/definitions/models.CandidateTime'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CandidateTime'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Create a new candidate time
+  /api/restricted/candidate_times/user/{user_id}/meeting/{meeting_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a candidate time by user id and meeting id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      - description: Meeting ID
+        in: path
+        name: meeting_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CandidateTime'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get a candidate time by user id and meeting id
+    put:
+      consumes:
+      - application/json
+      description: Update a candidate time by user id and meeting id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      - description: Meeting ID
+        in: path
+        name: meeting_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CandidateTime'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Update a candidate time by user id and meeting id
+  /api/restricted/meetings/{id}:
+    get:
+      description: Get meetings by meeting id
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get meetings by meeting id
+      tags:
+      - meetings
+  /api/restricted/meetings/user/{user_id}:
+    get:
+      description: Get meetings by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get meetings by user id
+      tags:
+      - meetings
+  /api/restricted/participants/meeting/{meeting_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get participant by meeting id
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: meeting_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ParticipantWithUserName'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get participant by meeting id
+      tags:
+      - participants
+    put:
+      consumes:
+      - application/json
+      description: Update participant by meeting id
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: meeting_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ParticipantWithUserName'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Update participant by meeting id
+      tags:
+      - participants
+  /api/restricted/participants/new:
+    post:
+      consumes:
+      - application/json
+      description: Create participants and other details
+      parameters:
+      - description: List of ParticipantWithUserName
+        in: body
+        name: participant
+        required: true
+        schema:
+          $ref: '#/definitions/models.ParticipantWithUserName'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ParticipantWithUserName'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Create new participants
+      tags:
+      - participants
+  /api/restricted/signup:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: Details of candidate time
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Create a new user
+  /api/send-email:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: Details of email address
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.EmailAddress'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.EmailAddress'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Create a new user
+  /api/signup:
+    post:
+      consumes:
+      - application/json
+      description: Create a new meeting
+      parameters:
+      - description: Meeting details
+        in: body
+        name: meeting
+        required: true
+        schema:
+          $ref: '#/definitions/models.Meeting'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Create a new meeting
+      tags:
+      - meetings
+  /meetings/{id}:
+    put:
+      description: Update meeting by meeting id
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Update meeting by meeting id
+      tags:
+      - meetings
+  /meetings/guest/confirmed/{user_id}:
+    get:
+      description: Get meetings that are not responded by host by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get meetings that are confirmed by guest by user id
+      tags:
+      - meetings
+  /meetings/guest/not-confirmed/{user_id}:
+    get:
+      description: Get meetings that are not confirmed by guest by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get meetings that are not confirmed by guest by user id
+      tags:
+      - meetings
+  /meetings/guest/not-responded/{user_id}:
+    get:
+      description: Get meetings that are not responded by guest by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get meetings that are not responded by guest by user id
+      tags:
+      - meetings
+  /meetings/host/confirmed/{user_id}:
+    get:
+      description: Get meetings that are confirmed for host by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get meetings that are confirmed for host by user id
+      tags:
+      - meetings
+  /meetings/host/not-confirmed/{user_id}:
+    get:
+      description: Get meetings that are not confirmed for host by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get meetings that are not confirmed for host by user id
+      tags:
+      - meetings
+  /meetings/host/not-responded/{user_id}:
+    get:
+      description: Get meetings that are not responded by host by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Get meetings that are not responded by host by user id
+      tags:
+      - meetings
+  /user/{id}/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New password
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            type: string
+      summary: Create a new user
+swagger: "2.0"

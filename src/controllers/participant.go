@@ -30,7 +30,7 @@ func CreateParticipant(c echo.Context) error {
   err := c.Bind(&newParticipantWithUserNameList)
   if err != nil {
     log.Printf("Bind Error: %v", err) // Log the bind error
-    return c.JSON(http.StatusBadRequest, ErrFailedToBindParticipantWithUserNameList)
+    return c.JSON(http.StatusBadRequest, config.ErrFailedToBindParticipantWithUserNameList)
   }
 
   newParticipantList := []models.Participant{}
@@ -106,7 +106,7 @@ func UpdateParticipantByMeetingId(c echo.Context) error {
 	pmi := c.Param("meeting_id")
 	mi, err := strconv.Atoi(pmi)
 	if err != nil {
-			return c.JSON(http.StatusBadRequest, ErrIdConversionFailed)
+			return c.JSON(http.StatusBadRequest, config.ErrIdConversionFailed)
 	}
 
 	participantWithUserNameList := []models.ParticipantWithUserName{}
@@ -115,7 +115,11 @@ func UpdateParticipantByMeetingId(c echo.Context) error {
 			return c.JSON(http.StatusBadRequest, config.ErrParticipantWithUserNameListFailedToRegister)
 	}
 
-	oldParticipantList := models.GetParticipantListByMeetingId(db, mi)
+	oldParticipantList, err := models.GetParticipantListByMeetingId(db, mi)
+	if err != nil {
+			return c.JSON(http.StatusBadRequest, config.ErrMeetingNotFound)
+	}
+
 	newParticipantList := []models.Participant{}
 
 	// Start transaction
@@ -154,19 +158,19 @@ func UpdateParticipantByMeetingId(c echo.Context) error {
 	if len(oldParticipantList) < len(participantWithUserNameList) {
 			for i := len(oldParticipantList); i < len(participantWithUserNameList); i++ {
 					pw := participantWithUserNameList[i]
-					newp, err := models.ConvertToParticipant(tx, pw) // Use tx in ConvertToParticipant
+					p, err := models.ConvertToParticipant(tx, pw) // Use tx in ConvertToParticipant
 					if err != nil {
 							// Rollback and return error
 							tx.Rollback()
 							return c.JSON(http.StatusBadRequest, err)
 					}
 					// Create new participant
-					if err := tx.Create(&newp).Error; err != nil {
+					if err := tx.Create(p).Error; err != nil {
 							// Rollback and return error
 							tx.Rollback()
 							return c.JSON(http.StatusBadRequest, config.ErrFailedToCreateParticipant)
 					}
-					newParticipantList = append(newParticipantList, *newp)
+					newParticipantList = append(newParticipantList, p)
 			}
 	}
 

@@ -36,20 +36,20 @@ func CreateUser(c echo.Context) error {
 	}
 
 	if models.IsEmailAddressEmptyOrNull(newUser) == true {
-		errorMessageList = append(errorMessageList, config.EmailAddressIsEmpty)
+		errorMessageList = append(errorMessageList, config.EmailAddressIsEmpty.Error())
 	}
 
 	if models.IsUserNameEmptyOrNull(newUser) == true {
-		errorMessageList = append(errorMessageList, config.UserNameIsEmpty)
+		errorMessageList = append(errorMessageList, config.UserNameIsEmpty.Error())
 	}
 
 	if models.IsPasswordEmptyOrNull(newUser) == true {
-		errorMessageList = append(errorMessageList, config.PasswordIsEmpty)
+		errorMessageList = append(errorMessageList, config.PasswordIsEmpty.Error())
 	}
 
 	userExist, _, _ := models.AlreadyExists(db, newUser)
-	if userExist == true {
-		errorMessageList = append(errorMessageList, config.UserAlreadyExists)
+	if userExist {
+		errorMessageList = append(errorMessageList, config.UserAlreadyExists.Error())
 	}
 
 	if models.ErrorsExist(errorMessageList) {

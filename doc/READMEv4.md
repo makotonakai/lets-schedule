@@ -273,7 +273,7 @@
 | IsOnsiteButNoPlaceSpecified | 与えられた物理開催のミーティングで開催場所が指定されているか判定する関数 |
 | IsOnlineButNoURLSpecified | 与えられたオンライン開催のミーティングで開催URLが指定されているか判定する関数 |
 | IsHybridButNeitherPlaceOrURLSpecified | 与えられたハイブリッド開催のミーティングで開催場所と開催URLが両方指定されているか判定する関数 |
-| GetMeetingById | 与えられたミーティングIDからミーティング情報を取得する関数 |
+| GetMeetingsByUserId | 与えられたミーティングIDからミーティング情報を取得する関数 |
 | GetMeetingsByUserId | 与えられたユーザーIDから参加するミーティング情報を取得する関数 |
 | GetConfirmedMeetingsForHostByUserId | 与えられたユーザーIDからホスト側の確定済みミーティング情報を取得する関数 |
 | GetNotConfirmedMeetingsForHostByUserId | 与えられたユーザーIDからホスト側の未確定のミーティング情報を取得する関数 |
@@ -392,7 +392,7 @@
 | 正常レスポンス | true / false  | nil |
 | 異常レスポンス (mがnilの時) | false | errors.New("The given Meeting object doesn't exist") |
 
-##### GetMeetingByIdメソッド
+##### GetMeetingsByUserIdメソッド
 
 与えられたミーティングIDからミーティング情報を取得する関数
 

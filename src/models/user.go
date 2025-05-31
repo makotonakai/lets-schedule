@@ -27,58 +27,40 @@ type NewPassword struct {
 	NewPassword string `json:"new_password"`
 }
 
-func IsEmailAddressValid(e string) (bool, error) {
-	if e == "" {
-		return false, config.ErrEmailAddressIsEmpty
-	}
+func IsEmailAddressValid(e string) bool {
+
 	emailRegex := regexp.MustCompile(`^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`)
-	return emailRegex.MatchString(e), nil
+	return emailRegex.MatchString(e)
+
 }
 
-func IsEmailAddressEmptyOrNull(u *User) (bool, error) {
+func IsEmailAddressEmptyOrNull(u User) bool {
 
-	if u == nil {
-		return false, config.ErrUserIsNil
-	}
-	u_ := *u
-	u_.EmailAddress = strings.ReplaceAll(u_.EmailAddress, " ", "")
-	return u_.EmailAddress == "", nil
+	u.EmailAddress = strings.ReplaceAll(u.EmailAddress, " ", "")
+	return u.EmailAddress == ""
+
 }
 
-func IsUserNameEmptyOrNull(u *User) (bool, error) {
+func IsUserNameEmptyOrNull(u User) bool {
 
-	if u == nil {
-		return false, config.ErrUserIsNil
-	}
-	u_ := *u
-	u_.UserName = strings.ReplaceAll(u_.UserName, " ", "")
-	return u_.UserName == "", nil
+	u.UserName = strings.ReplaceAll(u.UserName, " ", "")
+	return u.UserName == ""
+
 }
 
-func IsPasswordEmptyOrNull(u *User) (bool, error) {
+func IsPasswordEmptyOrNull(u User) bool {
 
-	if u == nil {
-		return false, config.ErrUserIsNil
-	}
-	u_ := *u
-	u_.Password = strings.ReplaceAll(u_.Password, " ", "")
-	return u_.Password == "", nil
+	u.Password = strings.ReplaceAll(u.Password, " ", "")
+	return u.Password == ""
+
 }
 
-func ErrorsExist(errorMessageList *[]string) (bool, error) {
-
-	if errorMessageList == nil {
-		return false, config.ErrListOfErrorsNotFound
-	}
-	return len((*errorMessageList)) != 0, nil
+func ErrorsExist(errorMessageList []string) bool {
+	return len((errorMessageList)) != 0
 }
 
 
-func AlreadyExists(db *gorm.DB, u *User) (bool, error, error) {
-
-	if u == nil {
-		return false, config.ErrUserIsNil, nil
-	}
+func AlreadyExists(db *gorm.DB, u User) (bool, error, error) {
 
 	var sameEmailAddress User
 	var sameUserName User
@@ -144,6 +126,7 @@ func ResetPassword(db *gorm.DB, Id int, NewPassword string) error {
 	if err != nil {
 		return config.ErrFailedToResetPassword
 	}
+	
 	return nil
 }
 
