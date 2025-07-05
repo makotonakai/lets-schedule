@@ -5,7 +5,6 @@ import (
 	"fmt"
   "gorm.io/gorm"
 	"gorm.io/driver/mysql"
-	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 	gormzerolog "github.com/vitaliy-art/gorm-zerolog"
 )
