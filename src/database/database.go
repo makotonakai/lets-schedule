@@ -17,12 +17,6 @@ var db_name string
 
 func Connect() *gorm.DB {
 
-	// db_user := os.Getenv("DB_USER")
-	// db_password := os.Getenv("DB_PASSWORD")
-	// db_host := os.Getenv("DB_HOST")
-	// db_port := os.Getenv("DB_PORT")
-	// db_name := os.Getenv("DB_NAME")
-
 	runLogFile, _ := os.OpenFile(
 		"logs/db.log",
 		os.O_APPEND|os.O_CREATE|os.O_WRONLY,
