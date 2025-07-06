@@ -9,13 +9,19 @@ import (
 	gormzerolog "github.com/vitaliy-art/gorm-zerolog"
 )
 
+var db_user string
+var db_password string
+var db_host string
+var db_port string
+var db_name string
+
 func Connect() *gorm.DB {
 
-	db_user := os.Getenv("DB_USER")
-	db_password := os.Getenv("DB_PASSWORD")
-	db_host := os.Getenv("DB_HOST")
-	db_port := os.Getenv("DB_PORT")
-	db_name := os.Getenv("DB_NAME")
+	// db_user := os.Getenv("DB_USER")
+	// db_password := os.Getenv("DB_PASSWORD")
+	// db_host := os.Getenv("DB_HOST")
+	// db_port := os.Getenv("DB_PORT")
+	// db_name := os.Getenv("DB_NAME")
 
 	runLogFile, _ := os.OpenFile(
 		"logs/db.log",
