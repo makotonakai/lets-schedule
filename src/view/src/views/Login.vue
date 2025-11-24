@@ -4,6 +4,8 @@ import axios from "axios";
 import { BadRequestStatus, UnauthorizedStatus } from "../utils/StatusCode.js";
 import LoginHeader from "../components/header/LoginHeader.vue";
 
+const api = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   // Properties returned from data() become reactive state
   // and will be exposed on `this`.
@@ -26,7 +28,7 @@ export default {
       // エラーのロギング
       // URLを共通の公開鍵 (ホスト鍵の公開鍵?) で暗号化
       // APIサーバーはHTTPS化
-      await axios.post(`${process.env.HOST}:${process.env.PORT}/api/login`, {
+      await axios.post(`${api}/api/login`, {
         user_name: this.UserName,
         password: this.Password,
       })
